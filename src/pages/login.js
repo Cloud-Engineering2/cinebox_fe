@@ -1,8 +1,9 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import useReq from '../hooks/useReq.js';
 import login from '../styles/pages/login.css'
 import { TextField } from '@mui/material';
 import UnderBarTitle from '../components/underBarTitle.js';
+import { AppContext } from "../App.js";
 
 const Login = () => {
     const { data, isLoading, error, doRequest } = useReq(process.env.REACT_APP_LOGIN_URL, null);

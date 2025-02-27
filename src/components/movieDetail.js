@@ -1,35 +1,28 @@
 import React, { useEffect, useState } from 'react';
 import detail from '../styles/components/movieDetail.css';
 
-const MovieDetail = ({detail}) => {
+const MovieDetail = ({movie, styles}) => {
 
     return <>
-        <div className="movieDetail">
+        <div className="movieDetail" style={styles}>
             <div className="movieInfo">
                 <div>
-                    <h2 className="title">{detail.title}</h2>
-                    <p className="plot">{detail.plot}</p>
+                    <h2 className="title mb-18">{movie.title}</h2>
+                    <p className='bold'>개봉일: {movie.releaseDate} &nbsp; 상영 시간: {movie.runtime}분 &nbsp; <span style={{color:'orange'}}>15세이상관람가</span> </p>
                 </div>
-                <div style={{display: 'flex'}}>
-                    <div className="mr-20">
-                        <p className="fs-12">실관람 평점</p>
-                        <p>8.3</p>
-                    </div>
-                    <div className="mr-20">
-                        <p className="fs-12">예매율</p>
-                        <p>3위</p>
-                    </div>
-                    <div className="mr-20">
-                        <p className="fs-12">누적관계수</p>
-                        <p>851,715</p>
-                    </div>
+                <div>
+                    <p><span className='grayFont'>장르</span> &nbsp; {movie.genre}</p>
+                    <p><span className='grayFont'>감독</span> &nbsp; {movie.director}</p>
+                    <p><span className='grayFont'>출연</span> &nbsp; {movie.actors}</p>
                 </div>
             </div>
             <div className="movieImg">
-                <div className="img">
-                    {/* <img src="https://www.bing.com/images/blob?bcid=r6CgZUr0sCYIlQ" alt="image" /> */}
+                <div className="img mb-6">
+                    <img src={movie.posterImageUrl} alt="image" />
                 </div>
-                <button type="button" className="button-sm mb-6">예매</button>
+                <div className="bookingButton button-sm">
+                    <a href={`/booking/${movie}`}>이 영화 예매</a>
+                </div>
             </div>
         </div>
     </>
