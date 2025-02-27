@@ -8,6 +8,7 @@ import Signup from './pages/signup.js';
 import Detail from './pages/detail.js';
 
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import Booking from './pages/booking.js';
 
 function App() {
   return (
@@ -18,6 +19,7 @@ function App() {
           <Route path="/" element={<Login />} />
           <Route path="/main" element={<Main />} />
           <Route path="/detail/:movieId" element={<Detail />} />
+          <Route path="/booking/:movieId" element={<Booking />} />
         </Routes>
       </Router>
     </div>
