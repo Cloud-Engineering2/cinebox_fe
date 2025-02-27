@@ -2,8 +2,6 @@ import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import useReq from '../hooks/useReq.js';
 import detail from '../styles/pages/detail.css'
-import Header from '../templates/header.js';
-import Footer from '../templates/footer.js';
 import MovieDetail from '../components/movieDetail.js'
 import Tabs from '../components/tabs.js';
 import { Box, TextField } from '@mui/material';
@@ -78,7 +76,6 @@ const Detail = () => {
     }
 
     return <>
-        <Header/>
         <Box style={{margin : '80px 200px'}}>
             {data && [
                 <MovieDetail detail={data}/>,
@@ -123,7 +120,6 @@ const Detail = () => {
                 </div>
             ]}
         </Box>
-        <Footer/>
     </>
 };
 
