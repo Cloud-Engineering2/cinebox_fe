@@ -32,7 +32,7 @@ export default function MovieCard({id, text, imgUrl, styles}) {
           onMouseOver={()=>actionBoxController(true)} 
           onMouseOut={()=>actionBoxController(false)}>
       <Box id={cardId} className='actionBox' style={actionBoxStyle}>
-        <Button>예매</Button>
+        <Button onClick={()=>{window.location.href=`/booking/${id}`}}>예매</Button>
         <Button onClick={moveMovieDetail}>상세 정보</Button>
       </Box>
       <CardActionArea>

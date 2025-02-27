@@ -14,7 +14,7 @@ const Detail = () => {
     const identifier = localStorage.getItem('identifier');
     const role = localStorage.getItem('role');
 
-    const { movieId } = useParams();  // This will get the value of the 'id' from the URL
+    const { movieId } = useParams();
     const { data, isLoading, error, doRequest } = useReq(process.env.REACT_APP_MOVIE_API + `/${movieId}`, {
         method: 'GET',
         headers: {
