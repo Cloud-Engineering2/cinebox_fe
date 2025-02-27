@@ -1,0 +1,26 @@
+.login {
+    width: 350px;
+    justify-self: center;
+    position: absolute;
+    left: calc(50% - 170px);
+    top: calc(50vh - 32px);
+}
+.signupForms {
+    display: flex;
+    width: 100%;
+}
+.form-box {
+    display: flex;
+    flex-direction: column;
+    margin-bottom : 15px;
+}
+
+.disabled {
+    display: none;
+}
+#warning {
+    color: red;
+    text-align: center;
+    margin-bottom: 6px;
+    font-size: 14px;
+}

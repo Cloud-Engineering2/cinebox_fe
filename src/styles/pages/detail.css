@@ -1,0 +1,32 @@
+.reviewBox{
+    width: 100%;
+}
+.reviewTextField{
+    display: flex;
+    align-content: center;
+    width: 100%;
+    justify-content: center;
+    margin-left: 5px;
+}
+.userImg {
+    width: 83px;
+    align-content: center;
+}
+.userImg img {
+    width: 100%;
+}
+
+.reviewList {
+    margin: 0px 85px 0px 109px;
+    height: 258px;
+    overflow-y: auto;
+}
+.addReviewButton {
+    width: 50px;
+    align-content: center;
+    margin-left: 12px;
+    text-align: center;
+}
+.addReviewButton img {
+    width: 73%;
+}

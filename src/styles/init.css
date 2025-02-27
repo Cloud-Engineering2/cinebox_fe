@@ -1,0 +1,37 @@
+.mb-5 {
+    margin-bottom: 5px !important;
+}
+.mb-6 {
+    margin-bottom: 6px !important;
+}
+.mb-10 {
+    margin-bottom: 10px !important;
+}
+.mb-18 {
+    margin-bottom: 18px !important;
+}
+.mb-110 {
+    margin-bottom: 110px !important;
+}
+
+.mr-12 {
+    margin-right: 12px !important;
+}
+.mr-20 {
+    margin-right: 20px !important;
+}
+.m1-10 {
+    margin-left: 10px !important;
+}
+
+.fs-12 {
+    font-size: 12px;
+}
+
+.wd-50p{
+    width: 50%;
+}
+
+.mainFontColor {
+    color: #004D09;
+}

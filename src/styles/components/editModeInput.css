@@ -1,0 +1,24 @@
+
+.textModeBox {
+    display: flex;
+    justify-content: space-between;
+    width: 75%;
+    align-items: center;
+}
+.ExButton {
+    width: 6%;
+    align-content: center;
+}
+
+.editMode{
+    width: 76%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+.editMode input{
+    width: 73%;
+}
+.editMode .editButton {
+    margin-left: 23px;
+}

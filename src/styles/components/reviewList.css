@@ -1,0 +1,12 @@
+.contentBox {
+    display: flex;
+    justify-content: space-between;
+    height: 45px;
+}
+.content1 {
+    width: 19%;
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    border-right: 2px solid #e8e8e8;
+}

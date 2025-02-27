@@ -1,0 +1,11 @@
+.movieListWraper{
+    overflow-y: auto;
+    padding: 50px;
+    margin: 68px 17%;
+}
+.movieList {
+    display: flex;
+    flex-wrap: wrap;
+    align-content: center;
+    justify-content: center;
+}

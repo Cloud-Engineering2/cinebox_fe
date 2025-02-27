@@ -1,0 +1,38 @@
+.header {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    position: fixed;
+    top: 0;
+    background-color: #fff;
+    width: 100%;
+    z-index: 99;
+    height: 115px;
+}
+.top-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 50px;
+}
+.top-header a {
+    text-decoration: none;
+    color: #004D09;
+    margin: 0px 5px;
+    cursor: pointer;
+}
+.top-header a:hover {
+    text-decoration: underline;
+}
+.bottom-header {
+    align-self: center;
+}
+.logo  {
+    width: 118px;
+}
+.logo img  {
+    width: 100%;
+}
+.nickname {
+    margin-right: 12px;
+}
