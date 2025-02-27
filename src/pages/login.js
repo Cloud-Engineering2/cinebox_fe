@@ -2,7 +2,6 @@ import React, { useState, useEffect } from 'react';
 import useReq from '../hooks/useReq.js';
 import login from '../styles/pages/login.css'
 import { TextField } from '@mui/material';
-import Layout from '../templates/Layout.js';
 import UnderBarTitle from '../components/underBarTitle.js';
 
 const Login = () => {
@@ -32,7 +31,7 @@ const Login = () => {
         }
     },[data]);
 
-    return <Layout>
+    return <>
         <UnderBarTitle title={'로그인'}/>
         <div class="login">
             <div class="form-box">
@@ -44,7 +43,7 @@ const Login = () => {
             <div id="warning" class="mb_8 disabled">아이디 혹은 비밀번호를 입력해 주세요.</div>
             <button id="login" type="button" class="button mb-6" onClick={LoginReq}>로그인</button>
         </div>
-    </Layout>;
+    </>;
 };
 
 export default Login;

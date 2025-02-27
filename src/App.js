@@ -8,22 +8,27 @@ import Signup from './pages/signup.js';
 import Detail from './pages/detail.js';
 
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
-import Booking from './pages/booking.js';
+import Footer from './templates/footer.js';
+import Header from './templates/header.js';
+import { Box } from '@mui/material';
 
 function App() {
-  return (
+  return <>
     <div className="App">
-      <Router>
-        <Routes>
-          <Route path="/signup" element={<Signup />} />
-          <Route path="/" element={<Login />} />
-          <Route path="/main" element={<Main />} />
-          <Route path="/detail/:movieId" element={<Detail />} />
-          <Route path="/booking/:movieId" element={<Booking />} />
-        </Routes>
-      </Router>
+    <Header/>
+      <Box style={{height:'calc(100vh - 238px)'}}>
+        <Router>
+          <Routes>
+            <Route path="/signup" element={<Signup />} />
+            <Route path="/" element={<Login />} />
+            <Route path="/main" element={<Main />} />
+            <Route path="/detail/:movieId" element={<Detail />} />
+          </Routes>
+        </Router>
+      </Box>
+      <Footer/>
     </div>
-  );
+  </>;
 }
 
 export default App;

@@ -1,9 +1,9 @@
 .signup {
-    width: 600px;
+    width: 350px;
     justify-self: center;
     position: absolute;
-    left: calc(50% - 304px);
-    top: calc(50vh - 105px);
+    left: calc(50% - 170px);
+    top: calc(50vh - 182px);
 }
 .form-box {
     display: flex;

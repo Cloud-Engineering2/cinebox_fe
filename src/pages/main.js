@@ -3,7 +3,6 @@ import useReq from '../hooks/useReq.js';
 import MainStyle from '../styles/pages/main.css';
 import MovieCard from '../components/movieCard.js';
 import EmptyBox from '../components/emptyBox.js';
-import Layout from '../templates/Layout.js';
 import UnderBarTitle from '../components/underBarTitle.js';
 
 const Main = () => {
@@ -23,7 +22,7 @@ const Main = () => {
         setMovies(data);
     },[data]);
 
-    return <Layout>
+    return <>
         <UnderBarTitle title={'박스오피스'}/>
         <div className='movieListWraper'>
             <div className='movieList'>
@@ -51,7 +50,7 @@ const Main = () => {
                 }
             </div>
         </div>
-    </Layout>
+    </>
 };
 
 export default Main;
