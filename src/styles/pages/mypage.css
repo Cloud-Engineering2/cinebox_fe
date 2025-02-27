@@ -1,0 +1,50 @@
+.userInfoBox {
+    position: relative;
+    width: 100%;
+    height: 175px;
+    background: #004D09;
+    border-radius: 14px;
+    display: flex;
+    padding: 50px;
+    box-sizing: border-box;
+    align-items: center;
+}
+.welcome {
+    width: 98px;
+}
+.welcome img {
+    width: 100%;
+}
+.welcomeText {
+    font-size: 28px;
+    color: #fff;
+}
+.userControlBox {
+    display: flex;
+    justify-content: left;
+    color: #fff;
+    position: absolute;
+    right: 30px;
+    bottom: 20px;
+}
+
+.favoriteMovie {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    margin: 37px 0px;
+    max-height: 550px;
+    overflow-y: auto;
+}
+.bookingList {
+    justify-content: center;
+    margin: 37px 0px;
+    max-height: 550px;
+    overflow-y: auto;
+}
+.movieStory {
+    justify-content: center;
+    margin: 37px 0px;
+    max-height: 550px;
+    overflow-y: auto;
+}
