@@ -1,3 +1,17 @@
+.flex {
+    display: flex;
+    align-items: cetner;
+}
+.fx-dir-col {
+    flex-direction: column;
+}
+.jsfy-cnt-cnt {
+    justify-content: center;
+}
+.mainFontColor {
+    color: #004D09;
+}
+
 .mb-5 {
     margin-bottom: 5px !important;
 }
@@ -7,8 +21,17 @@
 .mb-10 {
     margin-bottom: 10px !important;
 }
+.mb-14 {
+    margin-bottom: 14px !important;
+}
 .mb-18 {
     margin-bottom: 18px !important;
+}
+.mb-44 {
+    margin-bottom: 44px !important;
+}
+.mb-73 {
+    margin-bottom: 73px !important;
 }
 .mb-110 {
     margin-bottom: 110px !important;
@@ -27,11 +50,20 @@
 .fs-12 {
     font-size: 12px;
 }
+.fs-19 {
+    font-size: 19px;
+}
+.bold {
+    font-weight: bold;
+}
+.nowrap {
+    text-wrap: nowrap;
+}
+.of_hd {
+    overflow: hidden;
+}
 
 .wd-50p{
     width: 50%;
 }
 
-.mainFontColor {
-    color: #004D09;
-}

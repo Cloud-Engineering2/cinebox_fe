@@ -1,24 +1,14 @@
 import React, { useState, useEffect } from 'react';
 import {Card, Box, Button} from '@mui/material';
-import CardContent from '@mui/material/CardContent';
-import CardMedia from '@mui/material/CardMedia';
 import Typography from '@mui/material/Typography';
-import CardActionArea from '@mui/material/CardActionArea';
+import AgeLogo from './ageLogo';
+import movieCard from '../styles/components/movieCard.css'
 
-export default function MovieCard({id, text, imgUrl, styles}) {
-
+export default function MovieCard({movie, imgUrl, styles}) {
+  const id = movie.movieId;
+  const title = movie.title;
   const cardId = `actionBox${id}`;
-  const actionBoxStyle = {
-      display: 'none',
-      position:'absolute',
-      left:0, top:0,
-      zIndex:9999,
-      background: '#fff',
-      opacity: '0.7',
-      height: '100%',
-      textAlign: 'center',
-      placeContent: 'center'
-  }
+
   const actionBoxController = (isHover)=>{
     document.querySelector(`#${cardId}`).style.display = isHover ? 'block' : 'none';
   }
@@ -27,29 +17,46 @@ export default function MovieCard({id, text, imgUrl, styles}) {
   }
 
   return (
-    <Card sx={styles.card} 
-          style={{position:'relative'}} 
+    <Box style={Object.assign({position:'relative'},styles.card)} 
           onMouseOver={()=>actionBoxController(true)} 
           onMouseOut={()=>actionBoxController(false)}>
-      <Box id={cardId} className='actionBox' style={actionBoxStyle}>
-        <Button>예매</Button>
+      <Box id={cardId} className='actionBox'>
+        <Button onClick={()=>{window.location.href=`/booking/${id}`}}>예매</Button>
         <Button onClick={moveMovieDetail}>상세 정보</Button>
       </Box>
-      <CardActionArea>
-        <CardMedia
-          component="img"
-          height={styles.img.height}
-          src={imgUrl}
-        />
-        <CardContent>
+      <Box>
+        <Box style={{
+          height: styles.card.height,
+          backgroundImage: `url(${imgUrl})`,
+          backgroundSize: 'contain',
+          borderRadius: 6
+        }}>
+          {/* <img src={imgUrl}/> */}
+        </Box>
+        <Box>
           <Typography sx={{ 
-              color: 'text.secondary', 
+              textAlign: 'center',
               textWrapMode: 'nowrap',
-              overflow: 'hidden' }}>
-            {text}
+              overflow: 'hidden',
+              margin: '9px 0px 5px',
+              fontSize: 20 }}>
+            {title}
           </Typography>
-        </CardContent>
-      </CardActionArea>
-    </Card>
+          <Box className='flex'>
+            <AgeLogo 
+              age={12}
+              color={'yellow'}
+            />
+            <Typography sx={{ 
+                color: 'text.secondary', 
+                textWrapMode: 'nowrap',
+                overflow: 'hidden',
+                fontSize: 14 }}>
+              {movie.releaseDate} 개봉
+            </Typography>
+          </Box>
+        </Box>
+      </Box>
+    </Box>
   );
 }

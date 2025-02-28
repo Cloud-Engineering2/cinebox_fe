@@ -1,0 +1,13 @@
+.actionBox {
+    display: none;
+    position:absolute;
+    left:0;
+    top:0;
+    z-index:9999;
+    background: #fff;
+    opacity: 0.7;
+    width: 100%;
+    height: 100%;
+    text-align: center;
+    place-content: center;
+}
