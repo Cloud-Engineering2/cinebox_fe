@@ -34,6 +34,7 @@ export default function App() {
             <Route path="/admin" element={<Admin />} />
             <Route path="/detail/:movieId" element={<Detail />} />
             <Route path="/booking/:movieId" element={<Booking />} />
+            <Route path="/booking" element={<BookingList />} />
           </Routes>
         </Router>
       </Box>
