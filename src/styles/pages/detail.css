@@ -1,12 +1,14 @@
 .reviewBox{
     width: 100%;
+    border-top: 2px solid #004D09;
+    padding-top: 40px;
+
 }
 .reviewTextField{
     display: flex;
     align-content: center;
     width: 100%;
     justify-content: center;
-    margin-left: 5px;
 }
 .userImg {
     width: 83px;
@@ -17,16 +19,25 @@
 }
 
 .reviewList {
-    margin: 0px 85px 0px 109px;
-    height: 258px;
+    height: 240px;
     overflow-y: auto;
+    overflow-x: hidden;
 }
 .addReviewButton {
     width: 50px;
     align-content: center;
-    margin-left: 12px;
     text-align: center;
 }
 .addReviewButton img {
-    width: 73%;
+    width: 56%;
+}
+
+.selectRating{
+    height: 31px;
+    font-size: 1rem;
+    color: black;
+    background-color: #fff;
+    border: 1px solid #dee2e6;
+    border-radius: 6px;
+    padding: .375rem .75rem;
 }

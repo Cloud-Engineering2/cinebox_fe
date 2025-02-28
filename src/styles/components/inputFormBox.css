@@ -1,0 +1,11 @@
+.inputFormBox{
+    display: flex;
+    align-items: center;
+}
+.inputFormBox label{
+    width: 87px;
+    text-align: left;
+}
+.inputFormBox input{
+    
+}
