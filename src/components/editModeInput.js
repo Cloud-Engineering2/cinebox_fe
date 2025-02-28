@@ -2,15 +2,19 @@ import React, { useEffect, useState } from 'react';
 import Typography from '@mui/material/Typography';
 import {Box, Input, MenuItem, TextField} from '@mui/material';
 import editModeInput from '../styles/components/editModeInput.css';
+import button from '../styles/button.css';
 import MenuButton from './memuButton.js';
 
-export default function EditModeInput({editMode = false, id, text, menus}) {
+export default function EditModeInput({id, text, events}) {
+    const [isEdit, setIsEdit] = useState(false);
+    const [content, setContent] = useState(text);
 
-    const [isEdit, setisEdit] = useState(editMode);
-
-    useEffect(()=>{
-        setisEdit(editMode);
-    },[editMode])
+    const editHandler = ()=>{
+        const content = document.querySelector(`.editField${id} input`).value;
+        events.edit(content, 33);
+        setIsEdit(false);
+        setContent(content);
+    }
 
     return (
         <>
@@ -27,18 +31,21 @@ export default function EditModeInput({editMode = false, id, text, menus}) {
                             overflow: 'hidden',
                         }}
                     >
-                        {text}
+                        {content}
                     </Typography>
                 </Box>
                 <Box className='ExButton'>
                     <MenuButton
-                        items={menus.map(menu=>{
-                            return {
-                                label: menu.label,
-                                onClick: menu.onClick,
-                                disabled: menu.disabled
+                        items={[
+                            {
+                                label: '수정',
+                                onClick: ()=>setIsEdit(true),
+                            },
+                            {
+                                label: '삭제',
+                                onClick: events.remove,
                             }
-                        })}
+                        ]}
                     />
                 </Box>
             </Box> :
@@ -51,8 +58,8 @@ export default function EditModeInput({editMode = false, id, text, menus}) {
                         borderRadius: '4px'
                     }}
                 />
-                <Box className='editButton'>
-                    <img src={'/assets/arrow_gray.png'}/>
+                <Box className='editButton button-sm' onClick={editHandler}>
+                    수정
                 </Box>
             </Box>
         }

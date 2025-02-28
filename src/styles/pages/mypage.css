@@ -38,13 +38,14 @@
 }
 .bookingList {
     justify-content: center;
-    margin: 37px 0px;
+    margin: 22px 0px;
     max-height: 550px;
     overflow-y: auto;
 }
 .movieStory {
     justify-content: center;
     margin: 37px 0px;
-    max-height: 550px;
+    height: 350px;
     overflow-y: auto;
+    overflow-x: hidden;
 }

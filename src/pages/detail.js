@@ -12,7 +12,7 @@ import { AppContext } from "../App.js";
 const Detail = () => {
     const {context, setContext} = useContext(AppContext);
     const { movieId } = useParams();
-    const [reviews, setReviews] = useState(null);
+    const [reviews, setReviews] = useState([]);
 
     const { data, isLoading, error, doRequest } = useReq(process.env.REACT_APP_MOVIE_API + `/${movieId}`, {
         method: 'GET',
@@ -42,8 +42,9 @@ const Detail = () => {
     
     const AddReviewHandler = ()=>{
         const content = document.querySelector('#reviewTextField').value;
-        
-        if(content != null || content != undefined){
+        const rating = document.querySelector('#rating').value;
+
+        if(content != null || content != undefined || rating != ''){
             doAddReviewRequest(process.env.REACT_APP_MOVIE_API + `/${movieId}/reviews`, {
                 method: 'POST',
                 headers: {
@@ -51,8 +52,8 @@ const Detail = () => {
                 },
                 data: {
                     movieId : movieId,
-                    userId: 1,
-                    rating: 5,
+                    userId: context.userId,
+                    rating: rating,
                     content: content
                 }
             });
@@ -72,16 +73,25 @@ const Detail = () => {
                     </Box>
                 </Box>,
                 <Box className='reviewBox'>
-                    <Box className='reviewTextField'>
-                        <Box className='userImg  mr-12'>
-                            <img src={'/assets/User.jpeg'}/>
-                        </Box>
+                    <h2 className='fs-19 mb-18'>관객들의 리뷰</h2>
+                    <Box className='fs-19 mb-6'>
+                        <select id="rating" class="selectRating">
+                            <option value="" selected>별점</option>
+                            <option value="1">1</option>
+                            <option value="2">2</option>
+                            <option value="3">3</option>
+                            <option value="4">4</option>
+                            <option value="5">5</option>
+                        </select>
+                    </Box>    
+                    <Box className='reviewTextField mb-18'>
                         <TextField
                             id="reviewTextField"
+                            placeholder='리뷰를 입력해주세요.'
                             multiline
                             rows={2}
                             maxRows={2}
-                            sx={{width: '80%'}}
+                            sx={{width: '95%'}}
                         />
                         <Box className='addReviewButton' onClick={AddReviewHandler}>
                             <img src={'/assets/arrow_gray.png'}/>
@@ -89,11 +99,13 @@ const Detail = () => {
                     </Box>
                     <Box className='reviewList'>
                         {reviewResponse && <ReviewList 
-                        items={reviewResponse}
+                        reviews={reviewResponse.slice().reverse()}
                         styles={{
                             width: '98%',
-                            maxWidth: 'none'
-                        }}/>}
+                            maxWidth: 'none',
+                            height: 30
+                        }}
+                        doGetReviewRequest={doGetReviewRequest}/>}
                     </Box>
                 </Box>
             ]}

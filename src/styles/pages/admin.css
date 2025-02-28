@@ -1,0 +1,34 @@
+.admin {
+    display: flex;
+    margin: 40px 25%;
+}
+
+.sideMenu {
+    width: 230px;
+}
+.menuBox {
+    padding: 15px 5px;
+}
+.menuTitle {
+    font-size: 18px;
+    font-weight: 700;
+    margin-bottom: 9px;
+}
+.menuList {
+    font-size: 15px;
+    margin: 3px 0px;
+}
+
+.content {
+    width: 81%;
+}
+
+/* registerMovie */
+.controlBox {
+    display: flex;
+    justify-content: right;
+}
+.uploadForm {
+    width: 100%;
+    display: flex;
+}
