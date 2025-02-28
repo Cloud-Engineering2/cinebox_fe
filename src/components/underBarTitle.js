@@ -15,6 +15,7 @@ const UnderBarTitle = ({title, styles}) => {
     return <>
         <Box style={style}>
             {title}
+            <a>더보기</a>
         </Box>
     </>;
 };
