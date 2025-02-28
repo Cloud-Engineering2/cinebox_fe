@@ -1,4 +1,5 @@
 import React from 'react';
+import '../styles/templates/header.css';
 
 const Header = () => {
 	const token = localStorage.getItem('token');
@@ -19,7 +20,6 @@ const Header = () => {
 				<div>
 					<a href='/mypage' id="myPage">마이페이지</a>
 					{role == 'ADMIN' && <a href='/admin' id="moveAdmin">어드민 페이지</a>}
-					<a href='/bookings' id="moveBookings">예매 목록</a> {/* 예매 목록 링크 추가 */}
 				</div>
 				<div>
 					{token != null && <a id="logout" onClick={logout}>로그아웃</a>}
