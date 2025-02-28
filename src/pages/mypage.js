@@ -6,12 +6,15 @@ import { AppContext } from "../App.js";
 import mypage from '../styles/pages/mypage.css'
 import MovieCard from '../components/movieCard.js';
 import EmptyBox from '../components/emptyBox.js';
-import WideMovieCard from '../components/wideMovieCard.js';
+import BookingCard from '../components/bookingCard.js';
+import ReviewList from '../components/reviewList.js';
 
 const Mypage = () => {
     const {context, setContext} = useContext(AppContext);
     const [movies, setMovies] = useState([]);
     const [bookingList, setBookingList] = useState([]);
+    const [reviews, setReviews] = useState([]);
+    
     const { data, isLoading, error, doRequest } = useReq(process.env.REACT_APP_MOVIE_API, {
         method: 'GET',
         headers: {
@@ -19,6 +22,12 @@ const Mypage = () => {
         }
     });
     const { data: bookingResponse, isLoading: isBookingReqLoading, error: getBookingReqError, doRequest: doGetBookingRequest } = useReq(process.env.REACT_APP_BOOKING_API + '/my', {
+        method: 'GET',
+        headers: {
+            'Authorization': `Bearer ${context.token}`
+        }
+    });
+    const { data: reviewResponse, isLoading: isReviewLoading, error: getReviewsError, doRequest: doGetReviewRequest } = useReq(process.env.REACT_APP_MOVIE_API + `/4/reviews`, {
         method: 'GET',
         headers: {
                 'Authorization': `Bearer ${context.token}`
@@ -31,6 +40,9 @@ const Mypage = () => {
     useEffect(()=>{
         setBookingList(bookingResponse);
     },[bookingResponse]);
+    useEffect(()=>{
+        setReviews(reviewResponse);
+    },[reviewResponse]);
 
     return <>
         <UnderBarTitle title={'나의 시네박스'}/>
@@ -74,51 +86,28 @@ const Mypage = () => {
             <UnderBarTitle title={'MY 예매내역'} styles={{margin: 'none'}}/>
             <Box className='bookingList'>
                 {
-                    movies ? movies.map((movie) => {
-                        return (
-                            <WideMovieCard
-                                movie={movie}
-                                content1={<p>{movie.releaseDate}</p>}
-                                content2={<p>{context.identifier}&nbsp;&nbsp;|&nbsp;&nbsp;{movie.releaseDate}</p>}
-                                imgUrl='/assets/movie1.jpg'
-                                styles={{
-                                    card : {
-                                        marginBottom: '36px'
-                                    },
-                                    img : {
-                                        width: '100%'
-                                    }
-                                }}
-                            />
-                        );
+                    bookingList ? bookingList.map((booking) => {
+                        return <BookingCard booking={booking}/>;
                     }) : <EmptyBox/>
                 }
             </Box>
             <UnderBarTitle title={'MY 무비스토리'} styles={{margin: 'none'}}/>
+            {/* {JSON.stringify(reviews)} */}
             <Box className='movieStory'>
                 {
-                    movies ? movies.map((movie) => {
-                        return (
-                            <WideMovieCard
-                                movie={movie}
-                                content1={<p>{context.identifier}&nbsp;&nbsp;|&nbsp;&nbsp;{movie.releaseDate}</p>}
-                                content2={<p>{context.identifier}&nbsp;&nbsp;|&nbsp;&nbsp;{movie.releaseDate}</p>}
-                                imgUrl='/assets/movie1.jpg'
+                    reviews ? (
+                        <ReviewList 
+                                reviews={reviews.slice().reverse()}
                                 styles={{
-                                    card : {
-                                        marginBottom: '36px'
-                                    },
-                                    img : {
-                                        width: '100%'
-                                    }
+                                    width: '98%',
+                                    maxWidth: 'none',
+                                    height: 30
                                 }}
-                            />
-                        );
-                    }) : <EmptyBox/>
+                                doGetReviewRequest={()=>{}}/>
+                    ) : <EmptyBox/>
                 }
             </Box>
         </Box>
-        {JSON.stringify(bookingResponse)}
     </>;
 };
 
