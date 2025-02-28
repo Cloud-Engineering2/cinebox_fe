@@ -1,15 +1,14 @@
-import React, { useState, useEffect, useContext } from 'react';
-import useReq from '../hooks/useReq.js';
-import UnderBarTitle from '../components/underBarTitle.js';
 import { Box } from '@mui/material';
+import React, { useContext, useEffect, useState } from 'react';
 import { AppContext } from "../App.js";
-import mypage from '../styles/pages/mypage.css'
-import MovieCard from '../components/movieCard.js';
 import EmptyBox from '../components/emptyBox.js';
+import MovieCard from '../components/movieCard.js';
+import UnderBarTitle from '../components/underBarTitle.js';
 import WideMovieCard from '../components/wideMovieCard.js';
+import useReq from '../hooks/useReq.js';
 
 const Mypage = () => {
-    const {context, setContext} = useContext(AppContext);
+    const { context, setContext } = useContext(AppContext);
     const [movies, setMovies] = useState([]);
     const [bookingList, setBookingList] = useState([]);
     const { data, isLoading, error, doRequest } = useReq(process.env.REACT_APP_MOVIE_API, {
@@ -21,33 +20,33 @@ const Mypage = () => {
     const { data: bookingResponse, isLoading: isBookingReqLoading, error: getBookingReqError, doRequest: doGetBookingRequest } = useReq(process.env.REACT_APP_BOOKING_API + '/my', {
         method: 'GET',
         headers: {
-                'Authorization': `Bearer ${context.token}`
+            'Authorization': `Bearer ${context.token}`
         }
     });
 
-    useEffect(()=>{
+    useEffect(() => {
         setMovies(data);
-    },[data]);
-    useEffect(()=>{
+    }, [data]);
+    useEffect(() => {
         setBookingList(bookingResponse);
-    },[bookingResponse]);
+    }, [bookingResponse]);
 
     return <>
-        <UnderBarTitle title={'나의 시네박스'}/>
-        <Box style={{margin: '50px 27%'}}>
+        <UnderBarTitle title={'나의 시네박스'} />
+        <Box style={{ margin: '50px 27%' }}>
             <Box className='userInfoBox mb-44'>
                 <Box className='welcome mr-20'>
-                    <img src='/assets/Welcome.png'/>
+                    <img src='/assets/Welcome.png' />
                 </Box>
                 <Box className='welcomeText'>
-                    안녕하세요! <br/>{context.identifier} 님
+                    안녕하세요! <br />{context.identifier} 님
                 </Box>
                 <Box className='userControlBox'>
                     <span className='mr-12'>개인정보수정</span>
                     <span>회원 탈퇴</span>
                 </Box>
             </Box>
-            <UnderBarTitle title={'기대되는 영화'} styles={{margin: 'none'}}/>
+            <UnderBarTitle title={'기대되는 영화'} styles={{ margin: 'none' }} />
             <Box className='favoriteMovie'>
                 {
                     movies ? movies.map((movie) => {
@@ -56,22 +55,22 @@ const Mypage = () => {
                                 movie={movie}
                                 imgUrl='/assets/movie1.jpg'
                                 styles={{
-                                    card : {
-                                        width : 140,
+                                    card: {
+                                        width: 140,
                                         height: 200,
-                                        marginRight:'36px',
+                                        marginRight: '36px',
                                         marginBottom: '36px'
                                     },
-                                    img : {
+                                    img: {
                                         width: '100%'
                                     }
                                 }}
                             />
                         );
-                    }) : <EmptyBox/>
+                    }) : <EmptyBox />
                 }
             </Box>
-            <UnderBarTitle title={'MY 예매내역'} styles={{margin: 'none'}}/>
+            <UnderBarTitle title={'MY 예매내역'} styles={{ margin: 'none' }} />
             <Box className='bookingList'>
                 {
                     movies ? movies.map((movie) => {
@@ -82,19 +81,19 @@ const Mypage = () => {
                                 content2={<p>{context.identifier}&nbsp;&nbsp;|&nbsp;&nbsp;{movie.releaseDate}</p>}
                                 imgUrl='/assets/movie1.jpg'
                                 styles={{
-                                    card : {
+                                    card: {
                                         marginBottom: '36px'
                                     },
-                                    img : {
+                                    img: {
                                         width: '100%'
                                     }
                                 }}
                             />
                         );
-                    }) : <EmptyBox/>
+                    }) : <EmptyBox />
                 }
             </Box>
-            <UnderBarTitle title={'MY 무비스토리'} styles={{margin: 'none'}}/>
+            <UnderBarTitle title={'MY 무비스토리'} styles={{ margin: 'none' }} />
             <Box className='movieStory'>
                 {
                     movies ? movies.map((movie) => {
@@ -105,16 +104,16 @@ const Mypage = () => {
                                 content2={<p>{context.identifier}&nbsp;&nbsp;|&nbsp;&nbsp;{movie.releaseDate}</p>}
                                 imgUrl='/assets/movie1.jpg'
                                 styles={{
-                                    card : {
+                                    card: {
                                         marginBottom: '36px'
                                     },
-                                    img : {
+                                    img: {
                                         width: '100%'
                                     }
                                 }}
                             />
                         );
-                    }) : <EmptyBox/>
+                    }) : <EmptyBox />
                 }
             </Box>
         </Box>
