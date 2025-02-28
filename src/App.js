@@ -13,7 +13,7 @@ import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import Footer from './templates/footer.js';
 import Header from './templates/header.js';
 import { Box } from '@mui/material';
-import Admin from './pages/admin.js';
+import Admin from './pages/admin/index.js';
 
 export const AppContext = createContext(null);
 export default function App() {
