@@ -1,6 +1,6 @@
 import React from 'react';
 import { useParams } from 'react-router-dom';
-import UnderBarTitle from '../components/underBarTitle';
+import UnderBarTitle from '../../components/underBarTitle';
 
 
 const Booking = () => {
@@ -12,7 +12,7 @@ const Booking = () => {
 
     return <>
         <UnderBarTitle title={'영화 예매'} />
-        <div class="booking">
+        <div className="booking">
             예매 페이지 {movieId}
         </div>
     </>;

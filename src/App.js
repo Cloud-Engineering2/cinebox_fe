@@ -1,5 +1,6 @@
 import React, { createContext, useState } from 'react';
-import Booking from './pages/booking.js';
+import Booking from './pages/bookings/booking.js';
+import BookingList from './pages/bookings/bookingList.js';
 import Detail from './pages/detail.js';
 import Login from './pages/login.js';
 import Main from './pages/main.js';
@@ -33,8 +34,12 @@ export default function App() {
             <Route path="/mypage" element={<Mypage />} />
             <Route path="/admin" element={<Admin />} />
             <Route path="/detail/:movieId" element={<Detail />} />
+
+            {/* 특정영화에서 예매하기를 누름 */}
             <Route path="/booking/:movieId" element={<Booking />} />
-            <Route path="/booking" element={<BookingList />} />
+
+            {/* 내가 예매한 목록에서 결제하기 */}
+            <Route path="/bookings" element={<BookingList />} />
           </Routes>
         </Router>
       </Box>

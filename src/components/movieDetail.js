@@ -1,14 +1,15 @@
-import React, { useEffect, useState } from 'react';
-import detail from '../styles/components/movieDetail.css';
+import React from 'react';
+import '../styles/components/movieDetail.css';
 
-const MovieDetail = ({movie, styles}) => {
+
+const MovieDetail = ({ movie, styles }) => {
 
     return <>
         <div className="movieDetail" style={styles}>
             <div className="movieInfo">
                 <div>
                     <h2 className="title mb-18">{movie.title}</h2>
-                    <p className='bold'>개봉일: {movie.releaseDate} &nbsp; 상영 시간: {movie.runtime}분 &nbsp; <span style={{color:'orange'}}>15세이상관람가</span> </p>
+                    <p className='bold'>개봉일: {movie.releaseDate} &nbsp; 상영 시간: {movie.runtime}분 &nbsp; <span style={{ color: 'orange' }}>15세이상관람가</span> </p>
                 </div>
                 <div>
                     <p><span className='grayFont'>장르</span> &nbsp; {movie.genre}</p>
