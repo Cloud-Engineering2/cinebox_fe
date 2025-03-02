@@ -38,8 +38,9 @@ export default function App() {
             {/* 특정영화에서 예매하기를 누름 */}
             <Route path="/booking/:movieId" element={<Booking />} />
 
-            {/* 내가 예매한 목록에서 결제하기 */}
+            {/* 내가 예매한 목록에서 결제하기 =>나중에 결제할때 확인해보기 */}
             <Route path="/bookings" element={<BookingList />} />
+
           </Routes>
         </Router>
       </Box>
