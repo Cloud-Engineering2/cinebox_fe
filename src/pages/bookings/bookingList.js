@@ -1,3 +1,4 @@
+// 결제 & 내가예매한목록 
 import React, { useContext, useEffect, useState } from 'react';
 import { AppContext } from '../../App';
 import BookingTable from '../../components/BookingTable';
