@@ -8,6 +8,8 @@ import MovieCard from '../components/movieCard.js';
 import EmptyBox from '../components/emptyBox.js';
 import BookingCard from '../components/bookingCard.js';
 import ReviewList from '../components/reviewList.js';
+import Modal from '../components/modal.js';
+import UserForm from './admin/userForm.js';
 
 const Mypage = () => {
     const {context, setContext} = useContext(AppContext);
@@ -15,8 +17,15 @@ const Mypage = () => {
     const [bookingList, setBookingList] = useState([]);
     const [reviews, setReviews] = useState([]);
     const [showBookingList, setShowBookingList] = useState(false);
+    const [showEditUser, setShowEditUser] = useState({userId: null, state: false});
     
-    const { data, isLoading, error, doRequest } = useReq(process.env.REACT_APP_MOVIE_API, {
+    const { data, isLoading, error, doRequest } = useReq(process.env.REACT_APP_USER_API + `/${context.userId}`, {
+        method: 'GET',
+        headers: {
+            'Authorization': `Bearer ${context.token}`
+        }
+    });
+    const { data : likeMoviesRes, isLoading: isGetLikeMoviesReqLoading, error: getLikeMoviesReqError, doRequest: doGetLikeMoviesRequest } = useReq(process.env.REACT_APP_MOVIE_API + '/likes', {
         method: 'GET',
         headers: {
             'Authorization': `Bearer ${context.token}`
@@ -28,7 +37,7 @@ const Mypage = () => {
             'Authorization': `Bearer ${context.token}`
         }
     });
-    const { data: reviewRes, isLoading: isReviewLoading, error: getReviewsError, doRequest: doGetReviewRequest } = useReq(process.env.REACT_APP_MOVIE_API + `/6/reviews`, {
+    const { data: reviewRes, isLoading: isReviewLoading, error: getReviewsError, doRequest: doGetReviewRequest } = useReq(process.env.REACT_APP_REVIEW_API + `/my`, {
         method: 'GET',
         headers: {
                 'Authorization': `Bearer ${context.token}`
@@ -37,8 +46,8 @@ const Mypage = () => {
     const { data: deleteUserRes, isLoading: isDeleteUserLoading, error: deleteUserError, doRequest: doDeleteUserRequest } = useReq(process.env.REACT_APP_USER_API + `/${context.userId}`, null);
 
     useEffect(()=>{
-        setMovies(data);
-    },[data]);
+        setMovies(likeMoviesRes);
+    },[likeMoviesRes]);
     useEffect(()=>{
         setBookingList(bookingRes);
     },[bookingRes]);
@@ -78,7 +87,7 @@ const Mypage = () => {
                     안녕하세요! <br/>{context.identifier} 님
                 </Box>
                 <Box className='userControlBox'>
-                    <span className='mr-12 pointer' onClick={()=>{alert('개인정보수정')}}>개인정보수정</span>
+                    <span className='mr-12 pointer' onClick={()=>setShowEditUser({userId: context.userId, state: true})}>개인정보수정</span>
                     <span className='pointer' onClick={deleteUser}>회원 탈퇴</span>
                 </Box>
             </Box>
@@ -132,6 +141,7 @@ const Mypage = () => {
                 }
             </Box>
         </Box>
+        {showEditUser.state && <Modal className='flex jsfy-cnt-rght mb-10' content={<UserForm setShowModal={setShowEditUser} data={data}/>}/>}
     </>;
 };
 

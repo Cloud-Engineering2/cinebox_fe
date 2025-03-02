@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useContext } from 'react';
 import useReq from '../hooks/useReq.js';
 import login from '../styles/pages/login.css'
-import { TextField } from '@mui/material';
+import { Box, TextField } from '@mui/material';
 import UnderBarTitle from '../components/underBarTitle.js';
 import { AppContext } from "../App.js";
 
@@ -34,20 +34,20 @@ const Login = () => {
 
     return <>
         <UnderBarTitle title={'로그인'}/>
-        <div class="login">
-            <div class="form-box">
+        <Box class="login">
+            <Box class="form-box">
                 <TextField id="identifier" placeholder="아이디" variant="standard" />
-            </div>
-            <div class="form-box">
+            </Box>
+            <Box class="form-box">
                 <TextField id="password" placeholder="비밀번호" variant="standard" />
-            </div>
-            <div id="warning" class="mb_8 disabled">아이디 혹은 비밀번호를 입력해 주세요.</div>
+            </Box>
+            <Box id="warning" class="mb_8 disabled">아이디 혹은 비밀번호를 입력해 주세요.</Box>
             <button id="signupKakao" type="button" class="kakaoButton mb-10 bg-yellow opacity-07" disabled >
                 <img className="kakaoIcon" src='/assets/kakaoIcon.png'/>
                 카카오로 로그인
             </button>
             <button id="login" type="button" class="button mb-6" onClick={LoginReq}>로그인</button>
-        </div>
+        </Box>
     </>;
 };
 
