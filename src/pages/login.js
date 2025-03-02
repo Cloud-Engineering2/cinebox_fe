@@ -42,6 +42,10 @@ const Login = () => {
                 <TextField id="password" placeholder="비밀번호" variant="standard" />
             </div>
             <div id="warning" class="mb_8 disabled">아이디 혹은 비밀번호를 입력해 주세요.</div>
+            <button id="signupKakao" type="button" class="kakaoButton mb-10 bg-yellow opacity-07" disabled >
+                <img className="kakaoIcon" src='/assets/kakaoIcon.png'/>
+                카카오로 로그인
+            </button>
             <button id="login" type="button" class="button mb-6" onClick={LoginReq}>로그인</button>
         </div>
     </>;
