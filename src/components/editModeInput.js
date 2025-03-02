@@ -5,7 +5,7 @@ import editModeInput from '../styles/components/editModeInput.css';
 import button from '../styles/button.css';
 import MenuButton from './memuButton.js';
 
-export default function EditModeInput({id, text, events}) {
+export default function EditModeInput({id, text, events, noEdit=false}) {
     const [isEdit, setIsEdit] = useState(false);
     const [content, setContent] = useState(text);
 
@@ -34,7 +34,7 @@ export default function EditModeInput({id, text, events}) {
                         {content}
                     </Typography>
                 </Box>
-                <Box className='ExButton'>
+                {!noEdit && <Box className='ExButton'>
                     <MenuButton
                         items={[
                             {
@@ -47,7 +47,7 @@ export default function EditModeInput({id, text, events}) {
                             }
                         ]}
                     />
-                </Box>
+                </Box>}
             </Box> :
             <Box className='editMode'>
                 <Input

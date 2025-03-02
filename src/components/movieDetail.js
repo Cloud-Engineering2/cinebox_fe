@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import detail from '../styles/components/movieDetail.css';
 
-const MovieDetail = ({movie, styles}) => {
+const MovieDetail = ({movie, styles, noBookingButton=false}) => {
 
     return <>
         <div className="movieDetail" style={styles}>
@@ -18,11 +18,11 @@ const MovieDetail = ({movie, styles}) => {
             </div>
             <div className="movieImg">
                 <div className="img mb-6">
-                    <img src={movie.posterImageUrl} alt="image" />
+                    <img src={movie.posterImageUrl ? movie.posterImageUrl : '/assets/noImage.png'} alt="image" />
                 </div>
-                <div className="bookingButton button-sm">
+                {!noBookingButton && <div className="bookingButton button-sm">
                     <a href={`/booking/${movie}`}>이 영화 예매</a>
-                </div>
+                </div>}
             </div>
         </div>
     </>
