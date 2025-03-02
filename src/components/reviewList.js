@@ -53,8 +53,8 @@ export default function ReviewList({reviews, styles, doGetReviewRequest=()=>{}, 
             reviews && reviews.map(review =>{
                 return <Box className={`reviewBox${review.reviewId} mb-18`}>
                     <Box className={`flex ${showMovieTitle ? 'jsfy-cnt-spc-btwn' : 'jsfy-cnt-rght'} mb-6 fs-14 color-gray`}>
-                        {showMovieTitle && <p>movie 제목 넣기</p>}
-                        <p>{changeTimeFormat(review.createdAt)}</p>
+                        {showMovieTitle && <p>{review.movieTitle}</p>}
+                        {review.createdAt && <p>{changeTimeFormat(review.createdAt)}</p>}
                     </Box>
                     <Box className='contentBox'>
                         <Box className='content1'>

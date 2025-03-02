@@ -2,7 +2,6 @@ import React, { useState, useEffect } from 'react';
 import header from '../styles/templates/header.css';
 import { logout } from '../utils';
 import { Box } from '@mui/material';
-import SearchBox from '../components/searchBox';
 
 const Header = () => {
 	const token = localStorage.getItem('token');

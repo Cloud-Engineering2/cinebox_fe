@@ -32,3 +32,33 @@
     width: 100%;
     display: flex;
 }
+
+#sortingSelectBox{
+    height: 32px;
+    font-size: 14px;
+    color: black;
+    background-color: #fff;
+    border: 2px solid #004D09;
+    border-radius: 7px;
+    padding: .375rem .75rem;
+}
+#searchBox {
+    height: 30px;
+    font-size: 14px;
+    color: black;
+    background-color: #fff;
+    border: 2px solid #004D09;
+    border-radius: 7px;
+    padding: 0px 10px;
+}
+
+/* UserList */
+.userCard {
+    border-bottom: 1px solid;
+    margin-bottom: 6px;
+    padding-bottom: 6px;
+}
+.userCard .label {
+    color: #656565;
+    min-width: 75px;
+}

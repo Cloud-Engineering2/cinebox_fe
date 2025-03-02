@@ -21,14 +21,36 @@ const Main = () => {
         if(data != null) setMovies(data);
     },[data])
 
-    return <>
+    const searchMoviesList=()=>{
+        doRequest(process.env.REACT_APP_MOVIE_API, {
+            method: 'GET',
+            headers: {
+                'Authorization': `Bearer ${context.token}`
+            },
+            params: {
+                'sort': document.querySelector('#sortingSelectBox').value,
+                'search': document.querySelector('#searchBox').value
+            }
+        })
+    }
+
+    return <Box className='pstn-relative'>
         <UnderBarTitle title={'박스오피스'}/>
+        <Box className='flex pstn-absolute' style={{top: 0, right:44}}>
+            <select id="sortingSelectBox" className="mr-7" onChange={searchMoviesList}>
+                <option value="" selected>정렬</option>
+                <option value="title">제목</option>
+                <option value="" disabled>예매율</option>
+            </select>
+            <input id="searchBox" className='mr-7' placeholder="텍스트를 입력하세요" onChange={searchMoviesList}/>
+        </Box>
         <Box className='movieListWraper'>
             <Box className='movieList'>
                 {
-                    movies ? movies.map((movie) => {
+                    movies ? movies.map((movie, idx) => {
                         return (
                             <MovieCard
+                                number={idx + 1}
                                 movie={movie}
                                 imgUrl={movie.posterImageUrl ? movie.posterImageUrl : '/assets/noImage.png'}
                                 styles={{
@@ -45,7 +67,7 @@ const Main = () => {
                 }
             </Box>
         </Box>
-    </>
+    </Box>
 };
 
 export default Main;

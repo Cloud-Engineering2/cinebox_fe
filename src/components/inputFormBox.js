@@ -7,7 +7,7 @@ const InputFormBox = ({inputs, style}) => {
         {inputs.map((input)=>{
             return <Box className='inputFormBox'>
                 <label for={input.id} className='label'>{input.label}</label>
-                <TextField id={input.id} variant="standard" sx={style} defaultValue={input.value} />
+                <TextField id={input.id} variant="standard" sx={style} defaultValue={input.value} disabled={input.disabled} />
             </Box>;
         })}
     </>;
