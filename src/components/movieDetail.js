@@ -4,6 +4,7 @@ import '../styles/components/movieDetail.css';
 
 const MovieDetail = ({ movie, styles }) => {
 
+    console.log("movie: ", movie);
     return <>
         <div className="movieDetail" style={styles}>
             <div className="movieInfo">
@@ -22,7 +23,8 @@ const MovieDetail = ({ movie, styles }) => {
                     <img src={movie.posterImageUrl} alt="image" />
                 </div>
                 <div className="bookingButton button-sm">
-                    <a href={`/booking/${movie}`}>이 영화 예매</a>
+                    {/* URL에 영화의 ID만 포함시킴 */}
+                    <a href={`/booking/${movie.movieId}`}>이 영화 예매</a>
                 </div>
             </div>
         </div>
