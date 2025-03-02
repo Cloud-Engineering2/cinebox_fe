@@ -4,7 +4,7 @@ import Typography from '@mui/material/Typography';
 import AgeLogo from './ageLogo';
 import movieCard from '../styles/components/movieCard.css'
 
-export default function MovieCard({movie, imgUrl, styles}) {
+export default function MovieCard({number, movie, imgUrl, styles}) {
   const id = movie.movieId;
   const title = movie.title;
   const cardId = `actionBox${id}`;
@@ -48,14 +48,19 @@ export default function MovieCard({movie, imgUrl, styles}) {
           {/* <img src={imgUrl}/> */}
         </Box>
         <Box>
-          <Typography sx={{ 
-              textAlign: 'center',
-              textWrapMode: 'nowrap',
-              overflow: 'hidden',
-              margin: '9px 0px 5px',
-              fontSize: 16 }}>
-            {title}
-          </Typography>
+          <Box className='flex'>
+            {number && <em className='number mr-7 min-width-20'>{number}</em>}
+            <Typography 
+            sx={{ 
+                width: (number ? '62%' : '100%'),
+                textAlign: 'center',
+                textWrapMode: 'nowrap',
+                overflow: 'hidden',
+                margin: '9px 0px 5px',
+                fontSize: 16}}>
+              {title}
+            </Typography>
+          </Box>
           <Box className='flex'>
             <AgeLogo 
               age={getMovieAge(movie.ratingGrade).age}
