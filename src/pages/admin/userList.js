@@ -5,6 +5,7 @@ import EmptyBox from '../../components/emptyBox.js';
 import { Box } from '@mui/material';
 import UserForm from './userForm.js';
 import Modal from '../../components/modal.js';
+import admin from '../../styles/pages/admin.css';
 
 const UserList = () => {
     const {context, setContext} = useContext(AppContext);
@@ -26,7 +27,7 @@ const UserList = () => {
                 'Authorization': `Bearer ${context.token}`
             }
         })
-        document.querySelector(`.user_${userId}`).remove();
+        document.querySelector(`#user_${userId}`).remove();
     }
 
     return <>
@@ -38,13 +39,43 @@ const UserList = () => {
                 return <>
                     <Box 
                     key={`user_${user.userId}`}
+                    id={`user_${user.userId}`}
                     style={{
                         marginBottom: 30,
                         border: '2px solid #004D09',
                         padding: 21,
                         borderRadius: 6
                     }}>
-                        <Box>{JSON.stringify(user)}</Box>
+                        <Box>
+                            <Box className='userCard flex'>
+                                <p className='label'>이름</p>
+                                <p>{user.name}</p>
+                            </Box>
+                            <Box className='userCard flex'>
+                                <p className='label'>아이디</p>
+                                <p>{user.identifier}</p>
+                            </Box>
+                            <Box className='userCard flex'>
+                                <p className='label'>이메일</p>
+                                <p>{user.email}</p>
+                            </Box>
+                            <Box className='userCard flex'>
+                                <p className='label'>전화번호</p>
+                                <p>{user.phone}</p>
+                            </Box>
+                            <Box className='userCard flex'>
+                                <p className='label'>나이</p>
+                                <p>{user.age}</p>
+                            </Box>
+                            <Box className='userCard flex'>
+                                <p className='label'>성별</p>
+                                <p>{user.gender}</p>
+                            </Box>
+                            <Box className='userCard flex'>
+                                <p className='label'>역할</p>
+                                <p>{user.role}</p>
+                            </Box>
+                        </Box>
                         <Box className='controlBox'>
                             <button id="edit" type="button" class="button-sm mr-6" onClick={()=>setShowEditUser({userId: user.userId, state: true})}>수정</button>
                             <button id="delete" type="button" class="button-sm" onClick={()=>deleteUser(user.userId)}>삭제</button>

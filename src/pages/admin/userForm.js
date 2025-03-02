@@ -38,7 +38,8 @@ const UserForm = ({setShowModal, data=null}) => {
     },{
         id: 'role',
         label : '역할',
-        value : data && data.role
+        value : data && data.role,
+        disabled: data && (data.role != 'ADMIN')
     }];
 
     const save = ()=>{
