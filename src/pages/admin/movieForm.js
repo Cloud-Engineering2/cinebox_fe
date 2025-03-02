@@ -1,63 +1,153 @@
 import React, { useState, useEffect, useContext } from 'react';
 import useReq from '../../hooks/useReq.js';
 import { Box } from '@mui/material';
-import { AppContext } from "../../App.js";
 import InputFormBox from '../../components/inputFormBox.js';
+import { AppContext } from "../../App.js";
 
-const MovieForm = () => {
+const MovieForm = ({setShowModal, data=null}) => {
     const {context, setContext} = useContext(AppContext);
+    const { data: addMovieRes, isLoading: isAddMovieLoading, error: addMovieError, doRequest: doAddMovieRequest } = useReq(process.env.REACT_APP_MOVIE_API, null);
+    const { data: updateMovieRes, isLoading: isUpdateMovieLoading, error: updateMovieError, doRequest: doUpdateMovieRequest } = useReq(process.env.REACT_APP_MOVIE_API, null);
 
     const inputs = [{
         id: 'title',
         label : '영화제목',
+        value : data && data.title
     },{
         id: 'releaseDate',
         label : '개봉일',
+        value : data && data.releaseDate
     },{
-        id: 'runTime',
+        id: 'runtime',
         label : '러닝타임',
+        value : data && data.runtime
     },{
         id: 'ratingGrade',
         label : '관람등급',
+        value : data && data.ratingGrade
     },{
         id: 'genre',
-        label : '카테고리',
+        label : '장르',
+        value : data && data.genre
     },{
         id: 'director',
         label : '감독',
+        value : data && data.director
     },{
-        id: 'actor',
+        id: 'actors',
         label : '출연진',
+        value : data && data.actors
     },{
         id: 'status',
         label : '상영여부',
+        value : data && data.status
     },{
         id: 'posterImageUrl',
         label : '포스터',
+        value : data && data.posterImageUrl
+    },{
+        id: 'plot',
+        label : '영화 설명',
+        value : data && data.plot
     }];
 
     const remove = ()=>{
         const uploadFile = document.querySelector('#uploadFile');
         uploadFile.value = null;
     }
-    const save = ()=>{
-        const title = document.querySelector('#title');
-        const releaseDate = document.querySelector('#releaseDate');
-        const runTime = document.querySelector('#runTime');
-        const ratingGrade = document.querySelector('#ratingGrade');
-        const genre = document.querySelector('#genre');
-        const director = document.querySelector('#director');
-        const actor = document.querySelector('#actor');
-        const status = document.querySelector('#status');
-        const posterImageUrl = document.querySelector('#posterImageUrl');
-        const uploadFile = document.querySelector('#uploadFile');
+    const add = ()=>{
+        const title = document.querySelector('#title').value;
+        const releaseDate = document.querySelector('#releaseDate').value;
+        const runtime = document.querySelector('#runtime').value;
+        const ratingGrade = document.querySelector('#ratingGrade').value;
+        const genre = document.querySelector('#genre').value;
+        const director = document.querySelector('#director').value;
+        const actors = document.querySelector('#actors').value;
+        const status = document.querySelector('#status').value;
+        const posterImageUrl = document.querySelector('#posterImageUrl').value;
+        const uploadFile = document.querySelector('#uploadFile').value;
+        const plot = document.querySelector('#plot').value;
         
-        debugger;
+        doAddMovieRequest(process.env.REACT_APP_MOVIE_API, {
+            method: 'POST',
+            headers: {
+                    'Authorization': `Bearer ${context.token}`
+            },
+            data: {
+                title: title,
+                releaseDate: releaseDate,
+                runtime: runtime,
+                ratingGrade: ratingGrade,
+                genre: genre,
+                director: director,
+                actors: actors,
+                status: status,
+                posterImageUrl: posterImageUrl,
+                uploadFile: uploadFile,
+                plot: plot
+            }
+        });
     }
-    const upload = ()=>{
-        debugger;
+    const update = ()=>{
+        const title = document.querySelector('#title').value;
+        const releaseDate = document.querySelector('#releaseDate').value;
+        const runtime = document.querySelector('#runtime').value;
+        const ratingGrade = document.querySelector('#ratingGrade').value;
+        const genre = document.querySelector('#genre').value;
+        const director = document.querySelector('#director').value;
+        const actors = document.querySelector('#actors').value;
+        const status = document.querySelector('#status').value;
+        const posterImageUrl = document.querySelector('#posterImageUrl').value;
+        const uploadFile = document.querySelector('#uploadFile').value;
+        const plot = document.querySelector('#plot').value;
+        
+        doUpdateMovieRequest(process.env.REACT_APP_MOVIE_API + `/${data.movieId}`, {
+            method: 'PUT',
+            headers: {
+                    'Authorization': `Bearer ${context.token}`
+            },
+            data: {
+                movieId: data.movieId,
+                title: title,
+                releaseDate: releaseDate,
+                runtime: runtime,
+                ratingGrade: ratingGrade,
+                genre: genre,
+                director: director,
+                actors: actors,
+                status: status,
+                posterImageUrl: posterImageUrl,
+                uploadFile: uploadFile,
+                plot: plot
+            }
+        });
     }
 
+    useEffect(()=>{
+        if(addMovieRes != null){
+            document.querySelector('#title').value = '';
+            document.querySelector('#releaseDate').value = '';
+            document.querySelector('#runTime').value = '';
+            document.querySelector('#ratingGrade').value = '';
+            document.querySelector('#genre').value = '';
+            document.querySelector('#director').value = '';
+            document.querySelector('#actor').value = '';
+            document.querySelector('#status').value = '';
+            document.querySelector('#posterImageUrl').value = '';
+            document.querySelector('#uploadFile').value = '';
+            document.querySelector('#plot').value = '';
+
+            alert('success addMOvie');
+        }
+    },[addMovieRes])
+    useEffect(()=>{
+        if(updateMovieRes != null){
+            alert('success updateMovie');
+            window.location.reload ()
+        }
+    },[updateMovieRes])
+
+    
     return <>
         <h2 className='mb-14'>영화 등록</h2>
         <Box className='form mb-44'>
@@ -71,8 +161,8 @@ const MovieForm = () => {
             <button id="remove" type="button" class="button-sm mr-6" onClick={remove}>삭제</button>
         </Box>
         <Box className='controlBox mt-18'>
-            <button id="save" type="button" class="button-sm mr-6" onClick={save}>저장</button>
-            <button id="back" type="button" class="button-sm" onClick={upload}>뒤로</button>
+            <button id="save" type="button" class="button-sm mr-6" onClick={data != null ? update : add}>저장</button>
+            <button id="back" type="button" class="button-sm" onClick={() => setShowModal(false)}>뒤로</button>
         </Box>
     </>;
 };
