@@ -14,6 +14,7 @@ import Footer from './templates/footer.js';
 import Header from './templates/header.js';
 import { Box } from '@mui/material';
 import Admin from './pages/admin/index.js';
+import Util from './utils/index.js'
 
 export const AppContext = createContext(null);
 export default function App() {

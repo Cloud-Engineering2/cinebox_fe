@@ -1,6 +1,6 @@
 .flex {
     display: flex;
-    align-items: cetner;
+    align-items: center;
 }
 .fx-dir-col {
     flex-direction: column;
@@ -8,8 +8,18 @@
 .jsfy-cnt-cnt {
     justify-content: center;
 }
-.mainFontColor {
-    color: #004D09;
+.jsfy-cnt-rght {
+    justify-content: right;
+}
+.jsfy-cnt-spc-btwn {
+    justify-content: space-between;
+}
+
+.opacity-07 {
+    opacity: 0.7;
+}
+.pointer {
+    cursor: pointer;
 }
 
 
@@ -28,6 +38,9 @@
 .mb-18 {
     margin-bottom: 18px !important;
 }
+.mb-28 {
+    margin-bottom: 28px !important;
+}
 .mb-44 {
     margin-bottom: 44px !important;
 }
@@ -38,6 +51,12 @@
     margin-bottom: 110px !important;
 }
 
+.mt-6 {
+    margin-top: 6px !important;
+}
+.mt-10 {
+    margin-top: 10px !important;
+}
 .mt-18 {
     margin-top: 18px !important;
 }
@@ -67,6 +86,17 @@
 .fs-19 {
     font-size: 19px;
 }
+.fs-23 {
+    font-size: 23px;
+}
+
+.color-green {
+    color: #004D09;
+}
+.color-gray {
+    color: #656565;
+}
+
 .bold {
     font-weight: bold;
 }
@@ -80,4 +110,19 @@
 .wd-50p{
     width: 50%;
 }
+.height-35 {
+    height: 35px;
+}
 
+.pstn-relative {
+    position:relative;
+}
+.pstn-absolute {
+    position:absolute;
+}
+.pstn-left {
+    left:0;
+}
+.pstn-right {
+    right:0;
+}
