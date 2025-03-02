@@ -5,8 +5,8 @@ import { Box } from '@mui/material';
 import { AppContext } from "../../App.js";
 import admin from '../../styles/pages/admin.css';
 import Tabs from '../../components/tabs.js';
-import MovieForm from './movieForm.js';
-import UserForm from './userForm.js';
+import MovieList from './movieList.js';
+import UserList from './userList.js';
 
 const Admin = () => {
     const {context, setContext} = useContext(AppContext);
@@ -17,10 +17,10 @@ const Admin = () => {
             <Tabs tabs={[
                 {
                     value:'영화 관리',
-                    content:<MovieForm/>
+                    content: <MovieList/>
                 },{
                     value:'회원 관리',
-                    content:<UserForm/>
+                    content:<UserList/>
                 }
             ]}
             styles={{}}/>

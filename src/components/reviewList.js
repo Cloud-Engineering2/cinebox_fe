@@ -1,15 +1,14 @@
 import React, { useContext, useEffect, useState } from 'react';
-import { useParams } from 'react-router-dom';
 import useReq from '../hooks/useReq.js';
 import List from '@mui/material/List';
-import ListItem from '@mui/material/ListItem';
 import Divider from '@mui/material/Divider';
 import {Box, Input, MenuItem, TextField} from '@mui/material';
 import reviewList from '../styles/components/reviewList.css';
 import EditModeInput from './editModeInput.js';
 import { AppContext } from "../App.js";
+import { changeTimeFormat } from '../utils/index.js';
 
-export default function ReviewList({reviews, styles, doGetReviewRequest}) {
+export default function ReviewList({reviews, styles, doGetReviewRequest=()=>{}, noEdit=false, showMovieTitle=true}) {
     const {context, setContext} = useContext(AppContext);
 
     const { data: editReviewResponse, isLoading: isReviewEditLoading, error: editReviewsError, doRequest: doEditReviewRequest } = useReq(null, null);
@@ -52,10 +51,14 @@ export default function ReviewList({reviews, styles, doGetReviewRequest}) {
         <List sx={Object.assign({ width: '100%', maxWidth: 360, bgcolor: 'background.paper' }, styles)}>
         {
             reviews && reviews.map(review =>{
-                return <Box className={`reviewBox${review.reviewId}`}>
+                return <Box className={`reviewBox${review.reviewId} mb-18`}>
+                    <Box className={`flex ${showMovieTitle ? 'jsfy-cnt-spc-btwn' : 'jsfy-cnt-rght'} mb-6 fs-14 color-gray`}>
+                        {showMovieTitle && <p>movie 제목 넣기</p>}
+                        <p>{changeTimeFormat(review.createdAt)}</p>
+                    </Box>
                     <Box className='contentBox'>
                         <Box className='content1'>
-                            <Box>{review.userId}</Box>
+                            <Box>{review.identifier}</Box>
                             <Box>{review.rating}</Box>
                         </Box>
                         <EditModeInput 
@@ -65,6 +68,7 @@ export default function ReviewList({reviews, styles, doGetReviewRequest}) {
                                 edit: (content, rating)=>editReviewHandler(content, rating, review),
                                 remove: ()=>deleteReviewHandler(review.movieId, review.reviewId)
                             }}
+                            noEdit={noEdit}
                         />
                     </Box>
                 <Divider variant="inset" component="li" sx={{marginLeft: 0, marginBottom: 1}}/>

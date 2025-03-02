@@ -17,6 +17,7 @@ const useReq = (initialUrl, initalOption) => {
 
         try {
             const response = await axios(url, option);
+            console.log(response.data);
             setData(response.data);
         } catch (error) {
             setError(error);
@@ -25,16 +26,16 @@ const useReq = (initialUrl, initalOption) => {
         setIsLoading(false);
     };
 
+    const doRequest = (newUrl, newOption) => {
+        setUrl(newUrl);
+        setOption(newOption);
+    };
+
     useEffect(() => {
         if (url && option) {  // ✅ 둘 다 존재할 때만 실행
             fetchData();
         }
     }, [url, option]);
-
-    const doRequest = (newUrl, newOption) => {
-        setUrl(newUrl);
-        setOption(newOption);
-    };
 
     return { data, isLoading, error, doRequest };
 };

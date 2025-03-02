@@ -9,3 +9,13 @@
     align-content: center;
     justify-content: center;
 }
+
+#searchMovie {
+    height: 33px;
+    background: #E8E8E8;
+    color: #727272;
+    border: none;
+    border-radius: 6px;
+    padding: 5px;
+    box-sizing: border-box;
+}

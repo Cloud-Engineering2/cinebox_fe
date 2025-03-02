@@ -3,7 +3,6 @@ import { useParams } from 'react-router-dom';
 import useReq from '../hooks/useReq.js';
 import detail from '../styles/pages/detail.css'
 import MovieDetail from '../components/movieDetail.js'
-import Tabs from '../components/tabs.js';
 import { Box, TextField } from '@mui/material';
 import ReviewList from '../components/reviewList.js';
 import UnderBarTitle from '../components/underBarTitle.js';
@@ -68,16 +67,14 @@ const Detail = () => {
                 <MovieDetail movie={data} styles={{marginBottom: 73}}/>,
                 <Box className='mainInfo'>
                     <Box className='mb-73'>
-                        <h2 className='fs-19 mb-14 nowrap'>{data.plot}</h2>
-                        <p>전 세계를 붉게 장악하려는 사악한 음모</p>
+                        <p className='fs-19 mb-14'>{data.plot}</p>
                     </Box>
                 </Box>,
                 <Box className='reviewBox'>
                     <h2 className='fs-19 mb-18'>관객들의 리뷰</h2>
                     <Box className='fs-19 mb-6'>
                         <select id="rating" class="selectRating">
-                            <option value="" selected>별점</option>
-                            <option value="1">1</option>
+                            <option value="1" selected>1</option>
                             <option value="2">2</option>
                             <option value="3">3</option>
                             <option value="4">4</option>
@@ -105,7 +102,8 @@ const Detail = () => {
                             maxWidth: 'none',
                             height: 30
                         }}
-                        doGetReviewRequest={doGetReviewRequest}/>}
+                        doGetReviewRequest={doGetReviewRequest}
+                        showMovieTitle={false}/>}
                     </Box>
                 </Box>
             ]}

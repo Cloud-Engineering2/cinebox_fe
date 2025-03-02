@@ -14,6 +14,7 @@ const Mypage = () => {
     const [movies, setMovies] = useState([]);
     const [bookingList, setBookingList] = useState([]);
     const [reviews, setReviews] = useState([]);
+    const [showBookingList, setShowBookingList] = useState(false);
     
     const { data, isLoading, error, doRequest } = useReq(process.env.REACT_APP_MOVIE_API, {
         method: 'GET',
@@ -21,28 +22,50 @@ const Mypage = () => {
             'Authorization': `Bearer ${context.token}`
         }
     });
-    const { data: bookingResponse, isLoading: isBookingReqLoading, error: getBookingReqError, doRequest: doGetBookingRequest } = useReq(process.env.REACT_APP_BOOKING_API + '/my', {
+    const { data: bookingRes, isLoading: isBookingReqLoading, error: getBookingReqError, doRequest: doGetBookingRequest } = useReq(process.env.REACT_APP_BOOKING_API + '/my', {
         method: 'GET',
         headers: {
             'Authorization': `Bearer ${context.token}`
         }
     });
-    const { data: reviewResponse, isLoading: isReviewLoading, error: getReviewsError, doRequest: doGetReviewRequest } = useReq(process.env.REACT_APP_MOVIE_API + `/4/reviews`, {
+    const { data: reviewRes, isLoading: isReviewLoading, error: getReviewsError, doRequest: doGetReviewRequest } = useReq(process.env.REACT_APP_MOVIE_API + `/6/reviews`, {
         method: 'GET',
         headers: {
                 'Authorization': `Bearer ${context.token}`
         }
     });
+    const { data: deleteUserRes, isLoading: isDeleteUserLoading, error: deleteUserError, doRequest: doDeleteUserRequest } = useReq(process.env.REACT_APP_USER_API + `/${context.userId}`, null);
 
     useEffect(()=>{
         setMovies(data);
     },[data]);
     useEffect(()=>{
-        setBookingList(bookingResponse);
-    },[bookingResponse]);
+        setBookingList(bookingRes);
+    },[bookingRes]);
     useEffect(()=>{
-        setReviews(reviewResponse);
-    },[reviewResponse]);
+        setReviews(reviewRes);
+    },[reviewRes]);
+    useEffect(()=>{
+        if(showBookingList){
+            document.querySelector('.favoriteMovieLabel').style.display = 'none';
+            document.querySelector('.favoriteMovie').style.display = 'none';
+            document.querySelector('.movieStoryLabel').style.display = 'none';
+            document.querySelector('.movieStory').style.display = 'none';
+            document.querySelector('.bookingList').style.height = 'auto';
+            document.querySelector('.more').style.display = 'none';
+        }
+    },[showBookingList]);
+
+    const deleteUser = async ()=>{
+        await doDeleteUserRequest(process.env.REACT_APP_USER_API + `/${context.userId}`, {
+            method: 'DELETE',
+            headers: {
+                    'Authorization': `Bearer ${context.token}`
+            }
+        });
+        localStorage.clear();
+        window.location.href='/';
+    }
 
     return <>
         <UnderBarTitle title={'나의 시네박스'}/>
@@ -55,44 +78,45 @@ const Mypage = () => {
                     안녕하세요! <br/>{context.identifier} 님
                 </Box>
                 <Box className='userControlBox'>
-                    <span className='mr-12'>개인정보수정</span>
-                    <span>회원 탈퇴</span>
+                    <span className='mr-12 pointer' onClick={()=>{alert('개인정보수정')}}>개인정보수정</span>
+                    <span className='pointer' onClick={deleteUser}>회원 탈퇴</span>
                 </Box>
             </Box>
-            <UnderBarTitle title={'기대되는 영화'} styles={{margin: 'none'}}/>
+            <UnderBarTitle className='favoriteMovieLabel' title={'기대되는 영화'} styles={{margin: 'none'}}/>
             <Box className='favoriteMovie'>
                 {
                     movies ? movies.map((movie) => {
                         return (
                             <MovieCard
                                 movie={movie}
-                                imgUrl='/assets/movie1.jpg'
+                                imgUrl={movie.posterImageUrl ? movie.posterImageUrl : '/assets/noImage.png'}
                                 styles={{
                                     card : {
-                                        width : 140,
-                                        height: 200,
+                                        width : 130,
+                                        height: 220,
                                         marginRight:'36px',
                                         marginBottom: '36px'
-                                    },
-                                    img : {
-                                        width: '100%'
                                     }
                                 }}
                             />
                         );
-                    }) : <EmptyBox/>
+                    }) : <EmptyBox text="좋아요를 눌러보세요."/>
                 }
             </Box>
-            <UnderBarTitle title={'MY 예매내역'} styles={{margin: 'none'}}/>
-            <Box className='bookingList'>
-                {
-                    bookingList ? bookingList.map((booking) => {
-                        return <BookingCard booking={booking}/>;
-                    }) : <EmptyBox/>
-                }
+            <Box className='pstn-relative'>
+                <Box className='more pstn-absolute pstn-right color-gray pointer' onClick={()=>{setShowBookingList(true)}}>{'더보기 >'}</Box>
+                {/* <Box className='prev pstn-absolute pstn-right color-gray pointer' onClick={()=>{setShowBookingList(false)}}>{'이전으로 >'}</Box> */}
+                <UnderBarTitle title={'MY 예매내역'} styles={{margin: 'none'}}/>
+                <Box className='mt-10 fs-13 bold color-gray'>총 {bookingList ? bookingList.length : 0}건</Box>
+                <Box className='bookingList'>
+                    {
+                        bookingList ? bookingList.map((booking) => {
+                            return <BookingCard booking={booking}/>;
+                        }) : <EmptyBox text="예매 내역이 없습니다."/>
+                    }
+                </Box>
             </Box>
-            <UnderBarTitle title={'MY 무비스토리'} styles={{margin: 'none'}}/>
-            {/* {JSON.stringify(reviews)} */}
+            <UnderBarTitle className='movieStoryLabel'  title={'MY 무비스토리'} styles={{margin: 'none'}}/>
             <Box className='movieStory'>
                 {
                     reviews ? (
@@ -103,8 +127,8 @@ const Mypage = () => {
                                     maxWidth: 'none',
                                     height: 30
                                 }}
-                                doGetReviewRequest={()=>{}}/>
-                    ) : <EmptyBox/>
+                                noEdit={true}/>
+                    ) : <EmptyBox text="리뷰가 없습니다."/>
                 }
             </Box>
         </Box>

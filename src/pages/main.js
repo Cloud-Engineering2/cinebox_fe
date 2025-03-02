@@ -5,7 +5,7 @@ import MovieCard from '../components/movieCard.js';
 import EmptyBox from '../components/emptyBox.js';
 import UnderBarTitle from '../components/underBarTitle.js';
 import { AppContext } from "../App.js";
-import { Box } from '@mui/material';
+import { Box, TextField } from '@mui/material';
 
 const Main = () => {
     const {context, setContext} = useContext(AppContext);
@@ -18,8 +18,8 @@ const Main = () => {
     });
 
     useEffect(()=>{
-        setMovies(data);
-    },[data]);
+        if(data != null) setMovies(data);
+    },[data])
 
     return <>
         <UnderBarTitle title={'박스오피스'}/>
@@ -30,21 +30,18 @@ const Main = () => {
                         return (
                             <MovieCard
                                 movie={movie}
-                                imgUrl='/assets/movie1.jpg'
+                                imgUrl={movie.posterImageUrl ? movie.posterImageUrl : '/assets/noImage.png'}
                                 styles={{
                                     card : {
-                                        width : 167,
-                                        height: 240,
+                                        width : 140,
+                                        height: 230,
                                         marginRight:'36px',
-                                        marginBottom: '36px'
-                                    },
-                                    img : {
-                                        width: '100%'
+                                        marginBottom: '50px'
                                     }
                                 }}
                             />
                         );
-                    }) : <EmptyBox/>
+                    }) : <EmptyBox text='현재 상영 중인 영화가 없습니다.'/>
                 }
             </Box>
         </Box>

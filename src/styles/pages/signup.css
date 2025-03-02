@@ -1,15 +1,26 @@
 .signup {
     width: 350px;
     justify-self: center;
-    position: absolute;
-    left: calc(50% - 170px);
-    top: calc(50vh - 182px);
+    margin: 60px 0px;
 }
 .form-box {
     display: flex;
     flex-direction: column;
     margin-bottom : 15px;
 }
+.age-form-box {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    color: #A6A6A6;
+    border-bottom: 1px solid #949494;
+    margin-bottom : 15px;
+    padding-bottom : 8px;
+}
+.age-form-box:hover {
+    border-bottom: 2px solid #212121;
+}
+
 .form-select {
     height: 35px;
     font-size: 1rem;
