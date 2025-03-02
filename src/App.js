@@ -15,6 +15,7 @@ import Header from './templates/header.js';
 import { Box } from '@mui/material';
 import Admin from './pages/admin/index.js';
 import Util from './utils/index.js'
+import ScreenTable from './pages/admin/screenTable.js';
 
 export const AppContext = createContext(null);
 export default function App() {
@@ -38,6 +39,7 @@ export default function App() {
             <Route path="/admin" element={<Admin />} />
             <Route path="/detail/:movieId" element={<Detail />} />
             <Route path="/booking/:movieId" element={<Booking />} />
+            <Route path="/screen/:movieId" element={<ScreenTable />} />
           </Routes>
         </Router>
       </Box>
