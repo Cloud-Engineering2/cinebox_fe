@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import axios, { AxiosRequestConfig, AxiosResponse } from 'axios';
+import axios from 'axios';
 
 const useReq = (initialUrl, initalOption) => {
     const [url, setUrl] = useState(initialUrl);
@@ -12,12 +12,8 @@ const useReq = (initialUrl, initalOption) => {
     const fetchData = async () => {
         setIsLoading(true);
 
-        console.log("=========== start fetchData ==========");
-        console.log("url : " + url);
-
         try {
             const response = await axios(url, option);
-            console.log(response.data);
             setData(response.data);
         } catch (error) {
             setError(error);
@@ -32,9 +28,7 @@ const useReq = (initialUrl, initalOption) => {
     };
 
     useEffect(() => {
-        if (url && option) {  // ✅ 둘 다 존재할 때만 실행
-            fetchData();
-        }
+        if (url && option) fetchData();
     }, [url, option]);
 
     return { data, isLoading, error, doRequest };

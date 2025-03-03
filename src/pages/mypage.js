@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useContext } from 'react';
+import React, { useState, useEffect, useContext, useCallback } from 'react';
 import useReq from '../hooks/useReq.js';
 import UnderBarTitle from '../components/underBarTitle.js';
 import { Box } from '@mui/material';
@@ -65,7 +65,7 @@ const Mypage = () => {
         }
     },[showBookingList]);
 
-    const deleteUser = async ()=>{
+    const deleteUser = useCallback(async ()=>{
         await doDeleteUserRequest(process.env.REACT_APP_USER_API + `/${context.userId}`, {
             method: 'DELETE',
             headers: {
@@ -74,7 +74,7 @@ const Mypage = () => {
         });
         localStorage.clear();
         window.location.href='/';
-    }
+    },[context.token])
 
     return <>
         <UnderBarTitle title={'나의 시네박스'}/>

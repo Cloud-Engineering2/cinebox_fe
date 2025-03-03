@@ -1,5 +1,5 @@
-import React, { useState, useEffect } from 'react';
-import {Card, Box, Button} from '@mui/material';
+import React from 'react';
+import { Box } from '@mui/material';
 
 export default function AgeLogo({age, color}) {
     const style={

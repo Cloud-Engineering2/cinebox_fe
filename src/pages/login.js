@@ -1,16 +1,36 @@
-import React, { useState, useEffect, useContext } from 'react';
-import useReq from '../hooks/useReq.js';
+import React, { useCallback, useEffect } from 'react';
 import login from '../styles/pages/login.css'
-import { Box, TextField } from '@mui/material';
+import useReq from '../hooks/useReq.js';
+import { Box, Button, TextField } from '@mui/material';
 import UnderBarTitle from '../components/underBarTitle.js';
-import { AppContext } from "../App.js";
 
 const Login = () => {
     const { data, isLoading, error, doRequest } = useReq(process.env.REACT_APP_LOGIN_URL, null);
 
-    const LoginReq = ()=>{
+    useEffect(() => {
+        if (data != null) {
+            localStorage.setItem('token', data.token);
+            localStorage.setItem('identifier', data.identifier);
+            localStorage.setItem('role', data.role);
+            localStorage.setItem("userId", data.userId);
+
+            window.location.href = '/main';
+        }
+    }, [data]);
+    useEffect(() => {
+        if (error) {
+            alert('아이디 혹은 비밀번호가 맞지 않습니다.');
+        }
+    }, [error]);
+
+    const Login = useCallback(() => {
         const identifier = document.querySelector('#identifier').value;
         const password = document.querySelector('#password').value;
+
+        if(!identifier || !password){
+            alert('빈 칸을 입력해주세요.');
+            return;
+        }
 
         doRequest(process.env.REACT_APP_LOGIN_URL, {
             method: "POST",
@@ -19,34 +39,23 @@ const Login = () => {
                 'password': password,
             }
         });
-    };
-
-    useEffect(()=>{
-        if(data != null){
-            localStorage.setItem('token', data.token);
-            localStorage.setItem('identifier', data.identifier);
-            localStorage.setItem('role', data.role);
-            localStorage.setItem("userId", data.userId);
-
-            window.location.href='/main';
-        }
-    },[data]);
+    },[]);
 
     return <>
-        <UnderBarTitle title={'로그인'}/>
-        <Box class="login">
-            <Box class="form-box">
+        <UnderBarTitle title={'로그인'} />
+        <Box className="login">
+            <Box className="form-box">
                 <TextField id="identifier" placeholder="아이디" variant="standard" />
             </Box>
-            <Box class="form-box">
+            <Box className="form-box">
                 <TextField id="password" placeholder="비밀번호" variant="standard" />
             </Box>
-            <Box id="warning" class="mb_8 disabled">아이디 혹은 비밀번호를 입력해 주세요.</Box>
-            <button id="signupKakao" type="button" class="kakaoButton mb-10 bg-yellow opacity-07" disabled >
-                <img className="kakaoIcon" src='/assets/kakaoIcon.png'/>
+            <Box id="warning" className="mb_8 disabled">아이디 혹은 비밀번호를 입력해 주세요.</Box>
+            <Button id="signupKakao" type="button" className="kakaoButton mb-10 bg-yellow opacity-07" disabled >
+                <img className="kakaoIcon" src='/assets/kakaoIcon.png' />
                 카카오로 로그인
-            </button>
-            <button id="login" type="button" class="button mb-6" onClick={LoginReq}>로그인</button>
+            </Button>
+            <button id="login" type="button" className="button mb-6" onClick={Login}>로그인</button>
         </Box>
     </>;
 };

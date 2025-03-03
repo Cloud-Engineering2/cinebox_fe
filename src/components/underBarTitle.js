@@ -1,5 +1,5 @@
 import { Box } from '@mui/material';
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 
 const UnderBarTitle = ({className, title, styles}) => {
 
@@ -14,16 +14,9 @@ const UnderBarTitle = ({className, title, styles}) => {
         justifyContent: 'space-between'
     },styles);
 
-    const more = {
-        fontSize: 16,
-        cursor: 'pointer'
-    };
-
-    return <>
-        <Box className={className} style={style}>
+    return <Box className={className} style={style}>
             {title}
-        </Box>
-    </>;
+        </Box>;
 };
 
 export default UnderBarTitle;
