@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useContext } from 'react';
+import React, { useState, useEffect, useContext, useMemo, useCallback } from 'react';
 import useReq from '../../hooks/useReq.js';
 import { Box } from '@mui/material';
 import InputFormBox from '../../components/inputFormBox.js';
@@ -9,53 +9,64 @@ const MovieForm = ({setShowModal, data=null}) => {
     const { data: addMovieRes, isLoading: isAddMovieLoading, error: addMovieError, doRequest: doAddMovieRequest } = useReq(process.env.REACT_APP_MOVIE_API, null);
     const { data: updateMovieRes, isLoading: isUpdateMovieLoading, error: updateMovieError, doRequest: doUpdateMovieRequest } = useReq(process.env.REACT_APP_MOVIE_API, null);
 
-    const inputs = [{
-        id: 'title',
-        label : '영화제목',
-        value : data && data.title
-    },{
-        id: 'releaseDate',
-        label : '개봉일',
-        value : data && data.releaseDate
-    },{
-        id: 'runtime',
-        label : '러닝타임',
-        value : data && data.runtime
-    },{
-        id: 'ratingGrade',
-        label : '관람등급',
-        value : data && data.ratingGrade
-    },{
-        id: 'genre',
-        label : '장르',
-        value : data && data.genre
-    },{
-        id: 'director',
-        label : '감독',
-        value : data && data.director
-    },{
-        id: 'actors',
-        label : '출연진',
-        value : data && data.actors
-    },{
-        id: 'status',
-        label : '상영여부',
-        value : data && data.status
-    },{
-        id: 'posterImageUrl',
-        label : '포스터',
-        value : data && data.posterImageUrl
-    },{
-        id: 'plot',
-        label : '영화 설명',
-        value : data && data.plot
-    }];
+    const inputs = useMemo(() => [
+        {
+            id: 'title',
+            label: '영화제목',
+            value: data && data.title
+        },
+        {
+            id: 'releaseDate',
+            label: '개봉일',
+            value: data && data.releaseDate
+        },
+        {
+            id: 'runtime',
+            label: '러닝타임',
+            value: data && data.runtime
+        },
+        {
+            id: 'ratingGrade',
+            label: '관람등급',
+            value: data && data.ratingGrade
+        },
+        {
+            id: 'genre',
+            label: '장르',
+            value: data && data.genre
+        },
+        {
+            id: 'director',
+            label: '감독',
+            value: data && data.director
+        },
+        {
+            id: 'actors',
+            label: '출연진',
+            value: data && data.actors
+        },
+        {
+            id: 'status',
+            label: '상영여부',
+            value: data && data.status
+        },
+        {
+            id: 'posterImageUrl',
+            label: '포스터',
+            value: data && data.posterImageUrl
+        },
+        {
+            id: 'plot',
+            label: '영화 설명',
+            value: data && data.plot
+        }
+    ], [data]);
 
-    const remove = ()=>{
+    const remove = useCallback(()=>{
         const uploadFile = document.querySelector('#uploadFile');
         uploadFile.value = null;
-    }
-    const add = ()=>{
+    },[])
+    const add = useCallback(()=>{
         const title = document.querySelector('#title').value;
         const releaseDate = document.querySelector('#releaseDate').value;
         const runtime = document.querySelector('#runtime').value;
@@ -87,8 +98,8 @@ const MovieForm = ({setShowModal, data=null}) => {
                 plot: plot
             }
         });
-    }
-    const update = ()=>{
+    },[context.token])
+    const update = useCallback(()=>{
         const title = document.querySelector('#title').value;
         const releaseDate = document.querySelector('#releaseDate').value;
         const runtime = document.querySelector('#runtime').value;
@@ -121,7 +132,7 @@ const MovieForm = ({setShowModal, data=null}) => {
                 plot: plot
             }
         });
-    }
+    },[context.token])
 
     useEffect(()=>{
         if(addMovieRes != null){
@@ -158,11 +169,11 @@ const MovieForm = ({setShowModal, data=null}) => {
             <Box>
                 <input id='uploadFile' type="file"/>
             </Box>
-            <button id="remove" type="button" class="button-sm mr-6" onClick={remove}>삭제</button>
+            <button id="remove" type="button" className="button-sm mr-6" onClick={remove}>삭제</button>
         </Box>
         <Box className='controlBox mt-18'>
-            <button id="save" type="button" class="button-sm mr-6" onClick={data != null ? update : add}>저장</button>
-            <button id="back" type="button" class="button-sm" onClick={() => setShowModal(false)}>뒤로</button>
+            <button id="save" type="button" className="button-sm mr-6" onClick={data != null ? update : add}>저장</button>
+            <button id="back" type="button" className="button-sm" onClick={() => setShowModal(false)}>뒤로</button>
         </Box>
     </>;
 };

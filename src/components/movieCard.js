@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useReducer } from 'react';
+import React, { useState, useEffect, useReducer, useCallback } from 'react';
 import {Card, Box, Button} from '@mui/material';
 import Typography from '@mui/material/Typography';
 import AgeLogo from './ageLogo';
@@ -9,13 +9,10 @@ export default function MovieCard({number, movie, imgUrl, styles}) {
   const title = movie.title;
   const cardId = `actionBox${id}`;
 
-  const actionBoxController = (isHover)=>{
+  const actionBoxController = useCallback((isHover)=>{
     document.querySelector(`#${cardId}`).style.display = isHover ? 'block' : 'none';
-  }
-  const moveMovieDetail = ()=>{
-    window.location.href = `/detail/${id}`;
-  }
-  const getMovieAge = (ratingGrade)=>{
+  },[cardId])
+  const getMovieAge = useCallback((ratingGrade)=>{
     switch (ratingGrade){
       case (null || '전체관람가') : 
         return {age: 'All', color: 'green'};
@@ -28,7 +25,7 @@ export default function MovieCard({number, movie, imgUrl, styles}) {
       default : 
         return {age: 'All', color: 'green'};
     }
-  }
+  },[])
 
   return (
     <Box style={Object.assign({position:'relative'},styles.card)} 
@@ -36,7 +33,7 @@ export default function MovieCard({number, movie, imgUrl, styles}) {
           onMouseOut={()=>actionBoxController(false)}>
       <Box id={cardId} className='actionBox'>
         <Button onClick={()=>{window.location.href=`/booking/${id}`}}>예매</Button>
-        <Button onClick={moveMovieDetail}>상세 정보</Button>
+        <Button onClick={()=>{window.location.href = `/detail/${id}`}}>상세 정보</Button>
       </Box>
       <Box style={{height: styles.card.height * 0.87}}>
         <Box style={{

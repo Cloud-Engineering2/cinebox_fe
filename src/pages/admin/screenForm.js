@@ -93,8 +93,8 @@ const ScreenForm = ({setShowModal, data=null}) => {
             <InputFormBox inputs={inputs} style={{width: '75%'}}/>
         </Box>
         <Box className='controlBox mt-18'>
-            <button id="save" type="button" class="button-sm mr-6" onClick={data != null ? update : add}>저장</button>
-            <button id="back" type="button" class="button-sm" onClick={() => setShowModal(false)}>뒤로</button>
+            <button id="save" type="button" className="button-sm mr-6" onClick={data != null ? update : add}>저장</button>
+            <button id="back" type="button" className="button-sm" onClick={() => setShowModal(false)}>뒤로</button>
         </Box>
     </>;
 };

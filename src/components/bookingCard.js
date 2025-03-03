@@ -5,9 +5,6 @@ import init from '../styles/init.css';
 import { changeTimeFormat } from '../utils/index.js';
 
 export default function BookingCard({booking}) {
-  const bookingId = booking.bookingId;
-  const movieId = booking.movieId;
-  const bookCardId = `bookingCard${bookingId}`;
 
   return (
     <Box className='bookingCard mb-18' style={{borderBottom: '1px solid #656565', paddingBottom: 18}}>

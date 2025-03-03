@@ -16,34 +16,37 @@ import { Box } from '@mui/material';
 import Admin from './pages/admin/index.js';
 import Util from './utils/index.js'
 import ScreenTable from './pages/admin/screenTable.js';
+import ErrorBoundary from './components/errorBoundary.js';
 
 export const AppContext = createContext(null);
 export default function App() {
   const [context, setContext] = useState({
-      token: localStorage.getItem('token'),
-      identifier: localStorage.getItem('identifier'),
-      role: localStorage.getItem('role'),
-      userId: localStorage.getItem('userId')
+    token: localStorage.getItem('token'),
+    identifier: localStorage.getItem('identifier'),
+    role: localStorage.getItem('role'),
+    userId: localStorage.getItem('userId')
   });
 
   return <AppContext.Provider value={{ context, setContext }}>
-    <div className="App">
-    <Header/>
-      <Box style={{minHeight:'calc(100vh - 238px)'}}>
-        <Router>
-          <Routes>
-            <Route path="/signup" element={<Signup />} />
-            <Route path="/" element={<Login />} />
-            <Route path="/main" element={<Main />} />
-            <Route path="/mypage" element={<Mypage />} />
-            <Route path="/admin" element={<Admin />} />
-            <Route path="/detail/:movieId" element={<Detail />} />
-            <Route path="/booking/:movieId" element={<Booking />} />
-            <Route path="/screen/:movieId" element={<ScreenTable />} />
-          </Routes>
-        </Router>
+    <ErrorBoundary>
+      <Box className="App">
+        <Header />
+        <Box style={{ minHeight: 'calc(100vh - 238px)' }}>
+          <Router>
+            <Routes>
+              <Route path="/signup" element={<Signup />} />
+              <Route path="/" element={<Login />} />
+              <Route path="/main" element={<Main />} />
+              <Route path="/mypage" element={<Mypage />} />
+              <Route path="/admin" element={<Admin />} />
+              <Route path="/detail/:movieId" element={<Detail />} />
+              <Route path="/booking/:movieId" element={<Booking />} />
+              <Route path="/screen/:movieId" element={<ScreenTable />} />
+            </Routes>
+          </Router>
+        </Box>
+        <Footer />
       </Box>
-      <Footer/>
-    </div>
+    </ErrorBoundary>
   </AppContext.Provider>;
 }

@@ -10,8 +10,8 @@ const Header = () => {
 	const userId = localStorage.getItem('userId');
 
     return <>
-	<Box class="header">
-		<Box class="top-header">
+	<Box className="header">
+		<Box className="top-header">
 			<Box>
 				{userId && <a href='/mypage' id="myPage">마이페이지</a>}
 				{role == 'ADMIN' && <a href='/admin' id="moveAdmin">어드민 페이지</a>}
@@ -22,8 +22,8 @@ const Header = () => {
 				{token && <a href='/quickBooking' id="quickBooking">빠른예매</a>}
 			</Box>
 		</Box>
-		<Box class="bottom-header">
-			<Box class="logo">
+		<Box className="bottom-header">
+			<Box className="logo">
 				<a href={token ? '/main' : '/'}>
 					<img src={'/assets/cinebox_logo.png'}/>
 				</a>

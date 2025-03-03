@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useContext } from 'react';
+import React, { useState, useEffect, useContext, useCallback } from 'react';
 import useReq from '../../hooks/useReq.js';
 import { AppContext } from "../../App.js";
 import EmptyBox from '../../components/emptyBox.js';
@@ -20,7 +20,7 @@ const UserList = () => {
     });
     const { data: deleteMovieRes, isLoading: isDeleteMovieLoading, error: deleteMovieError, doRequest: doDeleteMovieRequest } = useReq(process.env.REACT_APP_USER_API, null);
 
-    const deleteUser = (userId)=>{
+    const deleteUser = useCallback((userId)=>{
         doDeleteMovieRequest(process.env.REACT_APP_USER_API + `/${userId}`, {
             method: 'DELETE',
             headers: {
@@ -28,12 +28,12 @@ const UserList = () => {
             }
         })
         document.querySelector(`#user_${userId}`).remove();
-    }
+    },[context.token])
 
     return <>
         {showAddUser && <Modal className='flex jsfy-cnt-rght mb-10' content={<UserForm setShowModal={setShowAddUser} />}/>}
         <Box className='flex jsfy-cnt-rght mb-10'>
-            <button id="addMovie" type="button" class="button-sm fs-23" onClick={()=>setShowAddUser(true)}>+</button>
+            <button id="addMovie" type="button" className="button-sm fs-23" onClick={()=>setShowAddUser(true)}>+</button>
         </Box>        {
             data ? data.map(user =>{
                 return <>
@@ -77,8 +77,8 @@ const UserList = () => {
                             </Box>
                         </Box>
                         <Box className='controlBox'>
-                            <button id="edit" type="button" class="button-sm mr-6" onClick={()=>setShowEditUser({userId: user.userId, state: true})}>수정</button>
-                            <button id="delete" type="button" class="button-sm" onClick={()=>deleteUser(user.userId)}>삭제</button>
+                            <button id="edit" type="button" className="button-sm mr-6" onClick={()=>setShowEditUser({userId: user.userId, state: true})}>수정</button>
+                            <button id="delete" type="button" className="button-sm" onClick={()=>deleteUser(user.userId)}>삭제</button>
                         </Box>
                     </Box>
                 </>

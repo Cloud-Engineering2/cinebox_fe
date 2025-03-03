@@ -1,3 +1,4 @@
+import { Input } from '@mui/material';
 import React, { useState, useEffect } from 'react';
 
 export default function SearchBox({placeholder}) {
@@ -11,5 +12,5 @@ export default function SearchBox({placeholder}) {
         boxSizing: 'border-box'
     }
 
-    return <input id='searchMovie' type='text' style={{style}} placeholder={placeholder}/>;
+    return <Input id='searchMovie' type='text' style={{style}} placeholder={placeholder}/>;
 }
