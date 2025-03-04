@@ -1,6 +1,7 @@
 import { Box } from '@mui/material';
 import React from 'react';
 import { logout } from '../utils';
+import '../styles/templates/header.css'
 
 const Header = () => {
 	const token = localStorage.getItem('token');
