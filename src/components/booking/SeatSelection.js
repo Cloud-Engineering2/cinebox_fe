@@ -1,8 +1,9 @@
 import React, { useEffect, useState } from 'react';
 
-const SeatSelection = ({ selectedScreenId, selectedTime, onPayment }) => {
+const SeatSelection = ({ selectedScreenId, selectedDate, selectedTime, onPayment }) => {
     const [seats, setSeats] = useState([]);
     const [selectedSeats, setSelectedSeats] = useState([]);
+    const [totalPrice, setTotalPrice] = useState(0);
 
     const token = localStorage.getItem('token');
 
@@ -40,6 +41,15 @@ const SeatSelection = ({ selectedScreenId, selectedTime, onPayment }) => {
         }
     };
 
+    useEffect(() => {
+        // 선택된 좌석들의 총 금액 계산
+        const total = selectedSeats.reduce((sum, seatId) => {
+            const seat = seats.find(s => s.seatId === seatId);
+            return seat ? sum + seat.price : sum;
+        }, 0);
+        setTotalPrice(total);
+    }, [selectedSeats, seats]);
+
     const handlePayment = () => {
         if (selectedSeats.length === 0) {
             alert('최소 한 개의 좌석을 선택해주세요.');
@@ -50,6 +60,18 @@ const SeatSelection = ({ selectedScreenId, selectedTime, onPayment }) => {
 
     return (
         <div className="seat-selection">
+            <h3>상영 날짜: {selectedDate} | 상영 시간: {selectedTime}</h3>
+
+            <h3>선택된 좌석:</h3>
+            <div className="selected-seat-list">
+                {selectedSeats.map((seatId) => {
+                    const seat = seats.find(s => s.seatId === seatId);
+                    return seat ? <span key={seatId}>{seat.seatNumber} </span> : null;
+                })}
+            </div>
+
+            <h3>결제 금액: {totalPrice.toLocaleString()}원</h3>
+
             <h2>좌석 선택</h2>
             <div className="seat-container">
                 {seats.map((seat) => (
@@ -62,14 +84,6 @@ const SeatSelection = ({ selectedScreenId, selectedTime, onPayment }) => {
                         {seat.seatNumber}
                     </button>
                 ))}
-            </div>
-
-            <h3>선택된 좌석:</h3>
-            <div className="selected-seat-list">
-                {selectedSeats.map((seatId) => {
-                    const seat = seats.find(s => s.seatId === seatId);
-                    return seat ? <span key={seatId}>{seat.seatNumber} </span> : null;
-                })}
             </div>
 
             <button onClick={handlePayment} disabled={selectedSeats.length === 0}>결제하기</button>
