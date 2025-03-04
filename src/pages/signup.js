@@ -85,10 +85,10 @@ const Signup = () => {
                 <TextField id="identifier" placeholder="아이디" variant="standard" />
             </Box>
             <Box className="form-box">
-                <TextField id="password" placeholder="비밀번호" variant="standard" />
+                <TextField type='password' id="password" placeholder="비밀번호" variant="standard" />
             </Box>
             <Box className="form-box">
-                <TextField id="passwordCheck" placeholder="비밀번호 확인" variant="standard" />
+                <TextField type='password' id="passwordCheck" placeholder="비밀번호 확인" variant="standard" />
             </Box>
             <Box className="form-box">
                 <TextField id="phone" placeholder="전화번호" variant="standard" />

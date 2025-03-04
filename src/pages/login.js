@@ -48,7 +48,7 @@ const Login = () => {
                 <TextField id="identifier" placeholder="아이디" variant="standard" />
             </Box>
             <Box className={styles.formBox}>
-                <TextField id="password" placeholder="비밀번호" variant="standard" />
+                <TextField type='password' id="password" placeholder="비밀번호" variant="standard" />
             </Box>
             <Box id={styles.warning} className="mb_8 disabled">아이디 혹은 비밀번호를 입력해 주세요.</Box>
             <Button id="signupKakao" type="button" className="kakaoButton mb-10 bg-yellow opacity-07" disabled >
