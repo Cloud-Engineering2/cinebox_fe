@@ -1,5 +1,5 @@
 import { Box, TextField } from '@mui/material';
-import React, { useContext, useEffect, useState } from 'react';
+import React, { useCallback, useContext, useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import { AppContext } from "../App.js";
 import MovieDetail from '../components/movieDetail.js';
@@ -35,14 +35,14 @@ const Detail = () => {
         });
     }, [isReviewAddLoading]);
     useEffect(() => {
-        setReviews(reviewResponse);
-    }, [isReviewLoading]);
+        if (reviewResponse) setReviews(reviewResponse.reverse());
+    }, [reviewResponse])
 
-    const AddReviewHandler = () => {
+    const AddReviewHandler = useCallback(() => {
         const content = document.querySelector('#reviewTextField').value;
         const rating = document.querySelector('#rating').value;
 
-        if (content != null || content != undefined || rating != '') {
+        if (content != null || rating != '') {
             doAddReviewRequest(process.env.REACT_APP_MOVIE_API + `/${movieId}/reviews`, {
                 method: 'POST',
                 headers: {
@@ -57,25 +57,23 @@ const Detail = () => {
             });
             document.querySelector('#reviewTextField').value = '';
         }
-    }
+    }, [context, movieId])
 
     return <>
         <UnderBarTitle />
         <Box style={{ margin: '47px 25%' }}>
             {data && [
-                <MovieDetail movie={data} styles={{ marginBottom: 73 }} />,
+                <MovieDetail key="movie-detail" movie={data} styles={{ marginBottom: 73 }} />,
                 <Box className='mainInfo'>
                     <Box className='mb-73'>
-                        <h2 className='fs-19 mb-14 nowrap'>{data.plot}</h2>
-                        <p>전 세계를 붉게 장악하려는 사악한 음모</p>
+                        <p className='fs-19 mb-14'>{data.plot}</p>
                     </Box>
                 </Box>,
-                <Box className='reviewBox'>
+                <Box key="review-box" className='reviewBox'>
                     <h2 className='fs-19 mb-18'>관객들의 리뷰</h2>
                     <Box className='fs-19 mb-6'>
-                        <select id="rating" class="selectRating">
-                            <option value="" selected>별점</option>
-                            <option value="1">1</option>
+                        <select id="rating" className="selectRating">
+                            <option value="1" selected>1</option>
                             <option value="2">2</option>
                             <option value="3">3</option>
                             <option value="4">4</option>
@@ -96,14 +94,20 @@ const Detail = () => {
                         </Box>
                     </Box>
                     <Box className='reviewList'>
-                        {reviewResponse && <ReviewList
-                            reviews={reviewResponse.slice().reverse()}
+                        {reviews && <ReviewList
+                            reviews={reviews}
                             styles={{
                                 width: '98%',
                                 maxWidth: 'none',
                                 height: 30
                             }}
-                            doGetReviewRequest={doGetReviewRequest} />}
+                            doGetReviewRequest={() => doGetReviewRequest(process.env.REACT_APP_MOVIE_API + `/${movieId}/reviews`, {
+                                method: 'GET',
+                                headers: {
+                                    'Authorization': `Bearer ${context.token}`
+                                }
+                            })}
+                            showMovieTitle={false} />}
                     </Box>
                 </Box>
             ]}

@@ -11,3 +11,7 @@
     text-align: center;
     place-content: center;
 }
+.number {
+    font-size: 21px;
+    font-weight: bold;
+}

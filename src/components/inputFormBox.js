@@ -1,17 +1,13 @@
 import React, { useState, useEffect, useContext } from 'react';
-import useReq from '../hooks/useReq.js';
 import { Box, TextField } from '@mui/material';
-import { AppContext } from "../App.js";
 import inputFormBox from "../styles/components/inputFormBox.css";
 
-const InputFormBox = ({inputs, style}) => {
-    const {context, setContext} = useContext(AppContext);
-
+const InputFormBox = ({ inputs, style }) => {
     return <>
-        {inputs.map((input)=>{
-            return <Box className='inputFormBox'>
+        {inputs.map((input) => {
+            return <Box key={input.id} className='inputFormBox'>
                 <label for={input.id} className='label'>{input.label}</label>
-                <TextField id={input.id} variant="standard" sx={style} />
+                <TextField id={input.id} variant="standard" sx={style} defaultValue={input.value} disabled={input.disabled} />
             </Box>;
         })}
     </>;

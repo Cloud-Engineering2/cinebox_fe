@@ -33,19 +33,18 @@
     flex-wrap: wrap;
     justify-content: center;
     margin: 37px 0px;
-    max-height: 550px;
+    max-height: 507px;
     overflow-y: auto;
 }
 .bookingList {
-    justify-content: center;
-    margin: 22px 0px;
-    max-height: 550px;
-    overflow-y: auto;
+    margin: 6px 0px;
+    height: 149px;
+    overflow-y: hidden;
 }
 .movieStory {
     justify-content: center;
-    margin: 37px 0px;
-    height: 350px;
+    margin: 17px 0px;
+    height: 378px;
     overflow-y: auto;
     overflow-x: hidden;
 }

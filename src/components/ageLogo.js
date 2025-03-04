@@ -1,16 +1,16 @@
-import React, { useState, useEffect } from 'react';
-import {Card, Box, Button} from '@mui/material';
+import React from 'react';
+import { Box } from '@mui/material';
 
 export default function AgeLogo({age, color}) {
     const style={
-        width: 20,
-        height: 20,
-        background: 'yellow',
+        width: 18,
+        height: 18,
+        background: color,
         color: 'white',
         fontWeight: 700,
         textAlign: 'center',
         borderRadius: '3px',
-        fontSize: 13,
+        fontSize: 11,
         marginRight: 6
     }
 

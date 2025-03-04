@@ -1,20 +1,19 @@
-import React, { useEffect, useState } from 'react';
+import React, { useCallback, useState } from 'react';
 import Typography from '@mui/material/Typography';
-import {Box, Input, MenuItem, TextField} from '@mui/material';
+import {Box, Input} from '@mui/material';
 import editModeInput from '../styles/components/editModeInput.css';
-import button from '../styles/button.css';
 import MenuButton from './memuButton.js';
 
-export default function EditModeInput({id, text, events}) {
+export default function EditModeInput({id, text, events, noEdit=false}) {
     const [isEdit, setIsEdit] = useState(false);
     const [content, setContent] = useState(text);
 
-    const editHandler = ()=>{
+    const editHandler = useCallback(()=>{
         const content = document.querySelector(`.editField${id} input`).value;
         events.edit(content, 33);
         setIsEdit(false);
         setContent(content);
-    }
+    },[id])
 
     return (
         <>
@@ -34,7 +33,7 @@ export default function EditModeInput({id, text, events}) {
                         {content}
                     </Typography>
                 </Box>
-                <Box className='ExButton'>
+                {!noEdit && <Box className='ExButton'>
                     <MenuButton
                         items={[
                             {
@@ -47,7 +46,7 @@ export default function EditModeInput({id, text, events}) {
                             }
                         ]}
                     />
-                </Box>
+                </Box>}
             </Box> :
             <Box className='editMode'>
                 <Input

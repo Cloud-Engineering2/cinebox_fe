@@ -1,28 +1,13 @@
 import React, { useState, useEffect, useContext } from 'react';
 import {Card, Box, Button} from '@mui/material';
-import Typography from '@mui/material/Typography';
-import AgeLogo from './ageLogo.js';
 import bookingCard from '../styles/components/bookingCard.css';
 import init from '../styles/init.css';
-import { AppContext } from "../App.js";
+import { changeTimeFormat } from '../utils/index.js';
 
 export default function BookingCard({booking}) {
-  const {context, setContext} = useContext(AppContext);
-  const bookingId = booking.bookingId;
-  const movieId = booking.movieId;
-  const bookCardId = `bookingCard${bookingId}`;
-
-  const changeTimeFormat = (datetime)=>{
-    const date = datetime.split('T')[0].replaceAll('-', '.');
-    const time = datetime.split('T')[1].split('.')[0];
-    const hour = time.split(':')[0];
-    const min = time.split(':')[1];
-
-    return `${date} (${hour}:${min})`;
-  }
 
   return (
-    <Box className='bookingCard' >
+    <Box className='bookingCard mb-18' style={{borderBottom: '1px solid #656565', paddingBottom: 18}}>
         <Box className='bookingAt'>
           예매 일시 &nbsp;|&nbsp; {changeTimeFormat(booking.bookingAt)}
         </Box>
