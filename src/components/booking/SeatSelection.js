@@ -32,7 +32,6 @@ const SeatSelection = ({ selectedScreenId, selectedTime, onPayment }) => {
         }
     }, [selectedScreenId, token]);
 
-
     const handleSeatSelect = (seatId) => {
         if (selectedSeats.includes(seatId)) {
             setSelectedSeats(selectedSeats.filter(id => id !== seatId));
@@ -62,9 +61,15 @@ const SeatSelection = ({ selectedScreenId, selectedTime, onPayment }) => {
                     >
                         {seat.seatNumber}
                     </button>
-
-
                 ))}
+            </div>
+
+            <h3>선택된 좌석:</h3>
+            <div className="selected-seat-list">
+                {selectedSeats.map((seatId) => {
+                    const seat = seats.find(s => s.seatId === seatId);
+                    return seat ? <span key={seatId}>{seat.seatNumber} </span> : null;
+                })}
             </div>
 
             <button onClick={handlePayment} disabled={selectedSeats.length === 0}>결제하기</button>
@@ -90,6 +95,10 @@ const SeatSelection = ({ selectedScreenId, selectedTime, onPayment }) => {
                 .seat.reserved {
                     background-color: #FF6347; /* 예매된 좌석 색상 */
                     cursor: not-allowed;
+                }
+                .selected-seat-list {
+                    margin: 10px 0;
+                    font-weight: bold;
                 }
             `}</style>
         </div>
