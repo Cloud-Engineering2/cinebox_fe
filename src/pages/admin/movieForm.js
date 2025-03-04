@@ -95,7 +95,8 @@ const MovieForm = ({setShowModal, data=null}) => {
                 status: status,
                 posterImageUrl: posterImageUrl,
                 uploadFile: uploadFile,
-                plot: plot
+                plot: plot,
+                likeCount: 0
             }
         });
     },[context.token])

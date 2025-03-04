@@ -29,7 +29,7 @@ const MovieList = () => {
                 'Authorization': `Bearer ${context.token}`
             }
         })
-        document.querySelector(`.movie_${movieId}`).remove();
+        document.querySelector(`#movie_${movieId}`).remove();
     }, [context.token]);
     const searchMoviesList = useCallback(() => {
         doRequest(process.env.REACT_APP_MOVIE_API, {
@@ -59,6 +59,7 @@ const MovieList = () => {
             data ? data.map(movie =>{
                 return <Box 
                 key={`movie_${movie.movieId}`}
+                id={`movie_${movie.movieId}`}
                 style={{
                     marginBottom: 30,
                     border: '2px solid #004D09',

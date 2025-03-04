@@ -1,5 +1,5 @@
 import React, { useCallback, useEffect } from 'react';
-import login from '../styles/pages/login.css'
+import styles from '../styles/pages/login.module.css'
 import useReq from '../hooks/useReq.js';
 import { Box, Button, TextField } from '@mui/material';
 import UnderBarTitle from '../components/underBarTitle.js';
@@ -43,14 +43,14 @@ const Login = () => {
 
     return <>
         <UnderBarTitle title={'로그인'} />
-        <Box className="login">
-            <Box className="form-box">
+        <Box className={styles.login}>
+            <Box className={styles.formBox}>
                 <TextField id="identifier" placeholder="아이디" variant="standard" />
             </Box>
-            <Box className="form-box">
+            <Box className={styles.formBox}>
                 <TextField id="password" placeholder="비밀번호" variant="standard" />
             </Box>
-            <Box id="warning" className="mb_8 disabled">아이디 혹은 비밀번호를 입력해 주세요.</Box>
+            <Box id={styles.warning} className="mb_8 disabled">아이디 혹은 비밀번호를 입력해 주세요.</Box>
             <Button id="signupKakao" type="button" className="kakaoButton mb-10 bg-yellow opacity-07" disabled >
                 <img className="kakaoIcon" src='/assets/kakaoIcon.png' />
                 카카오로 로그인
