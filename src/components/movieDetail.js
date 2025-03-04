@@ -1,8 +1,7 @@
-import React, { useCallback, useContext, useEffect, useState } from 'react';
-import detail from '../styles/components/movieDetail.css';
 import { Box } from '@mui/material';
-import useReq from '../hooks/useReq.js';
+import React, { useCallback, useContext, useEffect } from 'react';
 import { AppContext } from "../App.js";
+import useReq from '../hooks/useReq.js';
 
 const MovieDetail = ({ movie, styles, noBookingButton = false }) => {
     const { context, setContext } = useContext(AppContext);
@@ -22,7 +21,7 @@ const MovieDetail = ({ movie, styles, noBookingButton = false }) => {
             }
         })
         window.location.reload();
-    },[context.token])
+    }, [context.token])
 
     return <Box className="movieDetail" style={styles}>
         <Box className="movieInfo">

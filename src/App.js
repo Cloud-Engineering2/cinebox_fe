@@ -1,22 +1,18 @@
 import React, { createContext, useState } from 'react';
-import app from './App.css';
-import init from './styles/init.css';
-import button from './styles/button.css';
-import Main from './pages/main.js';
-import Login from './pages/login.js';
-import Signup from './pages/signup.js';
+import Booking from './pages/bookings/booking.js';
 import Detail from './pages/detail.js';
+import Login from './pages/login.js';
+import Main from './pages/main.js';
 import Mypage from './pages/mypage.js';
-import Booking from './pages/booking.js';
+import Signup from './pages/signup.js';
 
-import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import { Box } from '@mui/material';
+import { Route, BrowserRouter as Router, Routes } from 'react-router-dom';
+import ErrorBoundary from './components/errorBoundary.js';
+import Admin from './pages/admin/index.js';
+import ScreenTable from './pages/admin/screenTable.js';
 import Footer from './templates/footer.js';
 import Header from './templates/header.js';
-import { Box } from '@mui/material';
-import Admin from './pages/admin/index.js';
-import Util from './utils/index.js'
-import ScreenTable from './pages/admin/screenTable.js';
-import ErrorBoundary from './components/errorBoundary.js';
 
 export const AppContext = createContext(null);
 export default function App() {
@@ -28,6 +24,7 @@ export default function App() {
   });
 
   return <AppContext.Provider value={{ context, setContext }}>
+
     <ErrorBoundary>
       <Box className="App">
         <Header />

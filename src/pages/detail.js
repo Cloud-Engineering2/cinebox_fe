@@ -1,12 +1,11 @@
+import { Box, TextField } from '@mui/material';
 import React, { useCallback, useContext, useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
-import useReq from '../hooks/useReq.js';
-import detail from '../styles/pages/detail.css'
-import MovieDetail from '../components/movieDetail.js'
-import { Box, TextField } from '@mui/material';
+import { AppContext } from "../App.js";
+import MovieDetail from '../components/movieDetail.js';
 import ReviewList from '../components/reviewList.js';
 import UnderBarTitle from '../components/underBarTitle.js';
-import { AppContext } from "../App.js";
+import useReq from '../hooks/useReq.js';
 
 const Detail = () => {
     const { context, setContext } = useContext(AppContext);
@@ -35,9 +34,9 @@ const Detail = () => {
             }
         });
     }, [isReviewAddLoading]);
-    useEffect(()=>{
-        if(reviewResponse) setReviews(reviewResponse.reverse());
-    },[reviewResponse])
+    useEffect(() => {
+        if (reviewResponse) setReviews(reviewResponse.reverse());
+    }, [reviewResponse])
 
     const AddReviewHandler = useCallback(() => {
         const content = document.querySelector('#reviewTextField').value;
@@ -58,7 +57,7 @@ const Detail = () => {
             });
             document.querySelector('#reviewTextField').value = '';
         }
-    },[context, movieId])
+    }, [context, movieId])
 
     return <>
         <UnderBarTitle />
@@ -102,7 +101,7 @@ const Detail = () => {
                                 maxWidth: 'none',
                                 height: 30
                             }}
-                            doGetReviewRequest={()=>doGetReviewRequest(process.env.REACT_APP_MOVIE_API + `/${movieId}/reviews`, {
+                            doGetReviewRequest={() => doGetReviewRequest(process.env.REACT_APP_MOVIE_API + `/${movieId}/reviews`, {
                                 method: 'GET',
                                 headers: {
                                     'Authorization': `Bearer ${context.token}`
