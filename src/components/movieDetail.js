@@ -1,4 +1,5 @@
 import { Box } from '@mui/material';
+import '../styles/components/movieDetail.css';
 import React, { useCallback, useContext, useEffect } from 'react';
 import { AppContext } from "../App.js";
 import useReq from '../hooks/useReq.js';

@@ -1,5 +1,6 @@
-import { Box } from '@mui/material';
 import React, { useCallback, useContext, useEffect, useState } from 'react';
+import '../styles/pages/mypage.css';
+import { Box } from '@mui/material';
 import { AppContext } from "../App.js";
 import BookingCard from '../components/bookingCard.js';
 import EmptyBox from '../components/emptyBox.js';

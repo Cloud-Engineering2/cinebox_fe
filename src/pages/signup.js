@@ -1,5 +1,5 @@
 import React, { useCallback, useEffect } from 'react';
-import signup from '../styles/pages/signup.css'
+import '../styles/pages/signup.css'
 import useReq from '../hooks/useReq.js';
 import { Box, Button, TextField } from '@mui/material';
 import UnderBarTitle from '../components/underBarTitle.js';

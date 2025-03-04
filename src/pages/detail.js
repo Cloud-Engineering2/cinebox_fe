@@ -1,6 +1,7 @@
-import { Box, TextField } from '@mui/material';
 import React, { useCallback, useContext, useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
+import '../styles/pages/detail.css';
+import { Box, TextField } from '@mui/material';
 import { AppContext } from "../App.js";
 import MovieDetail from '../components/movieDetail.js';
 import ReviewList from '../components/reviewList.js';
