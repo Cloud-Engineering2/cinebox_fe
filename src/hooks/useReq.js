@@ -13,7 +13,9 @@ const useReq = (initialUrl, initalOption) => {
         setIsLoading(true);
 
         try {
-            const response = await axios(url, option);
+            const response = await axios(url, Object.assign(option, {            
+                withCredentials: true,
+                credentials: 'include'}));
             setData(response.data);
         } catch (error) {
             setError(error);
