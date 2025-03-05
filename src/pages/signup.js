@@ -4,6 +4,8 @@ import useReq from '../hooks/useReq.js';
 import { Box, Button, TextField } from '@mui/material';
 import UnderBarTitle from '../components/underBarTitle.js';
 import ToggleButton from '../components/toggleButton.js';
+import BasicDatePicker from '../components/datePicker.js';
+import { convertDateFormatter, convertISOString } from '../utils/index.js';
 
 const Signup = () => {
     const { data, isLoading, error, doRequest } = useReq(process.env.REACT_APP_SIGN_UP_URL, null);
@@ -25,12 +27,12 @@ const Signup = () => {
         const passwordCheck = document.querySelector('#passwordCheck').value;
         const email = document.querySelector('#email').value;
         const name = document.querySelector('#name').value;
-        const age = document.querySelector('#age').value;
-        const gender = document.querySelector('.gender').value;
+        const birthDate = document.querySelector('.birthDate input').value;
+        const gender = document.querySelector('.gender button[aria-pressed=true]').value;
         const phone = document.querySelector('#phone').value;
         const role = document.querySelector('#role').value;
 
-        if(!identifier || !password || !passwordCheck || !email || !name || !age || !gender || !phone || !role){
+        if(!identifier || !password || !passwordCheck || !email || !name || !birthDate || !gender || !phone || !role){
             alert('빈 칸을 입력해주세요.');
             return;
         }
@@ -47,7 +49,7 @@ const Signup = () => {
                 'password': password,
                 'email': email,
                 'name': name,
-                'age': age,
+                'birthDate': convertDateFormatter(birthDate),
                 'gender': gender,
                 'phone': phone,
                 'role': role
@@ -62,9 +64,9 @@ const Signup = () => {
                 <TextField id="name" placeholder="이름" variant="standard" />
             </Box>
             <Box className="form-box">
-                <TextField id="age" placeholder="나이" variant="standard" />
+                <BasicDatePicker label='생년월일' className='birthDate'/>
             </Box>
-            <Box className="age-form-box">
+            <Box className="gender-form-box">
                 <label>성별</label>
                 <Box>
                     <ToggleButton
