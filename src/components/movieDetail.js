@@ -16,13 +16,10 @@ const MovieDetail = ({ movie, styles, noBookingButton = false }) => {
 
     const increaseLikeCount = useCallback(async () => {
         await doUpdateLikeRequest(process.env.REACT_APP_MOVIE_API + `/${movie.movieId}/likes`, {
-            method: 'POST',
-            headers: {
-                'Authorization': `Bearer ${context.token}`
-            }
+            method: 'POST'
         })
         window.location.reload();
-    }, [context.token])
+    }, [])
 
     return <Box className="movieDetail" style={styles}>
         <Box className="movieInfo">

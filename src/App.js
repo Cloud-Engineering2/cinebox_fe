@@ -21,7 +21,6 @@ import Header from './templates/header.js';
 export const AppContext = createContext(null);
 export default function App() {
   const [context, setContext] = useState({
-    token: localStorage.getItem('token'),
     identifier: localStorage.getItem('identifier'),
     role: localStorage.getItem('role'),
     userId: localStorage.getItem('userId')

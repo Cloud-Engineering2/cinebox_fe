@@ -1,7 +1,6 @@
 import React, { useState, useEffect, useContext } from 'react';
-import {Card, Box, Button} from '@mui/material';
-import bookingCard from '../styles/components/bookingCard.css';
-import init from '../styles/init.css';
+import { Box } from '@mui/material';
+import '../styles/components/bookingCard.css';
 import { changeTimeFormat } from '../utils/index.js';
 
 export default function BookingCard({booking}) {

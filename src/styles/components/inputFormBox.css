@@ -9,3 +9,23 @@
 .inputFormBox input{
     
 }
+
+.selectBox{
+    display: flex;
+    align-items: center;
+    margin-bottom: 5px;
+}
+.selectBox label{
+    width: 87px;
+    text-align: left;
+}
+.selectBox select{
+    border: none;
+    width: 300px;
+    height: 32px;
+    border-bottom: 1.5px solid #BCBCBC;
+    font-size: 14px;
+}
+.selectBox select:hover{
+    border-bottom: 2px solid #212121;
+}

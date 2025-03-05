@@ -1,7 +1,7 @@
 import React, { useCallback, useState } from 'react';
 import Typography from '@mui/material/Typography';
 import {Box, Input} from '@mui/material';
-import editModeInput from '../styles/components/editModeInput.css';
+import '../styles/components/editModeInput.css';
 import MenuButton from './memuButton.js';
 
 export default function EditModeInput({id, text, events, noEdit=false}) {

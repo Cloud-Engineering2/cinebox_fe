@@ -1,15 +1,13 @@
 import React, { useCallback, useContext, useEffect, useState } from 'react';
-import reviewList from '../styles/components/reviewList.css';
+import '../styles/components/reviewList.css';
 import useReq from '../hooks/useReq.js';
 import List from '@mui/material/List';
 import Divider from '@mui/material/Divider';
 import { Box } from '@mui/material';
 import EditModeInput from './editModeInput.js';
-import { AppContext } from "../App.js";
 import { changeTimeFormat } from '../utils/index.js';
 
 export default function ReviewList({ reviews, styles, doGetReviewRequest, noEdit = false, showMovieTitle = true }) {
-    const { context, setContext } = useContext(AppContext);
     const { data: editReviewResponse, isLoading: isReviewEditLoading, error: editReviewsError, doRequest: doEditReviewRequest } = useReq(null, null);
     const { data: deleteReviewResponse, isLoading: isReviewDeleteLoading, error: deleteReviewsError, doRequest: doDeleteReviewRequest } = useReq(null, null);
 
@@ -19,9 +17,6 @@ export default function ReviewList({ reviews, styles, doGetReviewRequest, noEdit
 
         await doEditReviewRequest(process.env.REACT_APP_REVIEW_API + `/${reviewId}`, {
             method: 'PUT',
-            headers: {
-                'Authorization': `Bearer ${context.token}`
-            },
             data: {
                 userId: review.userId,
                 movieId: movieId,
@@ -30,24 +25,18 @@ export default function ReviewList({ reviews, styles, doGetReviewRequest, noEdit
             }
         });
         getReviewHandler(movieId);
-    },[context.token])
+    },[])
     const deleteReviewHandler = useCallback(async (review) => {
         await doDeleteReviewRequest(process.env.REACT_APP_REVIEW_API + `/${review.reviewId}`, {
-            method: 'GET',
-            headers: {
-                'Authorization': `Bearer ${context.token}`
-            }
+            method: 'GET'
         });
         getReviewHandler(review.movieId);
-    },[context.token])
+    },[])
     const getReviewHandler = useCallback((movieId) => {
         doGetReviewRequest(process.env.REACT_APP_MOVIE_API + `/${movieId}/reviews`, {
-            method: 'GET',
-            headers: {
-                'Authorization': `Bearer ${context.token}`
-            }
+            method: 'GET'
         });
-    },[context.token])
+    },[])
 
     return (
         <List sx={Object.assign({ width: '100%', maxWidth: 360, bgcolor: 'background.paper' }, styles)}>
