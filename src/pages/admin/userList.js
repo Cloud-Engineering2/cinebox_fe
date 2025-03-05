@@ -56,8 +56,8 @@ const UserList = () => {
                                 <p>{user.phone}</p>
                             </Box>
                             <Box className='userCard flex'>
-                                <p className='label'>나이</p>
-                                <p>{user.age}</p>
+                                <p className='label'>생년월일</p>
+                                <p>{user.birthDate}</p>
                             </Box>
                             <Box className='userCard flex'>
                                 <p className='label'>성별</p>

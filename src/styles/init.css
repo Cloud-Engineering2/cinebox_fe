@@ -102,6 +102,9 @@
 .color-gray {
     color: #656565;
 }
+.color-light-gray {
+    color: #A2A2A2;
+}
 
 .bold {
     font-weight: bold;
