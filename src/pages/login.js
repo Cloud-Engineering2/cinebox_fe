@@ -9,11 +9,10 @@ const Login = () => {
 
     useEffect(() => {
         if (data != null) {
-            localStorage.setItem('token', data.token);
             localStorage.setItem('identifier', data.identifier);
             localStorage.setItem('role', data.role);
             localStorage.setItem("userId", data.userId);
-
+            
             window.location.href = '/main';
         }
     }, [data]);
