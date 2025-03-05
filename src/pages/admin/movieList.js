@@ -14,35 +14,26 @@ const MovieList = () => {
     const [showEditMovie, setShowEditMovie] = useState({movieId: null, state: false});
 
     const { data, isLoading, error, doRequest } = useReq(process.env.REACT_APP_MOVIE_API, {
-        method: 'GET',
-        headers: {
-            'Authorization': `Bearer ${context.token}`
-        }
+        method: 'GET'
     });
     const { data: deleteMovieRes, isLoading: isDeleteMovieLoading, error: deleteMovieError, doRequest: doDeleteMovieRequest } = useReq(process.env.REACT_APP_MOVIE_API, null);
 
     const deleteMovie = useCallback((movieId) => {
         doDeleteMovieRequest(
             process.env.REACT_APP_MOVIE_API + `/${movieId}`, {
-            method: 'DELETE',
-            headers: {
-                'Authorization': `Bearer ${context.token}`
-            }
+            method: 'DELETE'
         })
         document.querySelector(`#movie_${movieId}`).remove();
-    }, [context.token]);
+    }, []);
     const searchMoviesList = useCallback(() => {
         doRequest(process.env.REACT_APP_MOVIE_API, {
             method: 'GET',
-            headers: {
-                'Authorization': `Bearer ${context.token}`
-            },
             params: {
                 'sort': document.querySelector('#sortingSelectBox').value,
                 'search': document.querySelector('#searchBox').value
             }
         })
-    }, [context.token]); 
+    }, []); 
 
     return <>
         {showAddMovie && <Modal className='flex jsfy-cnt-rght mb-10' content={<MovieForm setShowModal={setShowAddMovie} />}/>}

@@ -18,7 +18,8 @@ const MovieForm = ({setShowModal, data=null}) => {
         {
             id: 'releaseDate',
             label: '개봉일',
-            value: data && data.releaseDate
+            value: data && data.releaseDate,
+            placeholder: 'YYYY-MM-DD'
         },
         {
             id: 'runtime',
@@ -48,7 +49,17 @@ const MovieForm = ({setShowModal, data=null}) => {
         {
             id: 'status',
             label: '상영여부',
-            value: data && data.status
+            type: 'select',
+            items: [{
+                label: 'SHOWING', 
+                value: 'SHOWING'
+            },{
+                label: 'UPCOMMING', 
+                value: 'UPCOMMING'
+            },{
+                label: 'ENDED', 
+                value: 'ENDED'
+            }]
         },
         {
             id: 'posterImageUrl',
@@ -81,9 +92,6 @@ const MovieForm = ({setShowModal, data=null}) => {
         
         doAddMovieRequest(process.env.REACT_APP_MOVIE_API, {
             method: 'POST',
-            headers: {
-                    'Authorization': `Bearer ${context.token}`
-            },
             data: {
                 title: title,
                 releaseDate: releaseDate,
@@ -99,7 +107,7 @@ const MovieForm = ({setShowModal, data=null}) => {
                 likeCount: 0
             }
         });
-    },[context.token])
+    },[])
     const update = useCallback(()=>{
         const title = document.querySelector('#title').value;
         const releaseDate = document.querySelector('#releaseDate').value;
@@ -115,9 +123,6 @@ const MovieForm = ({setShowModal, data=null}) => {
         
         doUpdateMovieRequest(process.env.REACT_APP_MOVIE_API + `/${data.movieId}`, {
             method: 'PUT',
-            headers: {
-                    'Authorization': `Bearer ${context.token}`
-            },
             data: {
                 movieId: data.movieId,
                 title: title,
@@ -133,7 +138,7 @@ const MovieForm = ({setShowModal, data=null}) => {
                 plot: plot
             }
         });
-    },[context.token])
+    },[])
 
     useEffect(()=>{
         if(addMovieRes != null){
@@ -158,10 +163,15 @@ const MovieForm = ({setShowModal, data=null}) => {
             window.location.reload ()
         }
     },[updateMovieRes])
+    useEffect(() => {
+        if (addMovieError || updateMovieError) {
+            alert('입력 값을 다시 확인해 주세요.');
+        }
+    }, [addMovieError, updateMovieError])
 
     
     return <>
-        <h2 className='mb-14'>영화 등록</h2>
+        <h2 className='mb-14'>{data ? '영화 수정' : '영화 등록'}</h2>
         <Box className='form mb-44'>
             <InputFormBox inputs={inputs} style={{width: '75%'}}/>
         </Box>

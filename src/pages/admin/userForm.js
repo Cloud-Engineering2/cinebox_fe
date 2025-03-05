@@ -2,17 +2,16 @@ import React, { useState, useEffect, useContext, useCallback } from 'react';
 import useReq from '../../hooks/useReq.js';
 import { Box } from '@mui/material';
 import InputFormBox from '../../components/inputFormBox.js';
-import { AppContext } from "../../App.js";
 
 const UserForm = ({setShowModal, data=null}) => {
-    const {context, setContext} = useContext(AppContext);
     const { data: addUserRes, isLoading: isAddUserLoading, error: addUserError, doRequest: doAddUserRequest } = useReq(null, null);
     const { data: updateUserRes, isLoading: isUpdateUserLoading, error: updateUserError, doRequest: doUpdateUserRequest } = useReq(null, null);
     
     const inputs = [{
         id: 'identifier',
         label : '아이디',
-        value : data && data.identifier
+        value : data && data.identifier,
+        disabled: true
     },{
         id: 'password',
         label : '비밀번호',
@@ -20,7 +19,8 @@ const UserForm = ({setShowModal, data=null}) => {
     },{
         id: 'email',
         label : '이메일',
-        value : data && data.email
+        value : data && data.email,
+        placeholder: 'ex> example@example.com'
     },{
         id: 'name',
         label : '이름',
@@ -36,7 +36,8 @@ const UserForm = ({setShowModal, data=null}) => {
     },{
         id: 'phone',
         label : '전화번호',
-        value : data && data.phone
+        value : data && data.phone,
+        placeholder: 'ex> 010-1234-5678'
     },{
         id: 'role',
         label : '역할',
@@ -56,9 +57,6 @@ const UserForm = ({setShowModal, data=null}) => {
 
         doAddUserRequest(process.env.REACT_APP_SIGNUP_API, {
             method: 'POST',
-            headers: {
-                    'Authorization': `Bearer ${context.token}`
-            },
             data: {
                 identifier: identifier,
                 password: password,
@@ -70,7 +68,7 @@ const UserForm = ({setShowModal, data=null}) => {
                 role: role
             }
         });
-    },[context.token])
+    },[])
     const update = useCallback(()=>{
         const identifier = document.querySelector('#identifier').value;
         const password = document.querySelector('#password').value;
@@ -83,9 +81,6 @@ const UserForm = ({setShowModal, data=null}) => {
 
         doUpdateUserRequest(process.env.REACT_APP_USER_API + `/${data.userId}`, {
             method: 'PUT',
-            headers: {
-                    'Authorization': `Bearer ${context.token}`
-            },
             data: {
                 identifier: identifier,
                 password: password,
@@ -97,7 +92,7 @@ const UserForm = ({setShowModal, data=null}) => {
                 role: role
             }
         });
-    },[context, data])
+    },[data])
 
     useEffect(()=>{
         if(addUserRes != null){
@@ -119,9 +114,14 @@ const UserForm = ({setShowModal, data=null}) => {
             window.location.reload ()
         }
     },[updateUserRes])
+    useEffect(() => {
+        if (addUserError || updateUserError) {
+            alert('입력 값을 다시 확인해 주세요.');
+        }
+    }, [addUserError, updateUserError])
 
     return <>
-        <h2 className='mb-14'>유저 등록</h2>
+        <h2 className='mb-14'>{data ? '유저 수정' : '유저 등록'}</h2>
         <Box className='form mb-44'>
             <InputFormBox inputs={inputs} style={{width: '75%'}}/>
         </Box>
