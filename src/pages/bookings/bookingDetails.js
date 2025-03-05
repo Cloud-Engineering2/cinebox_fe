@@ -11,16 +11,15 @@ const BookingDetails = () => {
     const [isLoading, setIsLoading] = useState(false); // 결제 진행 중 상태
     const navigate = useNavigate(); // useNavigate를 사용
     const [paymentMap, setPaymentMap] = useState({}); // paymentMap 상태 추가
-    const token = localStorage.getItem('token');
 
     useEffect(() => {
         const fetchBookingDetails = async () => {
             try {
-                const response = await axios.get(`http://localhost:8080/api/bookings/${bookingId}`, {
+                const response = await axios.get(`http://127.0.0.1:8080/api/bookings/${bookingId}`, {
                     headers: {
-                        'Authorization': `Bearer ${token}`,
                         'Content-Type': 'application/json',
                     },
+                    withCredentials: true, // 쿠키 자동 전송을 위해 설정
                 });
                 setBookingData(response.data);
             } catch (error) {
@@ -30,7 +29,7 @@ const BookingDetails = () => {
         };
 
         fetchBookingDetails();
-    }, [bookingId, token]);
+    }, [bookingId]);
 
     const handlePaymentMethodChange = (e) => {
         setPaymentMethod(e.target.value);
@@ -60,17 +59,12 @@ const BookingDetails = () => {
         setIsLoading(true);
 
         try {
-            const token = localStorage.getItem('token');
-            if (!token) {
-                alert('사용자 인증이 필요합니다.');
-                return;
-            }
 
-            const userResponse = await axios.get('http://localhost:8080/api/users', {
+            const userResponse = await axios.get('http://127.0.0.1:8080/api/users', {
                 headers: {
-                    'Authorization': `Bearer ${token}`,
                     'Content-Type': 'application/json',
                 },
+                withCredentials: true, // 쿠키 자동 전송을 위해 설정
             });
 
             const user = userResponse.data[0];
@@ -93,7 +87,7 @@ const BookingDetails = () => {
             }, async (rsp) => {
                 if (rsp.success) {
                     try {
-                        const paymentResponse = await axios.post('http://localhost:8080/api/payments', {
+                        const paymentResponse = await axios.post('http://127.0.0.1:8080/api/payments', {
                             bookingId,
                             totalAmount: bookingData.totPrice,
                             paymentMethod,
@@ -101,9 +95,9 @@ const BookingDetails = () => {
                             paymentSuccess: rsp.success,
                         }, {
                             headers: {
-                                'Authorization': `Bearer ${token}`,
                                 'Content-Type': 'application/json',
                             },
+                            withCredentials: true, // 쿠키 자동 전송을 위해 설정
                         });
 
                         console.log("결제 성공 후 서버 응답:", paymentResponse.data);

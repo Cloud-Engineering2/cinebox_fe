@@ -59,12 +59,13 @@ const Booking = () => {
 
     const fetchAvailableDates = async () => {
         try {
-            const response = await fetch(`http://localhost:8080/api/movies/${movieId}/dates`, {
+            const response = await fetch(`http://127.0.0.1:8080/api/movies/${movieId}/dates`, {
                 method: 'GET',
                 headers: {
-                    'Authorization': `Bearer ${token}`,
+
                     'Content-Type': 'application/json',
                 },
+                credentials: 'include',  // 쿠키를 포함하여 요청
             });
             if (!response.ok) {
                 throw new Error(`HTTP error! Status: ${response.status}`);
@@ -78,12 +79,14 @@ const Booking = () => {
 
     const fetchAvailableTimes = async (date) => {
         try {
-            const response = await fetch(`http://localhost:8080/api/movies/${movieId}/screens/date?date=${formatDate(date)}`, {
+            //const response = await fetch(`${process.env.REACT_APP_MOVIE_SCHEDULE_API}/${movieId}/screens/date?date=${formatDate(date)}`, {
+            const response = await fetch(`http://127.0.0.1:8080/api/movies/${movieId}/screens/date?date=${formatDate(date)}`, {
+
                 method: 'GET',
                 headers: {
-                    'Authorization': `Bearer ${token}`,
                     'Content-Type': 'application/json',
                 },
+                credentials: 'include',  // 쿠키를 포함하여 요청
             });
             if (!response.ok) {
                 throw new Error(`HTTP error! Status: ${response.status}`);
@@ -136,10 +139,13 @@ const Booking = () => {
     useEffect(() => {
         const fetchMovieDetails = async () => {
             try {
-                const response = await fetch(`http://localhost:8080/api/movies/${movieId}/dates`, {
+                const response = await fetch(`http://127.0.0.1:8080/api/movies/${movieId}/dates`, {
+                    method: 'GET',
                     headers: {
-                        'Authorization': `Bearer ${token}`
-                    }
+                        'Content-Type': 'application/json',
+                    },
+                    credentials: 'include',  // 쿠키를 포함하여 요청
+
                 });
                 if (!response.ok) {
                     throw new Error(`HTTP error! Status: ${response.status}`);
@@ -232,12 +238,13 @@ const Booking = () => {
         console.log('결제 요청 데이터:', paymentData);
 
         try {
-            const response = await fetch('http://localhost:8080/api/payments', {
+            const response = await fetch('http://127.0.0.1:8080/api/payments', {
                 method: 'POST',
                 headers: {
-                    'Authorization': `Bearer ${token}`,
+
                     'Content-Type': 'application/json',
                 },
+                credentials: 'include',  // 쿠키를 포함하여 요청
                 body: JSON.stringify(paymentData),
             });
 

@@ -14,13 +14,11 @@ const SeatSelection = ({ selectedScreenId, selectedDate, selectedTime, selectedE
     useEffect(() => {
         const fetchSeats = async () => {
             try {
-                const response = await fetch(`http://localhost:8080/api/screens/${selectedScreenId}/seats`, {
+                const response = await fetch(`http://127.0.0.1:8080/api/screens/${selectedScreenId}/seats`, {
                     method: 'GET',
-                    headers: {
-                        'Authorization': `Bearer ${token}`,
-                        'Content-Type': 'application/json',
-                    },
+                    credentials: 'include',  // 쿠키를 포함하여 요청
                 });
+
                 if (!response.ok) throw new Error('좌석 정보를 불러오는 데 실패했습니다.');
 
                 const data = await response.json();
@@ -79,9 +77,9 @@ const SeatSelection = ({ selectedScreenId, selectedDate, selectedTime, selectedE
             const bookingResponse = await fetch('http://127.0.0.1:8080/api/bookings', {
                 method: 'POST',
                 headers: {
-                    'Authorization': `Bearer ${token}`,
                     'Content-Type': 'application/json',
                 },
+                credentials: 'include',  // 쿠키를 포함하여 요청
                 body: JSON.stringify({
                     screenId: selectedScreenId, // 선택한 상영관
                     seatNumbers: selectedSeatNumbers,  // 선택된 좌석 번호들
@@ -111,7 +109,6 @@ const SeatSelection = ({ selectedScreenId, selectedDate, selectedTime, selectedE
     return (
         <div>
             <h3>상영 날짜: {selectedDate ? selectedDate : '선택된 날짜가 없습니다.'}</h3>
-            <h3>상영 날짜: {selectedDate}</h3>
             <h3> 상영 시간: {selectedTime} ~ {selectedEndTime}</h3>
 
             <h3>선택된 좌석:</h3>

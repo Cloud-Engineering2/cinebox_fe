@@ -17,8 +17,8 @@ const Calendar = ({ currentDate, changeMonth, calendarDays, handleDateSelect }) 
                     onClick={() => {
                         if (isAvailable) {
                             const formattedDate = date.toISOString().split('T')[0];
-                            console.log(`선택된 날짜22: ${formattedDate}`);  // 디버깅을 위한 로그
-                            handleDateSelect(formattedDate);  // 포맷된 날짜 전달
+                            console.log(`선택된 날짜22: ${formattedDate}`);
+                            handleDateSelect(formattedDate);  // 포맷된 날짜 
                         }
                     }}
                     disabled={!isAvailable}
