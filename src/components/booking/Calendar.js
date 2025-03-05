@@ -13,7 +13,7 @@ const Calendar = ({ currentDate, changeMonth, calendarDays, handleDateSelect }) 
             {calendarDays.map(({ date, isAvailable }) => (
                 <button
                     key={date.toISOString()}
-                    className={isAvailable ? 'available' : 'unavailable'}
+                    className={isAvailable ? 'available calendarBtn' : 'unavailable'}
                     onClick={() => {
                         if (isAvailable) {
                             const formattedDate = date.toISOString().split('T')[0];
