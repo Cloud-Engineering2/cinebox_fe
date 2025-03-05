@@ -1,13 +1,21 @@
-import React, { useState, useEffect, useContext } from 'react';
+import React from 'react';
 import { Box, TextField } from '@mui/material';
-import inputFormBox from "../styles/components/inputFormBox.css";
+import "../styles/components/inputFormBox.css";
 
 const InputFormBox = ({ inputs, style }) => {
     return <>
         {inputs.map((input) => {
-            return <Box key={input.id} className='inputFormBox'>
+            return <Box key={input.id} className='inputFormBox selectBox'>
                 <label for={input.id} className='label'>{input.label}</label>
-                <TextField id={input.id} variant="standard" sx={style} defaultValue={input.value} disabled={input.disabled} />
+                {
+                    input.type == 'select' ? <select id={input.id} disabled={input.disabled}>
+                        {
+                            input?.items?.map(item => { return <option value={item.value} selected={item.value == (input.defaultValue ? input.defaultValue : input?.items[0].value)} >{item.label}</option> })
+                        }
+                    </select>
+                        : <TextField id={input.id} variant="standard" sx={style} defaultValue={input.value} placeholder={input.placeholder} disabled={input.disabled} />
+
+                }
             </Box>;
         })}
     </>;
