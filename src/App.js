@@ -1,10 +1,12 @@
 import React, { createContext, useState } from 'react';
 import Booking from './pages/bookings/booking.js';
+import BookingDetails from './pages/bookings/bookingDetails.js';
 import Detail from './pages/detail.js';
 import Login from './pages/login.js';
 import Main from './pages/main.js';
 import Mypage from './pages/mypage.js';
 import Signup from './pages/signup.js';
+
 
 import { Box } from '@mui/material';
 import { Route, BrowserRouter as Router, Routes } from 'react-router-dom';
@@ -39,11 +41,14 @@ export default function App() {
               <Route path="/detail/:movieId" element={<Detail />} />
               <Route path="/booking/:movieId" element={<Booking />} />
               <Route path="/screen/:movieId" element={<ScreenTable />} />
+              {/* 다른 라우트들 */}
+              <Route path="/bookings/:bookingId" element={<BookingDetails />} />
+
             </Routes>
           </Router>
         </Box>
         <Footer />
       </Box>
     </ErrorBoundary>
-  </AppContext.Provider>;
+  </AppContext.Provider >;
 }

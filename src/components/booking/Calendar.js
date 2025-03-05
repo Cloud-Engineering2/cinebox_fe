@@ -1,6 +1,7 @@
 //달력컴포넌트
 import React from 'react';
 
+
 const Calendar = ({ currentDate, changeMonth, calendarDays, handleDateSelect }) => (
     <div className="calendar-container">
         <div className="calendar-header">
@@ -11,9 +12,15 @@ const Calendar = ({ currentDate, changeMonth, calendarDays, handleDateSelect }) 
         <div className="days">
             {calendarDays.map(({ date, isAvailable }) => (
                 <button
-                    key={date}
+                    key={date.toISOString()}
                     className={isAvailable ? 'available' : 'unavailable'}
-                    onClick={() => isAvailable && handleDateSelect(date)}
+                    onClick={() => {
+                        if (isAvailable) {
+                            const formattedDate = date.toISOString().split('T')[0];
+                            console.log(`선택된 날짜22: ${formattedDate}`);  // 디버깅을 위한 로그
+                            handleDateSelect(formattedDate);  // 포맷된 날짜 전달
+                        }
+                    }}
                     disabled={!isAvailable}
                 >
                     {date.getDate()}
