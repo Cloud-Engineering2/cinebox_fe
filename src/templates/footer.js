@@ -1,5 +1,5 @@
-import React, { useState, useEffect } from 'react';
-import FooterCss from '../styles/templates/footer.css'
+import React from 'react';
+import '../styles/templates/footer.css'
 import { Box } from '@mui/material';
 
 const Footer = () => {
