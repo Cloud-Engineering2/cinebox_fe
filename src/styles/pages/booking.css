@@ -1,14 +1,29 @@
+.booking-container{
+    width: 100%;
+    max-width: 1200px;
+    margin: 0 auto;
+}
 .layout-container {
     display: flex;
     justify-content: space-around;
     gap: 20px;
 ;
 }
+
 .calendar-container {
-    
+    text-align: center;
+    border: 1px solid #191919;
+    padding: 25px 30px;
+    border-radius: 10px;
 }
 
-
+.times-container {
+    text-align: center;
+    border: 1px solid #191919;
+    padding: 25px 30px;
+    border-radius: 10px;
+    min-width: 300px;
+}
 .time-selector-container {
     flex: 1;
     max-width: 400px;  /* 최대 너비 설정 */
@@ -18,9 +33,12 @@
 .calendar-header {
     display: flex;
     justify-content: space-between;
+    align-items: center;
     width: 100%;
     margin-bottom: 10px;
 }
+
+
 
 .days {
     display: grid;
@@ -28,126 +46,107 @@
     gap: 10px;
 }
 
-button.calendarBtn {  
+.calendarBtn {  
     border-radius: 5px;
-    cursor: pointer;
+    
     font-size: 16px;
-    background-color: #f0f0f0;
+    width: 30px;
+    height: 30px;
+    background-color: transparent;
     transition: background-color 0.3s ease;
-}
-
-/* 캘린더 달력 버튼 */
-button.calendarBtn.available {
-    background-color: #4caf50;
-    color: white;
-}
-
-button.calendarBtn.unavailable {
-    background-color: #ccc;
-    cursor: not-allowed;
-}
-
-button.calendarBtn:focus {
-    outline: none;
-}
-
-button.calendarBtn:hover:not(.unavailable) {
-    background-color: #45a049;
-}
-
-
-/* 예시 스타일 */
-.times-container button {
-    background-color: #f0f0f0;
-    border: 1px solid #ccc;
-    padding: 10px;
-    margin: 5px;
+   
+    margin: 2px;
+    border: none;
     cursor: pointer;
-    transition: background-color 0.3s ease;
-}
-
-.times-container button.active {
-    background-color: #007bff; /* 클릭된 시간의 배경색 */
-    color: white;  /* 글자 색상 */
-    border-color: #0056b3; /* 테두리 색상 */
-}
-.times-container button.active {
-    background-color: blue;  /* 파란색 배경 */
-    color: white;  /* 글자 색을 하얗게 */
-}
-
-
-.seat {
-    margin: 5px;
-    padding: 10px;
-    background-color: #f0f0f0;
-    border: 1px solid #ccc;
-    cursor: pointer;
-}
-
-.seat.disabled {
-    background-color: #d3d3d3;  /* 비활성화된 좌석 배경색 */
-    cursor: not-allowed;  /* 비활성화된 좌석의 커서 모양 */
-}
-
-.seat:hover {
-    background-color: #ffeb3b; /* 선택 가능한 좌석 hover 효과 */
-}
-
-button:disabled {
-    background-color: #d3d3d3; /* 비활성화된 버튼 배경색 */
-    cursor: not-allowed; /* 클릭 불가능한 커서 */
-}
-/* CSS: 예약된 좌석은 회색 배경과 흐리게 표시 */
-.seat.disabled {
-    background-color: #d3d3d3; /* 회색 배경 */
-    cursor: not-allowed; /* 클릭 불가능한 커서 */
-    border: 1px solid #ccc; /* 약간 흐릿한 테두리 */
-}
-
-/* 선택 가능한 좌석은 정상적인 배경과 커서 */
-.seat {
-    background-color: #fff;
-    cursor: pointer;
-    border: 1px solid #000;
-}
-.seat.disabled {
-    background-color: #d3d3d3;  /* 예약된 좌석은 회색 배경 */
-    cursor: not-allowed;         /* 클릭할 수 없도록 */
-}
-
-.seat {
-    background-color: #fff;
-    cursor: pointer;  /* 클릭 가능한 좌석 */
-}
-
-.calendar-container {
     
 }
 
-.calendar-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
+.calendarBtn:focus {
+    outline: none;
 }
+
+
+
+.calendarBtn.past {
+    text-decoration: line-through;
+    background-color: transparent !important;
+    color: #c1c1c1;
+
+}
+.available.active{background-color: yellow;}
+.available {
+    background-color:transparent; /* 선택 가능한 날짜 */
+    color: #191919;
+   
+}
+
+.unavailable {}
+
+.calendarBtn.selected {
+    background-color: #02530e;
+    color: white;
+}
+
+
+/* 요일 헤더 */
+.weekdays {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr); /* 7열(일~토) */
+    font-weight: bold;
+    margin-bottom: 5px;
+}
+
+
+
+
+
+
+
+
+.day-names {
+    display: flex; 
+    justify-content: space-around;
+}
+
+
+
+/* === 달력 end === */
+
+
+
+/* 상영시간 */
+.auditorium-group{text-align: left;}
+
+.time-button-wrapper p{}
+.times-container button {
+    border: 1px solid #191919;
+    padding: 3px;
+    margin: 5px 0 10px;
+    cursor: pointer;
+    border-radius: 3px;
+    background: transparent;
+}
+
+.times-container button.active {
+    background-color:#0D5611; /* 클릭된 시간의 배경색 */
+    color: white;  /* 글자 색상 */
+    border-color: #0D5611; /* 테두리 색상 */
+}
+
+
 
 .days {
     display: grid;
     grid-template-columns: repeat(7, 1fr);
     gap: 5px;
     margin-top: 10px;
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    gap: 5px;
 }
 
 
-button {
-    padding: 10px;
-    cursor: pointer;
-    border: none;
-}
 
-button:disabled {
-    cursor: not-allowed;
-}
 
 /* 스타일 추가 */
 .seat {
@@ -166,4 +165,65 @@ button:disabled {
 .reserved {
     background-color: #ccc; /* 예약된 좌석은 회색 */
     cursor: not-allowed; /* 클릭 불가능 */
+}
+
+
+/* 선택 가능한 좌석은 정상적인 배경과 커서 */
+.seat {
+    margin: 5px;
+    padding: 10px;
+    background-color: #f0f0f0;
+    border: 1px solid #ccc;
+    cursor: pointer;
+    background-color: #fff;
+    cursor: pointer;
+    border: 1px solid #000;
+    background-color: #fff;
+    cursor: pointer;  /* 클릭 가능한 좌석 */
+}
+
+
+.seat.disabled {
+    background-color: #d3d3d3;  /* 예약된 좌석은 회색 배경 */
+    cursor: not-allowed;         /* 클릭할 수 없도록 */
+  
+    cursor: not-allowed; /* 클릭 불가능한 커서 */
+    border: 1px solid #ccc; /* 약간 흐릿한 테두리 */
+}
+
+.seat:hover {
+    background-color: #ffeb3b; /* 선택 가능한 좌석 hover 효과 */
+}
+
+
+/*============== btn-container ==============*/
+.btn-container{
+    margin-top: 6rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 12px;
+}
+
+.btn-container button{
+border-radius: 4px;
+    background: #0D5611;
+    padding: 17px 0px;
+    box-sizing: border-box;
+    color: #FFF;
+    text-align: center;
+    font-size: 14px;
+    font-weight: 700;
+    line-height: 14px;
+    display: inline-block;
+    width: 320px;
+    height: 48px;
+    border: none;
+    cursor: pointer;
+}
+
+.btn-container .prevBtn{
+    background: transparent;
+    border:1px solid #191919;
+    color: #191919;
 }

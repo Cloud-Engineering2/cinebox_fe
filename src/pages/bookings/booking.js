@@ -59,7 +59,7 @@ const Booking = () => {
 
     const fetchAvailableDates = async () => {
         try {
-            const response = await fetch(`http://127.0.0.1:8080/api/movies/${movieId}/dates`, {
+            const response = await fetch(`${process.env.REACT_APP_MOVIE_SCHEDULE_API}/${movieId}/dates`, {
                 method: 'GET',
                 headers: {
 
@@ -279,8 +279,8 @@ const Booking = () => {
     return (
         <>
             <UnderBarTitle title={'영화 예매'} />
-            <div className="booking">
-                <h1>{movieDetails.title} 예매</h1>
+            <div className="booking-container">
+                <h1>{movieDetails.title} </h1>
                 <p>{movieDetails.description}</p>
 
                 {!showSeatSelection ? (
@@ -312,11 +312,13 @@ const Booking = () => {
                     />
                 )}
 
-                <button onClick={handleGoBack}>이전</button>
+                <div className="btn-container">
+                    <button className="prevBtn" onClick={handleGoBack}>이전</button>
 
-                {!showSeatSelection && (
-                    <button onClick={handleReserve}>다음</button>
-                )}
+                    {!showSeatSelection && (
+                        <button className="nextBtn" onClick={handleReserve}>다음</button>
+                    )}
+                </div>
             </div>
         </>
     );
