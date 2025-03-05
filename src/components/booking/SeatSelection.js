@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom'; // useNavigate 훅을 import
 
-
 const SeatSelection = ({ selectedScreenId, selectedDate, selectedTime, selectedEndTime, onPayment, price }) => {
     const [seats, setSeats] = useState([]);
     const [selectedSeats, setSelectedSeats] = useState([]);
@@ -44,10 +43,6 @@ const SeatSelection = ({ selectedScreenId, selectedDate, selectedTime, selectedE
         );
     };
 
-
-
-
-
     // 가격 업데이트
     useEffect(() => {
         if (price) {
@@ -55,10 +50,7 @@ const SeatSelection = ({ selectedScreenId, selectedDate, selectedTime, selectedE
         }
     }, [selectedSeats, price]);
 
-
-
     // 예매 생성 (결제 없이 진행)
-    // 예매 생성 후 예매 정보를 보여주는 페이지로 이동
     const handleBooking = async () => {
         if (selectedSeats.length === 0) {
             alert('최소 한 개의 좌석을 선택해주세요.');
@@ -102,14 +94,14 @@ const SeatSelection = ({ selectedScreenId, selectedDate, selectedTime, selectedE
         }
     };
 
-
-
-
+    // 총 좌석과 예약 가능한 좌석 수 계산
+    const totalSeats = seats.length;
+    const availableSeats = seats.filter((seat) => !seat.reserved).length;
 
     return (
         <div>
             <h3>상영 날짜: {selectedDate ? selectedDate : '선택된 날짜가 없습니다.'}</h3>
-            <h3> 상영 시간: {selectedTime} ~ {selectedEndTime}</h3>
+            <h3>상영 시간: {selectedTime} ~ {selectedEndTime}</h3>
 
             <h3>선택된 좌석:</h3>
             {selectedSeats.map((seatId) => {
@@ -118,6 +110,9 @@ const SeatSelection = ({ selectedScreenId, selectedDate, selectedTime, selectedE
             })}
 
             <h3>결제 금액: {totalPrice.toLocaleString()}원</h3>
+
+            <h3>총 좌석 수: {totalSeats}</h3>
+            <h3>예약 가능한 좌석 수: {availableSeats}</h3>
 
             <h2>좌석 선택</h2>
             <div>
@@ -139,6 +134,5 @@ const SeatSelection = ({ selectedScreenId, selectedDate, selectedTime, selectedE
         </div>
     );
 };
-
 
 export default SeatSelection;

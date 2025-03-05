@@ -126,7 +126,9 @@
     border-radius: 3px;
     background: transparent;
 }
-
+.time-button-wrapper {
+    border: 1px solid #191919;
+}
 .times-container button.active {
     background-color:#0D5611; /* 클릭된 시간의 배경색 */
     color: white;  /* 글자 색상 */

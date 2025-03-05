@@ -195,12 +195,15 @@ const Booking = () => {
         setSelectedEndTime(endTime); // endTime 값 설정
         setSelectedPrice(price);
 
+
         // 가격 확인 로그
         console.log("선택된 상영관 ID: ", screenId);
         console.log("선택된 시간: ", startTime);
         console.log("선택된 종료 시간22: ", endTime); // 추가된 로그
         console.log("선택된 가격 (Booking에서): ", price);
+
     };
+
 
     const handleReserve = () => {
         if (!selectedDate || !selectedTime || !selectedScreenId) {
@@ -233,6 +236,7 @@ const Booking = () => {
         });
     };
 
+
     // 결제api
     const handleCompletePayment = async (paymentData) => {
         console.log('결제 요청 데이터:', paymentData);
@@ -241,7 +245,6 @@ const Booking = () => {
             const response = await fetch('http://127.0.0.1:8080/api/payments', {
                 method: 'POST',
                 headers: {
-
                     'Content-Type': 'application/json',
                 },
                 credentials: 'include',  // 쿠키를 포함하여 요청
@@ -294,7 +297,11 @@ const Booking = () => {
                         <TimeSelector
                             availableTimes={availableTimes}
                             onSelectTime={handleTimeSelect}
+                            selectedSeats={selectedSeats}
+
+
                         />
+
                     </div>
                 ) : (
                     <SeatSelection
