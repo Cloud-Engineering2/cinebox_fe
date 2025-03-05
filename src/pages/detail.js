@@ -14,25 +14,16 @@ const Detail = () => {
     const [reviews, setReviews] = useState([]);
 
     const { data, isLoading, error, doRequest } = useReq(process.env.REACT_APP_MOVIE_API + `/${movieId}`, {
-        method: 'GET',
-        headers: {
-            'Authorization': `Bearer ${context.token}`
-        }
+        method: 'GET'
     });
     const { data: reviewResponse, isLoading: isReviewLoading, error: getReviewsError, doRequest: doGetReviewRequest } = useReq(process.env.REACT_APP_MOVIE_API + `/${movieId}/reviews`, {
-        method: 'GET',
-        headers: {
-            'Authorization': `Bearer ${context.token}`
-        }
+        method: 'GET'
     });
     const { data: addReviewResponse, isLoading: isReviewAddLoading, error: addReviewsError, doRequest: doAddReviewRequest } = useReq(process.env.REACT_APP_MOVIE_API + `/${movieId}/reviews`, null);
 
     useEffect(() => {
         doGetReviewRequest(process.env.REACT_APP_MOVIE_API + `/${movieId}/reviews`, {
-            method: 'GET',
-            headers: {
-                'Authorization': `Bearer ${context.token}`
-            }
+            method: 'GET'
         });
     }, [isReviewAddLoading]);
     useEffect(() => {
@@ -46,9 +37,6 @@ const Detail = () => {
         if (content != null || rating != '') {
             doAddReviewRequest(process.env.REACT_APP_MOVIE_API + `/${movieId}/reviews`, {
                 method: 'POST',
-                headers: {
-                    'Authorization': `Bearer ${context.token}`
-                },
                 data: {
                     movieId: movieId,
                     userId: context.userId,
@@ -58,7 +46,7 @@ const Detail = () => {
             });
             document.querySelector('#reviewTextField').value = '';
         }
-    }, [context, movieId])
+    }, [movieId])
 
     return <>
         <UnderBarTitle />

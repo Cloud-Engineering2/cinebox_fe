@@ -20,28 +20,16 @@ const Mypage = () => {
     const [showEditUser, setShowEditUser] = useState({ userId: null, state: false });
 
     const { data, isLoading, error, doRequest } = useReq(process.env.REACT_APP_USER_API + `/${context.userId}`, {
-        method: 'GET',
-        headers: {
-            'Authorization': `Bearer ${context.token}`
-        }
+        method: 'GET'
     });
     const { data: likeMoviesRes, isLoading: isGetLikeMoviesReqLoading, error: getLikeMoviesReqError, doRequest: doGetLikeMoviesRequest } = useReq(process.env.REACT_APP_MOVIE_API + '/likes', {
-        method: 'GET',
-        headers: {
-            'Authorization': `Bearer ${context.token}`
-        }
+        method: 'GET'
     });
     const { data: bookingRes, isLoading: isBookingReqLoading, error: getBookingReqError, doRequest: doGetBookingRequest } = useReq(process.env.REACT_APP_BOOKING_API + '/my', {
-        method: 'GET',
-        headers: {
-            'Authorization': `Bearer ${context.token}`
-        }
+        method: 'GET'
     });
     const { data: reviewRes, isLoading: isReviewLoading, error: getReviewsError, doRequest: doGetReviewRequest } = useReq(process.env.REACT_APP_REVIEW_API + `/my`, {
-        method: 'GET',
-        headers: {
-            'Authorization': `Bearer ${context.token}`
-        }
+        method: 'GET'
     });
     const { data: deleteUserRes, isLoading: isDeleteUserLoading, error: deleteUserError, doRequest: doDeleteUserRequest } = useReq(process.env.REACT_APP_USER_API + `/${context.userId}`, null);
 
@@ -67,14 +55,11 @@ const Mypage = () => {
 
     const deleteUser = useCallback(async () => {
         await doDeleteUserRequest(process.env.REACT_APP_USER_API + `/${context.userId}`, {
-            method: 'DELETE',
-            headers: {
-                'Authorization': `Bearer ${context.token}`
-            }
+            method: 'DELETE'
         });
         localStorage.clear();
         window.location.href = '/';
-    }, [context.token])
+    }, [])
 
     return <>
         <UnderBarTitle title={'나의 시네박스'} />
