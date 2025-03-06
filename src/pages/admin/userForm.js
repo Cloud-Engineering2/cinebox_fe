@@ -2,6 +2,7 @@ import React, { useState, useEffect, useContext, useCallback } from 'react';
 import useReq from '../../hooks/useReq.js';
 import { Box } from '@mui/material';
 import InputFormBox from '../../components/inputFormBox.js';
+import { convertDateFormatter } from '../../utils/index.js';
 
 const UserForm = ({setShowModal, data=null}) => {
     const { data: addUserRes, isLoading: isAddUserLoading, error: addUserError, doRequest: doAddUserRequest } = useReq(null, null);
@@ -26,13 +27,15 @@ const UserForm = ({setShowModal, data=null}) => {
         label : '이름',
         value : data && data.name
     },{
-        id: 'age',
-        label : '나이',
-        value : data && data.age
+        id: 'birthDate',
+        label : '생년월일',
+        type: 'datepicker',
+        value : data && data.birthDate
     },{
         id: 'gender',
         label : '성별',
-        value : data && data.gender
+        value : data && data.gender,
+        placeholder: 'MALE / FEMALE'
     },{
         id: 'phone',
         label : '전화번호',
@@ -74,7 +77,7 @@ const UserForm = ({setShowModal, data=null}) => {
         const password = document.querySelector('#password').value;
         const email = document.querySelector('#email').value;
         const name = document.querySelector('#name').value;
-        const age = document.querySelector('#age').value;
+        const birthDate = document.querySelector('.birthDate input').value;
         const gender = document.querySelector('#gender').value;
         const phone = document.querySelector('#phone').value;
         const role = document.querySelector('#role').value;
@@ -86,7 +89,7 @@ const UserForm = ({setShowModal, data=null}) => {
                 password: password,
                 email: email,
                 name: name,
-                age: age,
+                birthDate: convertDateFormatter(birthDate),
                 gender: gender,
                 phone: phone,
                 role: role
@@ -100,7 +103,7 @@ const UserForm = ({setShowModal, data=null}) => {
             document.querySelector('#password').value = '';
             document.querySelector('#email').value = '';
             document.querySelector('#name').value = '';
-            document.querySelector('#age').value = '';
+            document.querySelector('.age input').value = '';
             document.querySelector('#gender').value = '';
             document.querySelector('#phone').value = '';
             document.querySelector('#role').value = '';

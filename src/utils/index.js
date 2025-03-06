@@ -7,6 +7,13 @@ export const changeTimeFormat = (datetime)=>{
     return `${date} (${hour}:${min})`;
 }
 
+export const convertDateFormatter = (datetime)=>{
+    const date = new Date(datetime.replace(' ', 'T'));
+    const pad = (num) => String(num).padStart(2, '0');
+    
+    return `${date.getFullYear()}-${pad(date.getMonth() + 1)}-${pad(date.getDate())}`;
+}
+
 export const splitDateTime = (datetime)=>{
     const date = datetime.split('T')[0];
     const month = date.split('-')[1];
