@@ -65,24 +65,28 @@ const TimeSelector = ({ availableTimes, onSelectTime, currentUserId }) => {
     return (
         <div className="times-container">
             <h3>상영 시간</h3>
-            {uniqueTimes.map(({ startTime, endTime, screenId, price, auditoriumName }) => (
-                <div key={`${startTime}-${screenId}`} className="time-button-wrapper">
-                    <div className="time-details-wrapper">
-                        <h4>{auditoriumName}</h4> {/* 상영관 이름 출력 */}
-                        <button
-                            className={activeTime === startTime ? 'active' : ''}
-                            onClick={() => handleTimeClick(startTime, screenId, price, endTime)}
-                        >
-                            {startTime} - {endTime}
-                        </button>
+            {uniqueTimes.length === 0 ? (
+                <p>상영 날짜를 선택해주세요.</p>
+            ) : (
+                uniqueTimes.map(({ startTime, endTime, screenId, price, auditoriumName }) => (
+                    <div key={`${startTime}-${screenId}`} className="time-button-wrapper">
+                        <div className="time-details-wrapper">
+                            <h4>{auditoriumName}</h4> {/* 상영관 이름 출력 */}
+                            <button
+                                className={activeTime === startTime ? 'active' : ''}
+                                onClick={() => handleTimeClick(startTime, screenId, price, endTime)}
+                            >
+                                {startTime} - {endTime}
+                            </button>
+                        </div>
+                        {/* 예약 가능한 좌석 수 표시 */}
+                        <div>
+                            <h3>예약된 좌석 수: {reservedSeatsCount}</h3>
+                            <h4>남은 좌석 수: {availableSeatsCount}</h4>
+                        </div>
                     </div>
-                    {/* 예약 가능한 좌석 수 표시 */}
-                    <div>
-                        <h3>예약된 좌석 수: {reservedSeatsCount}</h3>
-                        <h4>남은 좌석 수: {availableSeatsCount}</h4>
-                    </div>
-                </div>
-            ))}
+                ))
+            )}
         </div>
     );
 };
