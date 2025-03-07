@@ -3,7 +3,7 @@ import useReq from '../../hooks/useReq.js';
 import { Box } from '@mui/material';
 import InputFormBox from '../../components/inputFormBox.js';
 import { AppContext } from "../../App.js";
-import { convertISOString } from '../../utils/index.js';
+import { convertISOString, getFullDateTime } from '../../utils/index.js';
 
 const ScreenForm = ({setShowModal, data=null}) => {
     const {context, setContext} = useContext(AppContext);
@@ -31,8 +31,8 @@ const ScreenForm = ({setShowModal, data=null}) => {
     },{
         id: 'startTime',
         label : '시작시간',
-        value : data && data.startTime,
-        placeholder: 'YYYY-MM-DDTHH:MM'
+        type: 'datetimepicker',
+        value : data && data.birthDate
     },{
         id: 'price',
         label : '금액',
@@ -44,7 +44,6 @@ const ScreenForm = ({setShowModal, data=null}) => {
             document.querySelector('#price').value = '';
             document.querySelector('#movieId').value = '';
             document.querySelector('#auditoriumId').value = '';
-            document.querySelector('#startTime').value = '';
 
             alert('success addScreen');
             window.location.reload ();
@@ -72,7 +71,7 @@ const ScreenForm = ({setShowModal, data=null}) => {
         const price = document.querySelector('#price').value;
         const movieId = document.querySelector('#movieId').value;
         const auditoriumId = document.querySelector('#auditoriumId').value;
-        const startTime = document.querySelector('#startTime').value;
+        const startTime = getFullDateTime(document.querySelector('.startTime input').value);
 
         doAddScreenRequest(process.env.REACT_APP_SCREEN_API, {
             method: 'POST',
@@ -80,7 +79,7 @@ const ScreenForm = ({setShowModal, data=null}) => {
                 price: price,
                 movieId: movieId,
                 auditoriumId: auditoriumId,
-                startTime: convertISOString(startTime)
+                startTime: startTime
             }
         });
     },[])
@@ -88,7 +87,7 @@ const ScreenForm = ({setShowModal, data=null}) => {
         const price = document.querySelector('#price').value;
         const movieId = document.querySelector('#movieId').value;
         const auditoriumId = document.querySelector('#auditoriumId').value;
-        const startTime = document.querySelector('#startTime').value;
+        const startTime = getFullDateTime(document.querySelector('.startTime input').value);
         
         doUpdateScreenRequest(process.env.REACT_APP_SCREEN_API + `/${data.screenId}`, {
             method: 'PUT',
@@ -96,7 +95,7 @@ const ScreenForm = ({setShowModal, data=null}) => {
                 price: price,
                 movieId: movieId,
                 auditoriumId: auditoriumId,
-                startTime: convertISOString(startTime)
+                startTime: startTime
             }
         });
     },[data])

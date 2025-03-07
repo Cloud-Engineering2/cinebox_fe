@@ -29,6 +29,19 @@ export const splitDateTime = (datetime) => {
     };
 }
 
+export const getFullDateTime = (datetime) => {
+    const date = new Date(datetime);
+    const year = date.getFullYear();
+    const month = date.getMonth();
+    const day = date.getDate();
+    const hour = date.getHours();
+    const min = date.getMinutes();
+    const sec = date.getSeconds();
+
+    const pad = (num) => String(num).padStart(2, '0');
+    return `${year}-${pad(month)}-${pad(day)}T${pad(hour)}:${pad(min)}:${pad(sec)}`;
+}
+
 export const convertISOString = (datetime) => {
     const date = new Date(datetime.replace(' ', 'T'));
     const pad = (num) => String(num).padStart(2, '0');
