@@ -170,19 +170,11 @@ const MovieForm = ({ setShowModal, data = null }) => {
 
             showToast('성공적으로 영화가 추가되었습니다.', 'success');
         }
-<<<<<<< HEAD
     }, [addMovieRes])
     useEffect(() => {
         if (updateMovieRes != null) {
-            alert('success updateMovie');
-            window.location.reload()
-=======
-    },[addMovieRes])
-    useEffect(()=>{
-        if(updateMovieRes != null){
             showToast('성공적으로 영화가 수정되었습니다.', 'success');
-            window.location.reload ()
->>>>>>> develop
+            window.location.reload()
         }
     }, [updateMovieRes])
     useEffect(() => {
