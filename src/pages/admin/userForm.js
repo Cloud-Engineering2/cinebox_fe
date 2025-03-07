@@ -3,6 +3,8 @@ import React, { useCallback, useEffect } from 'react';
 import InputFormBox from '../../components/inputFormBox.js';
 import useReq from '../../hooks/useReq.js';
 import { convertDateFormatter } from '../../utils/index.js';
+import { showToast } from '../../utils/toast.js';
+import { checkEmailRegExp, checkPhoneRegExp } from '../../utils/regExp.js';
 
 const UserForm = ({ setShowModal, data = null }) => {
     const { data: addUserRes, isLoading: isAddUserLoading, error: addUserError, doRequest: doAddUserRequest } = useReq(null, null);
@@ -82,9 +84,9 @@ const UserForm = ({ setShowModal, data = null }) => {
     const update = useCallback(() => {
         const identifier = document.querySelector('#identifier').value;
         const password = document.querySelector('#password').value;
-        const email = document.querySelector('#email').value;
+        const email = checkEmailRegExp(document.querySelector('#email').value);
         const name = document.querySelector('#name').value;
-        const birthDate = document.querySelector('.birthDate input').value;
+        const birthDate = convertDateFormatter(document.querySelector('.birthDate input').value);
         const gender = document.querySelector('#gender').value;
         const phone = document.querySelector('#phone').value;
         const role = document.querySelector('#role').value;
@@ -96,7 +98,7 @@ const UserForm = ({ setShowModal, data = null }) => {
                 password: password,
                 email: email,
                 name: name,
-                birthDate: convertDateFormatter(birthDate),
+                birthDate: birthDate,
                 gender: gender,
                 phone: phone,
                 role: role
@@ -115,18 +117,26 @@ const UserForm = ({ setShowModal, data = null }) => {
             document.querySelector('#phone').value = '';
             document.querySelector('#role').value = '';
 
-            alert('success addUser');
+            showToast('성공적으로 유저가 추가되었습니다.', 'success');
         }
+<<<<<<< HEAD
     }, [addUserRes])
     useEffect(() => {
         if (updateUserRes != null) {
             alert('success updateUser');
             window.location.reload()
+=======
+    },[addUserRes])
+    useEffect(()=>{
+        if(updateUserRes != null){
+            showToast('성공적으로 정보가 변경되었습니다.', 'success');
+            window.location.reload ()
+>>>>>>> develop
         }
     }, [updateUserRes])
     useEffect(() => {
         if (addUserError || updateUserError) {
-            alert('입력 값을 다시 확인해 주세요.');
+            showToast('입력 값을 다시 확인해 주세요.', 'warn');
         }
     }, [addUserError, updateUserError])
 

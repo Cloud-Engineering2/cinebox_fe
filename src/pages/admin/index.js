@@ -5,6 +5,7 @@ import '../../styles/pages/admin.css';
 import Tabs from '../../components/tabs.js';
 import MovieList from './movieList.js';
 import UserList from './userList.js';
+import AuditoriumList from './auditoriumList.js';
 
 const Admin = () => {
     return <>
@@ -17,6 +18,9 @@ const Admin = () => {
                 },{
                     value:'회원 관리',
                     content:<UserList/>
+                },{
+                    value:'상영관 관리',
+                    content:<AuditoriumList/>
                 }
             ]}
             styles={{}}/>

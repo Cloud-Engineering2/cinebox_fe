@@ -3,6 +3,7 @@ import styles from '../styles/pages/login.module.css'
 import useReq from '../hooks/useReq.js';
 import { Box, Button, TextField } from '@mui/material';
 import UnderBarTitle from '../components/underBarTitle.js';
+import { showToast } from '../utils/toast.js';
 
 const Login = () => {
     const { data, isLoading, error, doRequest } = useReq(process.env.REACT_APP_LOGIN_URL, null);
@@ -18,7 +19,7 @@ const Login = () => {
     }, [data]);
     useEffect(() => {
         if (error) {
-            alert('아이디 혹은 비밀번호가 맞지 않습니다.');
+            showToast('아이디 혹은 비밀번호가 맞지 않습니다.', 'error');
         }
     }, [error]);
 
@@ -27,7 +28,7 @@ const Login = () => {
         const password = document.querySelector('#password').value;
 
         if(!identifier || !password){
-            alert('빈 칸을 입력해주세요.');
+            showToast('빈 칸을 입력해주세요.', 'warn');
             return;
         }
 

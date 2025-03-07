@@ -22,6 +22,7 @@ import Admin from './pages/admin/index.js';
 import ScreenTable from './pages/admin/screenTable.js';
 import Footer from './templates/footer.js';
 import Header from './templates/header.js';
+import { ToastContainer } from 'react-toastify';
 
 export const AppContext = createContext(null);
 export default function App() {
@@ -33,7 +34,7 @@ export default function App() {
   });
 
   return <AppContext.Provider value={{ context, setContext }}>
-
+    <ToastContainer />
     <ErrorBoundary>
       <Box className="App">
         <Header />

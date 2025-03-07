@@ -6,6 +6,8 @@ import UnderBarTitle from '../components/underBarTitle.js';
 import ToggleButton from '../components/toggleButton.js';
 import BasicDatePicker from '../components/datePicker.js';
 import { convertDateFormatter, convertISOString } from '../utils/index.js';
+import { showToast } from '../utils/toast.js';
+import { checkEmailRegExp, checkPhoneRegExp } from '../utils/regExp.js';
 
 const Signup = () => {
     const { data, isLoading, error, doRequest } = useReq(process.env.REACT_APP_SIGN_UP_URL, null);
@@ -17,7 +19,7 @@ const Signup = () => {
     }, [data]);
     useEffect(() => {
         if (error) {
-            alert(error.response.data.message);
+            showToast(error.response.data.message, 'error');
         }
     }, [error]);
 
@@ -25,19 +27,25 @@ const Signup = () => {
         const identifier = document.querySelector('#identifier').value;
         const password = document.querySelector('#password').value;
         const passwordCheck = document.querySelector('#passwordCheck').value;
-        const email = document.querySelector('#email').value;
+        const email = checkEmailRegExp(document.querySelector('#email').value);
         const name = document.querySelector('#name').value;
         const birthDate = document.querySelector('.birthDate input').value;
-        const gender = document.querySelector('.gender button[aria-pressed=true]').value;
         const phone = document.querySelector('#phone').value;
         const role = document.querySelector('#role').value;
+        var gender = null;
 
-        if(!identifier || !password || !passwordCheck || !email || !name || !birthDate || !gender || !phone || !role){
-            alert('빈 칸을 입력해주세요.');
+        if(!identifier || !password || !passwordCheck || !email || !name || !birthDate || !phone || !role){
+            showToast('빈 칸을 입력해주세요.', 'warn');
+            return;
+        }
+        if(document.querySelector('.gender button[aria-pressed=true]')){
+            gender = document.querySelector('.gender button[aria-pressed=true]').value;
+        }else {
+            showToast('성별을 선택해주세요.', 'warn');
             return;
         }
         if(passwordCheck != password){
-            alert('패스워드를 다시 확인해주세요.');
+            showToast('패스워드를 다시 확인해주세요.', 'warn');
             document.querySelector('#passwordCheck').value = '';
             return;
         }

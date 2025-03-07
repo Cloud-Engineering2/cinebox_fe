@@ -3,6 +3,7 @@ import React, { useContext, useEffect } from 'react';
 import { AppContext } from "../App.js";
 import useReq from '../hooks/useReq';
 import '../styles/templates/header.css';
+import { showToast } from '../utils/toast.js';
 
 const Header = () => {
 	const { context, setContext } = useContext(AppContext);
@@ -12,7 +13,7 @@ const Header = () => {
 		if (isLogoutLoading) window.location.href = '/';
 	}, [isLogoutLoading])
 	useEffect(() => {
-		if (logoutError) alert('로그아웃에 실패하였습니다.');
+		if (logoutError) showToast('로그아웃에 실패하였습니다.', 'error');
 	}, [logoutError])
 
 	const logout = () => {

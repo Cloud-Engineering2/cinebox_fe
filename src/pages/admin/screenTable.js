@@ -1,7 +1,7 @@
-import React, { useState, useEffect, useContext, useCallback } from 'react';
+import React, { useState, useCallback } from 'react';
 import useReq from '../../hooks/useReq.js';
 import '../../styles/components/screenTable.css';
-import { Accordion, AccordionDetails, AccordionSummary, Alert, Box, Typography } from '@mui/material';
+import { Accordion, AccordionDetails, AccordionSummary, Typography, Box } from '@mui/material';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import { splitDateTime } from '../../utils/index.js';
 import UnderBarTitle from '../../components/underBarTitle.js';
