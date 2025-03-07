@@ -195,7 +195,7 @@ const MovieForm = ({ setShowModal, data = null }) => {
             <Box>
                 <input id='image' type="file" />
             </Box>
-            <button id="remove" type="button" className="button-sm mr-6" onClick={remove}>삭제</button>
+            <button id="remove" type="buttpon" className="button-sm mr-6" onClick={remove}>삭제</button>
         </Box>
         <Box className='controlBox mt-18'>
             <button id="save" type="button" className="button-sm mr-6" onClick={data != null ? update : add}>저장</button>
