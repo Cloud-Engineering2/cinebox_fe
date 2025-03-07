@@ -110,7 +110,7 @@ const UserForm = ({setShowModal, data=null}) => {
             document.querySelector('#password').value = '';
             document.querySelector('#email').value = '';
             document.querySelector('#name').value = '';
-            document.querySelector('.age input').value = '';
+            document.querySelector('.birthDate input').value = '';
             document.querySelector('#gender').value = '';
             document.querySelector('#phone').value = '';
             document.querySelector('#role').value = '';
