@@ -23,7 +23,8 @@ export default function App() {
   const [context, setContext] = useState({
     identifier: localStorage.getItem('identifier'),
     role: localStorage.getItem('role'),
-    userId: localStorage.getItem('userId')
+    userId: localStorage.getItem('userId'),
+    cookie: document.cookie,
   });
 
   return <AppContext.Provider value={{ context, setContext }}>
