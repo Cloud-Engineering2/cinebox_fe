@@ -88,7 +88,7 @@ const UserForm = ({setShowModal, data=null}) => {
         const name = document.querySelector('#name').value;
         const birthDate = convertDateFormatter(document.querySelector('.birthDate input').value);
         const gender = document.querySelector('#gender').value;
-        const phone = checkPhoneRegExp(document.querySelector('#phone').value);
+        const phone = document.querySelector('#phone').value;
         const role = document.querySelector('#role').value;
 
         doUpdateUserRequest(process.env.REACT_APP_USER_API + `/${data.userId}`, {

@@ -30,9 +30,9 @@ const Signup = () => {
         const email = checkEmailRegExp(document.querySelector('#email').value);
         const name = document.querySelector('#name').value;
         const birthDate = document.querySelector('.birthDate input').value;
-        const phone = checkPhoneRegExp(document.querySelector('#phone').value);
+        const phone = document.querySelector('#phone').value;
         const role = document.querySelector('#role').value;
-        const gender = null;
+        var gender = null;
 
         if(!identifier || !password || !passwordCheck || !email || !name || !birthDate || !phone || !role){
             showToast('빈 칸을 입력해주세요.', 'warn');
