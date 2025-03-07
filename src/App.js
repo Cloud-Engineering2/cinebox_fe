@@ -6,6 +6,8 @@ import './styles/init.css';
 
 import Booking from './pages/bookings/booking.js';
 import BookingDetails from './pages/bookings/bookingDetails.js';
+import Confirmation from './pages/bookings/Confirmation.js'; // Confirmation.js 임포트
+
 import Detail from './pages/detail.js';
 import Login from './pages/login.js';
 import Main from './pages/main.js';
@@ -48,7 +50,7 @@ export default function App() {
               <Route path="/screen/:movieId" element={<ScreenTable />} />
               {/* 다른 라우트들 */}
               <Route path="/bookings/:bookingId" element={<BookingDetails />} />
-
+              <Route path="/confirmation" element={<Confirmation />} />
             </Routes>
           </Router>
         </Box>

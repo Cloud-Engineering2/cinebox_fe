@@ -3,6 +3,7 @@ import React, { useEffect, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom'; // Make sure to import useNavigate
 import UnderBarTitle from '../../components/underBarTitle';
 
+
 const BookingDetails = () => {
     const { bookingId } = useParams(); // URL에서 bookingId를 받아옴
     const [bookingData, setBookingData] = useState(null);
@@ -118,11 +119,13 @@ const BookingDetails = () => {
                                 [bookingId]: {
                                     paymentId: paymentResponse.data.paymentId,
                                     amount: bookingData.totPrice,
-                                    paymentStatus: "COMPLETED", // 강제로 'COMPLETED' 처리
+                                    paymentStatus: "COMPLETED",
                                 },
                             }));
                             console.log("paymentMap 갱신:", paymentMap);
-                            navigate(`/bookings/${bookingId}`);
+                            // 결제 완료 후 Confirmation.js로 리디렉션
+                            navigate('/confirmation', { state: { bookingData, paymentStatus: 'COMPLETED' } });
+
                         } else {
                             alert("결제 상태를 확인할 수 없습니다. 오류 발생");
                         }
