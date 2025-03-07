@@ -174,10 +174,10 @@ const BookingDetails = () => {
 
     return (
         <>
-            <UnderBarTitle title={'영화 예매'} />
+            <UnderBarTitle title={'영화 결제'} />
 
             <div className="payment-container">
-                <h2>결제하기</h2>
+
                 <div>
                     <p><strong>영화 제목:</strong> {bookingData.movieTitle}</p>
                     <p><strong>포스터:</strong> <img src={bookingData.posterImageUrl} alt={bookingData.movieTitle} width="200" /></p>
