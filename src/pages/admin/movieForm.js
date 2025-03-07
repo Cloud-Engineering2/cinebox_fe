@@ -29,7 +29,21 @@ const MovieForm = ({setShowModal, data=null}) => {
         {
             id: 'ratingGrade',
             label: '관람등급',
-            value: data && data.ratingGrade
+            defaultValue: data && data.ratingGrade,
+            type: 'select',
+            items: [{
+                label: '전체관람가', 
+                value: '전체관람가'
+            },{
+                label: '15세이상관람가', 
+                value: '15세이상관람가'
+            },{
+                label: '12세이상관람가', 
+                value: '12세이상관람가'
+            },{
+                label: '청소년관람불가', 
+                value: '청소년관람불가'
+            }]
         },
         {
             id: 'genre',

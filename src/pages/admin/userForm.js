@@ -34,8 +34,15 @@ const UserForm = ({setShowModal, data=null}) => {
     },{
         id: 'gender',
         label : '성별',
-        value : data && data.gender,
-        placeholder: 'MALE / FEMALE'
+        defaultValue: data && data.gender,
+        type: 'select',
+        items: [{
+            label: 'MALE', 
+            value: 'MALE'
+        },{
+            label: 'FEMALE', 
+            value: 'FEMALE'
+        }]
     },{
         id: 'phone',
         label : '전화번호',
