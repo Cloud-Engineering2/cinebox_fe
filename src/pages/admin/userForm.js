@@ -3,6 +3,7 @@ import useReq from '../../hooks/useReq.js';
 import { Box } from '@mui/material';
 import InputFormBox from '../../components/inputFormBox.js';
 import { convertDateFormatter } from '../../utils/index.js';
+import { showToast } from '../../utils/toast.js';
 
 const UserForm = ({setShowModal, data=null}) => {
     const { data: addUserRes, isLoading: isAddUserLoading, error: addUserError, doRequest: doAddUserRequest } = useReq(null, null);
@@ -115,18 +116,18 @@ const UserForm = ({setShowModal, data=null}) => {
             document.querySelector('#phone').value = '';
             document.querySelector('#role').value = '';
 
-            alert('success addUser');
+            showToast('성공적으로 유저가 추가되었습니다.', 'success');
         }
     },[addUserRes])
     useEffect(()=>{
         if(updateUserRes != null){
-            alert('success updateUser');
+            showToast('성공적으로 정보가 변경되었습니다.', 'success');
             window.location.reload ()
         }
     },[updateUserRes])
     useEffect(() => {
         if (addUserError || updateUserError) {
-            alert('입력 값을 다시 확인해 주세요.');
+            showToast('입력 값을 다시 확인해 주세요.', 'warn');
         }
     }, [addUserError, updateUserError])
 

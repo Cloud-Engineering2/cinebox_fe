@@ -4,6 +4,7 @@ import { Box } from '@mui/material';
 import InputFormBox from '../../components/inputFormBox.js';
 import { AppContext } from "../../App.js";
 import { convertISOString, getFullDateTime } from '../../utils/index.js';
+import { showToast } from '../../utils/toast.js';
 
 const ScreenForm = ({setShowModal, data=null}) => {
     const {context, setContext} = useContext(AppContext);
@@ -45,25 +46,25 @@ const ScreenForm = ({setShowModal, data=null}) => {
             document.querySelector('#movieId').value = '';
             document.querySelector('#auditoriumId').value = '';
 
-            alert('success addScreen');
+            showToast('성공적으로 상영정보가 추가되었습니다.', 'success');
             window.location.reload ();
         }
     },[addScreenRes])
     useEffect(()=>{
         if(updateScreenRes){
-            alert('success updateScreen');
+            showToast('성공적으로 상영정보가 수정되었습니다.', 'success');
             window.location.reload ();
         }
     },[updateScreenRes])
     useEffect(() => {
         if (addScreenError || updateScreenError) {
-            alert('해당 상영관 및 시간에 상영할 수 없습니다.');
+            showToast('해당 상영관 및 시간에 상영할 수 없습니다.','error');
             document.querySelector('#startTime').value = '';
         }
     }, [addScreenError, updateScreenError])
     useEffect(() => {
         if (getAuditoriumError || getMovieError) {
-            alert('데이터를 획득하지 못하였습니다.');
+            showToast('데이터를 획득하지 못하였습니다.', 'error');
         }
     }, [getAuditoriumError, getMovieError])
 

@@ -6,6 +6,7 @@ import UnderBarTitle from '../components/underBarTitle.js';
 import ToggleButton from '../components/toggleButton.js';
 import BasicDatePicker from '../components/datePicker.js';
 import { convertDateFormatter, convertISOString } from '../utils/index.js';
+import { showToast } from '../utils/toast.js';
 
 const Signup = () => {
     const { data, isLoading, error, doRequest } = useReq(process.env.REACT_APP_SIGN_UP_URL, null);
@@ -17,7 +18,7 @@ const Signup = () => {
     }, [data]);
     useEffect(() => {
         if (error) {
-            alert(error.response.data.message);
+            showToast(error.response.data.message, 'error');
         }
     }, [error]);
 
@@ -33,11 +34,11 @@ const Signup = () => {
         const role = document.querySelector('#role').value;
 
         if(!identifier || !password || !passwordCheck || !email || !name || !birthDate || !gender || !phone || !role){
-            alert('빈 칸을 입력해주세요.');
+            showToast('빈 칸을 입력해주세요.', 'warn');
             return;
         }
         if(passwordCheck != password){
-            alert('패스워드를 다시 확인해주세요.');
+            showToast('패스워드를 다시 확인해주세요.', 'warn');
             document.querySelector('#passwordCheck').value = '';
             return;
         }

@@ -3,6 +3,7 @@ import '../styles/components/movieDetail.css';
 import React, { useCallback, useContext, useEffect } from 'react';
 import { AppContext } from "../App.js";
 import useReq from '../hooks/useReq.js';
+import { showToast } from '../utils/toast.js';
 
 const MovieDetail = ({ movie, styles, noBookingButton = false }) => {
     const { context, setContext } = useContext(AppContext);
@@ -10,7 +11,7 @@ const MovieDetail = ({ movie, styles, noBookingButton = false }) => {
 
     useEffect(() => {
         if (updateLikeError) {
-            alert(updateLikeError);
+            showToast(updateLikeError.response.data.message, 'error');
         }
     }, [updateLikeError]);
 
