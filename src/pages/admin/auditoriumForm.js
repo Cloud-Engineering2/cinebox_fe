@@ -12,42 +12,51 @@ const AuditoriumForm = ({setShowModal, data=null}) => {
         id: 'auditoriumName',
         label : '상영관',
         value : data && data.auditoriumName,
-    },{
+    }].concat(data ? [{
         id: 'capacity',
         label : '좌석수',
         value : data && data.capacity,
-        disabled: true
-    }];
+        disabled: data
+    }] : [{
+        id: 'row',
+        label : '행',
+        placeholder: 'A ~ Z'
+    },{
+        id: 'column',
+        label : '열',
+        placeholder: '1 ~ 30'
+    }]);
 
     const add = useCallback(()=>{
-        const auditoriumName = document.querySelector('#auditoriumName').value;
-        const capacity = document.querySelector('#capacity').value;
+        const name = document.querySelector('#auditoriumName').value;
+        const row = document.querySelector('#row').value;
+        const column = Number.parseInt(document.querySelector('#column').value);
 
-        doAddAuditoriumRequest(process.env.REACT_APP_SIGNUP_API, {
+        doAddAuditoriumRequest(process.env.REACT_APP_AUDITORIUM_API, {
             method: 'POST',
             data: {
-                auditoriumName: auditoriumName,
-                capacity: capacity,
+                name: name,
+                row: row,
+                column: column
             }
         });
     },[])
     const update = useCallback(()=>{
         const auditoriumName = document.querySelector('#auditoriumName').value;
-        const capacity = document.querySelector('#capacity').value;
 
-        doUpdateAuditoriumRequest(process.env.REACT_APP_USER_API + `/${data.userId}`, {
+        doUpdateAuditoriumRequest(process.env.REACT_APP_AUDITORIUM_API + `/${data.auditoriumId}`, {
             method: 'PUT',
             data: {
-                auditoriumName: auditoriumName,
-                capacity: capacity,
+                auditoriumName: auditoriumName
             }
         });
     },[data])
 
     useEffect(()=>{
         if(addAuditoriumRes != null){
-            document.querySelector('#identifier').value = '';
-            document.querySelector('#capacity').value = '';
+            document.querySelector('#auditoriumName').value = '';
+            document.querySelector('#row').value = '';
+            document.querySelector('#column').value = '';
 
             showToast('성공적으로 상영관이 추가되었습니다.', 'success');
         }
