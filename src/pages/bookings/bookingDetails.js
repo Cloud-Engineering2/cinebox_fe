@@ -1,6 +1,7 @@
 import axios from 'axios';
 import React, { useEffect, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom'; // Make sure to import useNavigate
+import UnderBarTitle from '../../components/underBarTitle';
 
 const BookingDetails = () => {
     const { bookingId } = useParams(); // URL에서 bookingId를 받아옴
@@ -172,63 +173,68 @@ const BookingDetails = () => {
     };
 
     return (
-        <div>
-            <h2>예매 상세 정보</h2>
-            <div>
-                <p><strong>영화 제목:</strong> {bookingData.movieTitle}</p>
-                <p><strong>포스터:</strong> <img src={bookingData.posterImageUrl} alt={bookingData.movieTitle} width="200" /></p>
+        <>
+            <UnderBarTitle title={'영화 예매'} />
 
-                <p>
-                    <strong>상영 일자:</strong> {formatDateWithWeekday(bookingData.screenStartTime)}
-                    <strong>상영 시간:</strong> {formatTime(bookingData.screenStartTime)} ~ {formatTime(bookingData.screenEndTime)}
-                </p>
-
-                <p><strong>상영관 이름:</strong> {bookingData.auditoriumName}</p>
-                <p><strong>선택된 좌석:</strong> {bookingData.seatNumbers.join(', ')}</p>
-                <p><strong>최종 결제금액:</strong> {bookingData.totPrice.toLocaleString()}원</p>
-
-                {/* 결제 수단 선택 */}
+            <div className="payment-container">
+                <h2>결제하기</h2>
                 <div>
-                    <h3>결제수단</h3>
-                    <label>
-                        <input
-                            type="radio"
-                            name="paymentMethod"
-                            value="credit"
-                            checked={paymentMethod === 'credit'}
-                            onChange={handlePaymentMethodChange}
-                        />
-                        신용/체크카드
-                    </label>
+                    <p><strong>영화 제목:</strong> {bookingData.movieTitle}</p>
+                    <p><strong>포스터:</strong> <img src={bookingData.posterImageUrl} alt={bookingData.movieTitle} width="200" /></p>
+
+                    <p>
+                        <strong>상영 일자:</strong> {formatDateWithWeekday(bookingData.screenStartTime)}
+                        <strong>상영 시간:</strong> {formatTime(bookingData.screenStartTime)} ~ {formatTime(bookingData.screenEndTime)}
+                    </p>
+
+                    <p><strong>상영관 이름:</strong> {bookingData.auditoriumName}</p>
+                    <p><strong>선택된 좌석:</strong> {bookingData.seatNumbers.join(', ')}</p>
+                    <p><strong>최종 결제금액:</strong> {bookingData.totPrice.toLocaleString()}원</p>
+
+                    {/* 결제 수단 선택 */}
+                    <div>
+                        <h3>결제수단</h3>
+                        <label>
+                            <input
+                                type="radio"
+                                name="paymentMethod"
+                                value="credit"
+                                checked={paymentMethod === 'credit'}
+                                onChange={handlePaymentMethodChange}
+                            />
+                            신용/체크카드
+                        </label>
+                    </div>
+
+                    {/* 환불 정책 동의 체크 */}
+                    <div>
+                        <label>
+                            <input
+                                type="checkbox"
+                                checked={agreeRefundPolicy}
+                                onChange={handleRefundPolicyChange}
+                            />
+                            취소/환불 정책에 동의합니다.
+                        </label>
+                    </div>
+
+                    {/* 결제 진행 버튼 */}
+                    <div className="btn-container">
+                        <button onClick={handleNext} disabled={isLoading}>
+                            {isLoading ? '결제 중...' : '결제하기'}
+                        </button>
+                    </div>
+
+
+
+
                 </div>
-
-                {/* 환불 정책 동의 체크 */}
-                <div>
-                    <label>
-                        <input
-                            type="checkbox"
-                            checked={agreeRefundPolicy}
-                            onChange={handleRefundPolicyChange}
-                        />
-                        취소/환불 정책에 동의합니다.
-                    </label>
-                </div>
-
-                {/* 결제 진행 버튼 */}
-                <div className="btn-container">
-                    <button onClick={handleNext} disabled={isLoading}>
-                        {isLoading ? '결제 중...' : '결제하기'}
-                    </button>
-                </div>
-
-
 
 
             </div>
-
-
-        </div>
+        </>
     );
+
 };
 
 export default BookingDetails;

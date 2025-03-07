@@ -1,7 +1,7 @@
 import { Box } from '@mui/material';
 import React from 'react';
+import '../styles/templates/header.css';
 import { logout } from '../utils';
-import '../styles/templates/header.css'
 
 const Header = () => {
 	const role = localStorage.getItem('role');

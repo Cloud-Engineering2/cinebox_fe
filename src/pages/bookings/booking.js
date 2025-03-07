@@ -18,7 +18,6 @@ const Booking = () => {
     const [selectedDate, setSelectedDate] = useState(null);
     const [availableTimes, setAvailableTimes] = useState([]);
     const [loading, setLoading] = useState(true);
-
     const [currentDate, setCurrentDate] = useState(new Date());
     const [showSeatSelection, setShowSeatSelection] = useState(false);  // 좌석 선택 화면을 보여주는 상태
     const [selectedPrice, setSelectedPrice] = useState(null);
@@ -37,6 +36,13 @@ const Booking = () => {
         const dateObj = (date instanceof Date) ? date : new Date(date);
         return dateObj.toLocaleDateString('en-CA');  // 'YYYY-MM-DD' 형식으로 반환
     }
+
+    const formatDayOfWeek = (date) => {
+        const dateObj = (date instanceof Date) ? date : new Date(date);
+        return dateObj.toLocaleDateString('ko-KR', { weekday: 'long' }); // 요일만 출력 (한국어로)
+    }
+
+
 
     const changeMonth = (direction) => {
         const newDate = new Date(currentDate);
@@ -181,6 +187,7 @@ const Booking = () => {
         fetchMovieDetails();
         fetchAvailableDates();
     }, [movieId, token]);
+
 
     useEffect(() => {
         if (movieDetails && availableDates.length > 0) {
@@ -327,6 +334,7 @@ const Booking = () => {
                             setSelectedTime={setSelectedTime}  // 추가
                             setSelectedPrice={setSelectedPrice}  // 추가
                             setSelectedEndTime={setSelectedEndTime}  // 추가
+                            formatDayOfWeek={formatDayOfWeek}
                         />
                     )}
                 </div>

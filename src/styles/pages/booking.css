@@ -104,12 +104,6 @@
 }
 
 
-
-
-
-
-
-
 .day-names {
     display: flex; 
     justify-content: space-around;
@@ -130,10 +124,13 @@
     flex-wrap: wrap;
     padding-right: 12px;
 }
-.time-details-wrapper p{font-size:14px;    width: 80px;}
 .time-details-wrapper {
     display: flex;
+    align-items: center;
+    margin: 7px 0;
 }
+.time-details-wrapper p{font-size:14px; width: 77px; }
+
 
 .times-container button {
     border: 1px solid #191919;
@@ -163,41 +160,63 @@
 }
 
 
+/* =========================== 좌석 start ================================== */
+.seat-container .screenInfo{
 
-
+}
+.totalprice{font-size: 24px;
+    text-align: right;
+}
 /* 스타일 추가 */
+.seats .row {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 5px;
+}
+.empty-seat{
+    color: red;
+    font-weight:bold;
+    font-size: 16px;
+}
+.selectSeat {
+   
+}
+
+.screenInfo .flex{display:flex; justify-content: space-between;align-items: start;}
+
+.seats .row .row-label {
+    font-weight: 500;
+    font-size: 17px;
+}
+
 .seat {
-    margin: 5px;
+  margin: 5px;
     padding: 10px;
-    background-color: #f0f0f0; /* 기본 배경색 */
-    border: 1px solid #ccc;
-    cursor: pointer;
+   
+    width: 30px;
+        height: 30px;
+        border: 1px solid #ddd;
+        background-color: #9d9d9d;
+        color: #fff;
+        cursor: pointer;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        font-size: 12px;
+    
 }
 
-.selected {
-    background-color: #007bff; /* 선택된 좌석의 배경색 */
-    color: white; /* 텍스트 색상 */
+.seat.selected {
+    background-color: #0D5611;
+    color: #fff;
 }
 
-.reserved {
-    background-color: #ccc; /* 예약된 좌석은 회색 */
-    cursor: not-allowed; /* 클릭 불가능 */
+.seat.reserved {
+    background-color: #e6e6e6;
+    cursor: not-allowed;
 }
 
-
-/* 선택 가능한 좌석은 정상적인 배경과 커서 */
-.seat {
-    margin: 5px;
-    padding: 10px;
-    background-color: #f0f0f0;
-    border: 1px solid #ccc;
-    cursor: pointer;
-    background-color: #fff;
-    cursor: pointer;
-    border: 1px solid #000;
-    background-color: #fff;
-    cursor: pointer;  /* 클릭 가능한 좌석 */
-}
 
 
 .seat.disabled {
@@ -209,8 +228,26 @@
 }
 
 .seat:hover {
-    background-color: #ffeb3b; /* 선택 가능한 좌석 hover 효과 */
+    background-color:#0D5611; /* 선택 가능한 좌석 hover 효과 */
+    color:#fff;
 }
+
+.group-1-4 {
+   
+}
+.group-5-15 {
+   
+}
+
+.last-seat1-4 {
+    font-weight: bold;
+    padding-right: 50px;
+}
+.last-seat16-19{
+    font-weight: bold;
+    padding-left: 50px;
+}
+
 .screen {
     display: flex;
     flex-direction: column;
@@ -220,43 +257,21 @@
 
 .screen-line {
     width: 80%;
-    height: 10px;
-    background-color: #000;
+    height: 50px;
+    background-color: #bfbfbf;
     margin-bottom: 20px;
+    color: #191919;
+    font-size: 17px;
+    font-weight: 500;
+    text-align: center;
+    border-radius: 5px;
+    padding: 15px;
+    box-sizing: border-box;
 }
 
-.seats {
-    display: flex;
-    flex-direction: column;
-    gap: 10px;
-}
 
-.row {
-    display: flex;
-    justify-content: center;
-    gap: 5px;
-}
+/* =========================== 좌석 end ================================== */
 
-.seat {
-    width: 40px;
-    height: 40px;
-    border: 1px solid #ddd;
-    background-color: #fff;
-    cursor: pointer;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    font-size: 14px;
-}
-
-.seat.selected {
-    background-color: #7bcf7d;
-}
-
-.seat.reserved {
-    background-color: #e6e6e6;
-    cursor: not-allowed;
-}
 
 
 

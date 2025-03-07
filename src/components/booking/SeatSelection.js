@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 
-const SeatSelection = ({ selectedScreenId, selectedDate, selectedTime, selectedEndTime, onPayment, price,
+const SeatSelection = ({ selectedScreenId, selectedDate, selectedTime, selectedEndTime, onPayment, price, formatDayOfWeek,
     setSelectedTime,  // 추가
     setSelectedPrice,  // 추가
     setSelectedEndTime  // 추가
@@ -96,27 +96,53 @@ const SeatSelection = ({ selectedScreenId, selectedDate, selectedTime, selectedE
 
     const rows = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J'];  // 예시로 A~E열까지 가정
 
+    // Seat groupings
+    const seatGroups = [
+        { row: 'A', range: [1, 4] },
+        { row: 'A', range: [5, 15] },
+        { row: 'A', range: [16, 19] },
+        { row: 'B', range: [1, 4] },
+        { row: 'B', range: [5, 15] },
+        { row: 'B', range: [16, 19] },
+        // Add more rows and ranges as needed
+    ];
     return (
-        <div>
-            {/* 좌석을 선택하지 않았을 때 문구 추가 */}
-            {selectedSeats.length === 0 && (
-                <p style={{ color: 'red', fontWeight: 'bold' }}>좌석을 선택해주세요!</p>
-            )}
+        <div className="seat-container">
 
-            <h3>상영 날짜: {selectedDate ? selectedDate : '선택된 날짜가 없습니다.'}</h3>
-            <h3>상영 시간: {selectedTime} ~ {selectedEndTime}</h3>
-            <h3>선택된 좌석:</h3>
-            {selectedSeats.map((seatId) => {
-                const seat = seats.find((s) => s.seatId === seatId);
-                return seat ? <span key={seatId}>{seat.seatNumber} </span> : null;
-            })}
-            <h3>결제 금액: {totalPrice.toLocaleString()}원</h3>
-            <h3>총 좌석 수: {totalSeats}</h3>
-            <h3>예약 가능한 좌석 수: {availableSeats}</h3>
+            <div className="screenInfo">
 
-            <h2>좌석 선택</h2>
+                <div className="flex">
+
+                    <h3>선택된 자리:
+                        {selectedSeats.length === 0 && (
+                            <span className="empty-seat" > 좌석을 선택해주세요</span>
+                        )}
+
+                        {selectedSeats.map((seatId, index) => {
+                            const seat = seats.find((s) => s.seatId === seatId);
+                            if (!seat) return null;
+
+                            // 마지막 항목이 아니면 ',' 추가
+                            const isLast = index === selectedSeats.length - 1;
+                            return (
+                                <span className="selectSeat" key={seatId}>
+                                    {seat.seatNumber}
+                                    {!isLast && ', '}
+                                </span>
+                            );
+                        })}
+                    </h3>
+                    <div>
+                        <h3>상영 시간:{selectedDate ? `${selectedDate} (${formatDayOfWeek(selectedDate)})` : '선택된 날짜가 없습니다.'} {selectedTime} ~ {selectedEndTime}</h3>
+                        {/* <h3>총 좌석 수: {totalSeats}</h3> */}
+                        <p>예약 가능한 좌석 수: {availableSeats}/{totalSeats}</p>
+                    </div>
+
+                </div>
+            </div>
+
             <div className="screen">
-                <div className="screen-line"></div>
+                <div className="screen-line">SCREEN</div>
                 <div className="seats">
                     {rows.map((row) => (
                         <div key={row} className="row">
@@ -124,55 +150,55 @@ const SeatSelection = ({ selectedScreenId, selectedDate, selectedTime, selectedE
                             {Array.from({ length: 19 }).map((_, index) => {
                                 const seatNumber = `${row}${index + 1}`;
                                 const seat = seats.find(seat => seat.seatNumber === seatNumber);
+                                const seatId = seat?.seatId;
+
+                                // Grouping seats by their number ranges
+                                let groupClass = '';
+                                if (index + 1 >= 1 && index + 1 <= 4) {
+                                    groupClass = 'group-1-4';
+                                } else if (index + 1 >= 5 && index + 1 <= 15) {
+                                    groupClass = 'group-5-15';
+                                } else if (index + 1 >= 16 && index + 1 <= 19) {
+                                    groupClass = 'group-16-19';
+                                }
+
+                                // 추가: A4, B4, C4 등 마지막 좌석에 별도의 클래스 추가
+                                if (index + 1 === 4) {
+                                    groupClass += ' last-seat1-4';  // last-seat 클래스를 추가
+                                }
+                                // 추가:
+                                if (index + 1 === 16) {
+                                    groupClass += ' last-seat16-19';  // last-seat 클래스를 추가
+                                }
+
+
                                 return (
-                                    <button
-                                        key={seatNumber}
-                                        onClick={() => handleSeatSelect(seat.seatId)}
-                                        disabled={seat?.reserved}
-                                        className={`seat ${seat?.reserved ? 'reserved' : ''} ${selectedSeats.includes(seat?.seatId) ? 'selected' : ''}`}
-                                    >
-                                        {seatNumber}
-                                    </button>
+                                    <div key={seatNumber} className={groupClass}>
+                                        <button
+                                            onClick={() => handleSeatSelect(seatId)}
+                                            disabled={seat?.reserved}
+                                            className={`seat ${seat?.reserved ? 'reserved' : ''} ${selectedSeats.includes(seatId) ? 'selected' : ''}`}
+                                        >
+                                            {seatNumber}
+                                        </button>
+                                    </div>
                                 );
                             })}
                         </div>
                     ))}
                 </div>
             </div>
-
-
-
+            <h3 className="totalprice">최종 결제 금액: {totalPrice.toLocaleString()}원</h3>
             <div className="btn-container">
                 <button
                     onClick={handleBooking}
-                    disabled={selectedSeats.length === 0} // 좌석이 선택되지 않으면 비활성화
-                    style={{
-                        backgroundColor: selectedSeats.length === 0 ? 'gray' : 'green', // 비활성화 시 색상 변경
-                        cursor: selectedSeats.length === 0 ? 'not-allowed' : 'pointer',
-                    }}
+                    disabled={selectedSeats.length === 0}
+
                 >
                     예매하기
                 </button>
-
-                {/* <button
-                    className="prevBtn"
-                    onClick={() => {
-                        if (showSeatSelection) {
-                            // 좌석 선택에서 상영 시간 선택 화면으로 돌아가기
-                            setShowSeatSelection(false); // 좌석 선택 화면을 숨김
-                        } else {
-                            // "이전" 버튼을 누르면 상영 시간 선택 화면으로 돌아가도록
-                            handleGoBack();  // 영화 선택 화면으로 돌아가기
-                        }
-                    }}
-                >
-                    이전
-                </button> */}
-
             </div>
-
-
-        </div>
+        </div >
     );
 };
 
