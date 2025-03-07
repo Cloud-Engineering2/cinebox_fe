@@ -16,6 +16,9 @@ const Header = () => {
 	},[logoutError])
 
 	const logout = ()=>{
+		localStorage.removeItem('userId');
+		localStorage.removeItem('role');
+		localStorage.removeItem('identifier');
 		doLogoutRequest(process.env.REACT_APP_LOGOUT_URL, {
 			method: 'POST'
 		})
