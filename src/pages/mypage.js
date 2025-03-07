@@ -73,7 +73,7 @@ const Mypage = () => {
                 </Box>
                 <Box className='userControlBox'>
                     <span className='mr-12 pointer' onClick={() => setShowEditUser({ userId: context.userId, state: true })}>개인정보수정</span>
-                    <span className='pointer' onClick={deleteUser}>회원 탈퇴</span>
+                    {context.role != 'ADMIN' && <span className='pointer' onClick={deleteUser}>회원 탈퇴</span>}
                 </Box>
             </Box>
             <UnderBarTitle className='favoriteMovieLabel' title={'기대되는 영화'} styles={{ margin: 'none' }} />

@@ -4,6 +4,7 @@ import { Box } from '@mui/material';
 import InputFormBox from '../../components/inputFormBox.js';
 import { convertDateFormatter } from '../../utils/index.js';
 import { showToast } from '../../utils/toast.js';
+import { checkEmailRegExp, checkPhoneRegExp } from '../../utils/regExp.js';
 
 const UserForm = ({setShowModal, data=null}) => {
     const { data: addUserRes, isLoading: isAddUserLoading, error: addUserError, doRequest: doAddUserRequest } = useReq(null, null);
@@ -83,11 +84,11 @@ const UserForm = ({setShowModal, data=null}) => {
     const update = useCallback(()=>{
         const identifier = document.querySelector('#identifier').value;
         const password = document.querySelector('#password').value;
-        const email = document.querySelector('#email').value;
+        const email = checkEmailRegExp(document.querySelector('#email').value);
         const name = document.querySelector('#name').value;
-        const birthDate = document.querySelector('.birthDate input').value;
+        const birthDate = convertDateFormatter(document.querySelector('.birthDate input').value);
         const gender = document.querySelector('#gender').value;
-        const phone = document.querySelector('#phone').value;
+        const phone = checkPhoneRegExp(document.querySelector('#phone').value);
         const role = document.querySelector('#role').value;
 
         doUpdateUserRequest(process.env.REACT_APP_USER_API + `/${data.userId}`, {
@@ -97,7 +98,7 @@ const UserForm = ({setShowModal, data=null}) => {
                 password: password,
                 email: email,
                 name: name,
-                birthDate: convertDateFormatter(birthDate),
+                birthDate: birthDate,
                 gender: gender,
                 phone: phone,
                 role: role
