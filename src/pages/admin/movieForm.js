@@ -18,8 +18,8 @@ const MovieForm = ({setShowModal, data=null}) => {
         {
             id: 'releaseDate',
             label: '개봉일',
-            value: data && data.releaseDate,
-            placeholder: 'YYYY-MM-DD'
+            type: 'datepicker',
+            value : data && data.releaseDate
         },
         {
             id: 'runtime',

@@ -14,7 +14,7 @@ const InputFormBox = ({ inputs, style }) => {
                             input?.items?.map(item => { return <option value={item.value} selected={item.value == (input.defaultValue ? input.defaultValue : input?.items[0].value)} >{item.label}</option> })
                         }
                     </select>
-                    : input.type == 'datepicker' ? <BasicDatePicker className={input.id}/>
+                    : input.type == 'datepicker' ? <BasicDatePicker className={input.id} value={input.value}/>
                     : <TextField id={input.id} variant="standard" sx={style} defaultValue={input.value} placeholder={input.placeholder} disabled={input.disabled} />
 
                 }
