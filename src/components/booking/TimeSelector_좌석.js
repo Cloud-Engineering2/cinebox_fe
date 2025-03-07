@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 
 const TimeSelector = ({ availableTimes, onSelectTime, currentUserId }) => {
-    const [activeTime, setActiveTime] = useState(null);
+    const [activeTime, setActiveTime] = useState(null); // 하나의 시간만 선택
     const [seats, setSeats] = useState([]);
     const [selectedScreenId, setSelectedScreenId] = useState(null);
     const totalSeats = 100; // 예시: 상영관의 총 좌석 수
@@ -28,6 +28,7 @@ const TimeSelector = ({ availableTimes, onSelectTime, currentUserId }) => {
     };
 
     const handleTimeClick = (startTime, screenId, price, endTime) => {
+        // 이전에 선택된 시간이 있으면 비활성화하고, 새로 클릭한 시간만 활성화
         setActiveTime(activeTime === startTime ? null : startTime);
         setSelectedScreenId(screenId);  // 선택된 화면 ID를 업데이트
         onSelectTime(screenId, startTime, endTime, price);
@@ -54,26 +55,38 @@ const TimeSelector = ({ availableTimes, onSelectTime, currentUserId }) => {
         setAvailableSeatsCount(getAvailableSeatsCount());  // 남은 좌석 수 계산
     }, [seats]);  // seats가 업데이트될 때마다 실행
 
+    // 중복 시간과 상영관을 필터링
+    const uniqueTimes = availableTimes.filter((time, index, self) =>
+        index === self.findIndex((t) => (
+            t.startTime === time.startTime && t.auditoriumName === time.auditoriumName
+        ))
+    );
+
     return (
         <div className="times-container">
             <h3>상영 시간</h3>
-            {availableTimes.map(({ startTime, endTime, screenId, price }) => (
-                <div key={`${startTime}-${screenId}`} className="time-button-wrapper">
-                    <div className="time-details-wrapper">
-                        <button
-                            className={activeTime === startTime ? 'active' : ''}
-                            onClick={() => handleTimeClick(startTime, screenId, price, endTime)}
-                        >
-                            {startTime} - {endTime}
-                        </button>
+            {uniqueTimes.length === 0 ? (
+                <p>상영 날짜를 선택해주세요.</p>
+            ) : (
+                uniqueTimes.map(({ startTime, endTime, screenId, price, auditoriumName }) => (
+                    <div key={`${startTime}-${screenId}`} className="time-button-wrapper">
+                        <div className="time-details-wrapper">
+                            <h4>{auditoriumName}</h4> {/* 상영관 이름 출력 */}
+                            <button
+                                className={activeTime === startTime ? 'active' : ''}
+                                onClick={() => handleTimeClick(startTime, screenId, price, endTime)}
+                            >
+                                {startTime} - {endTime}
+                            </button>
+                        </div>
+                        {/* 예약 가능한 좌석 수 표시 */}
+                        <div>
+                            <h3>예약된 좌석 수: {reservedSeatsCount}</h3>
+                            <h4>남은 좌석 수: {availableSeatsCount}</h4>
+                        </div>
                     </div>
-                    {/* 예약 가능한 좌석 수 표시 */}
-                    <div>
-                        <h3>예약된 좌석 수: {reservedSeatsCount}</h3>
-                        <h4>남은 좌석 수: {availableSeatsCount}</h4>
-                    </div>
-                </div>
-            ))}
+                ))
+            )}
         </div>
     );
 };

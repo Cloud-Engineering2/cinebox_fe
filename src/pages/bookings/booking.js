@@ -18,6 +18,7 @@ const Booking = () => {
     const [selectedDate, setSelectedDate] = useState(null);
     const [availableTimes, setAvailableTimes] = useState([]);
     const [loading, setLoading] = useState(true);
+
     const [currentDate, setCurrentDate] = useState(new Date());
     const [showSeatSelection, setShowSeatSelection] = useState(false);  // 좌석 선택 화면을 보여주는 상태
     const [selectedPrice, setSelectedPrice] = useState(null);
@@ -28,10 +29,14 @@ const Booking = () => {
     const [selectedEndTime, setSelectedEndTime] = useState(null);  // selectedEndTime 상태 추가
 
 
+    // const formatDate = (date) => {
+    //     const dateObj = (date instanceof Date) ? date : new Date(date);
+    //     return dateObj.toISOString().split('T')[0];
+    // };
     const formatDate = (date) => {
         const dateObj = (date instanceof Date) ? date : new Date(date);
-        return dateObj.toISOString().split('T')[0];
-    };
+        return dateObj.toLocaleDateString('en-CA');  // 'YYYY-MM-DD' 형식으로 반환
+    }
 
     const changeMonth = (direction) => {
         const newDate = new Date(currentDate);
@@ -112,6 +117,9 @@ const Booking = () => {
                             movieTitle: screen.movieTitle,
                             screenId: screen.screenId,
                             auditoriumName: auditorium.auditoriumName,
+                            totalSeats: screen.auditoriumCapacity,  // 총 좌석 수
+                            availableSeats: screen.auditoriumRemain,  // 남은 좌석 수
+
                         };
                     });
                 } else {
@@ -279,6 +287,7 @@ const Booking = () => {
 
     const calendarDays = renderCalendar();
 
+
     return (
         <>
             <UnderBarTitle title={'영화 예매'} />
@@ -286,46 +295,69 @@ const Booking = () => {
                 <h1>{movieDetails.title} </h1>
                 <p>{movieDetails.description}</p>
 
-                {!showSeatSelection ? (
-                    <div className="layout-container">
-                        <Calendar
-                            currentDate={currentDate}
-                            changeMonth={changeMonth}
-                            calendarDays={calendarDays}
-                            handleDateSelect={handleDateSelect}
-                        />
-                        <TimeSelector
-                            availableTimes={availableTimes}
-                            onSelectTime={handleTimeSelect}
+                <div className="layout-container">
+                    {!showSeatSelection ? (
+                        <>
+                            <Calendar
+                                currentDate={currentDate}
+                                changeMonth={changeMonth}
+                                calendarDays={calendarDays}
+                                handleDateSelect={handleDateSelect}
+                                selectedDate={selectedDate}
+                            />
+
+                            <TimeSelector
+                                availableTimes={availableTimes}
+                                onSelectTime={handleTimeSelect}
+                                selectedSeats={selectedSeats}
+                            />
+                        </>
+
+                    ) : (
+                        <SeatSelection
+                            selectedScreenId={selectedScreenId}
+                            selectedTime={selectedTime}
+                            selectedDate={selectedDate}// 부모 컴포넌트에서 전달된 selectedDate
+                            selectedEndTime={selectedEndTime} // endTime 전달
+                            selectedPrice={selectedPrice}
+                            handleSeatSelect={handleSeatSelect}
                             selectedSeats={selectedSeats}
-
-
+                            price={selectedPrice}  // 가격 전달
+                            onPayment={handleCompletePayment}
+                            setSelectedTime={setSelectedTime}  // 추가
+                            setSelectedPrice={setSelectedPrice}  // 추가
+                            setSelectedEndTime={setSelectedEndTime}  // 추가
                         />
-
-                    </div>
-                ) : (
-                    <SeatSelection
-                        selectedScreenId={selectedScreenId}
-                        selectedTime={selectedTime}
-                        selectedDate={selectedDate}
-                        selectedEndTime={selectedEndTime} // endTime 전달
-                        selectedPrice={selectedPrice}
-                        handleSeatSelect={handleSeatSelect}
-                        selectedSeats={selectedSeats}
-                        price={selectedPrice}  // 가격 전달
-                        onPayment={handleCompletePayment}
-
-
-                    />
-                )}
-
-                <div className="btn-container">
-                    <button className="prevBtn" onClick={handleGoBack}>이전</button>
-
-                    {!showSeatSelection && (
-                        <button className="nextBtn" onClick={handleReserve}>다음</button>
                     )}
                 </div>
+                <div className="btn-container">
+                    {/* 이전 버튼 */}
+                    {/* <button
+                        className="prevBtn"
+                        onClick={() => {
+                            if (showSeatSelection) {
+                                // 좌석 선택 → 상영 회차로 이동 + 선택값 초기화
+                                setShowSeatSelection(false);
+                            } else {
+                                if (!selectedTime || selectedTime === "") {
+                                    alert("시간을 선택해주세요.");
+                                    return;
+                                }
+                                handleGoBack();
+                            }
+                        }}
+                    >
+                        이전
+                    </button> */}
+
+                    {!showSeatSelection && (
+                        <button onClick={handleReserve}>다음</button>
+                    )}
+                </div>
+
+
+
+
             </div>
         </>
     );

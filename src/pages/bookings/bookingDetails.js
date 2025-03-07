@@ -60,18 +60,21 @@ const BookingDetails = () => {
 
         try {
 
-            const userResponse = await axios.get('http://127.0.0.1:8080/api/users', {
+            const userResponse = await axios.get('http://127.0.0.1:8080/api/users/my', {
                 headers: {
                     'Content-Type': 'application/json',
                 },
                 withCredentials: true, // 쿠키 자동 전송을 위해 설정
             });
+            console.log('사용자 응답 데이터:', userResponse.data); // 데이터 확인
 
-            const user = userResponse.data[0];
+
+            const user = userResponse.data;
             if (!user) {
                 alert('사용자 정보를 가져올 수 없습니다.');
                 return;
             }
+
 
             const IMP = window.IMP;
             IMP.init("imp25587836");
@@ -212,12 +215,18 @@ const BookingDetails = () => {
                 </div>
 
                 {/* 결제 진행 버튼 */}
-                <div>
+                <div className="btn-container">
                     <button onClick={handleNext} disabled={isLoading}>
-                        {isLoading ? '결제 중...' : '다음'}
+                        {isLoading ? '결제 중...' : '결제하기'}
                     </button>
                 </div>
+
+
+
+
             </div>
+
+
         </div>
     );
 };

@@ -1,13 +1,17 @@
 import React, { useEffect, useState } from 'react';
-import { useNavigate } from 'react-router-dom'; // useNavigate 훅을 import
+import { useNavigate, useParams } from 'react-router-dom';
 
-const SeatSelection = ({ selectedScreenId, selectedDate, selectedTime, selectedEndTime, onPayment, price }) => {
+const SeatSelection = ({ selectedScreenId, selectedDate, selectedTime, selectedEndTime, onPayment, price,
+    setSelectedTime,  // 추가
+    setSelectedPrice,  // 추가
+    setSelectedEndTime  // 추가
+}) => {
     const [seats, setSeats] = useState([]);
     const [selectedSeats, setSelectedSeats] = useState([]);
     const [totalPrice, setTotalPrice] = useState(0);
-
-    const navigate = useNavigate();  // navigate 정의
-
+    const [showSeatSelection, setShowSeatSelection] = useState(false);  // 좌석 선택 화면을 보여주는 상태
+    const { movieId } = useParams();
+    const navigate = useNavigate();
     const token = localStorage.getItem('token');
 
     useEffect(() => {
@@ -15,7 +19,7 @@ const SeatSelection = ({ selectedScreenId, selectedDate, selectedTime, selectedE
             try {
                 const response = await fetch(`http://127.0.0.1:8080/api/screens/${selectedScreenId}/seats`, {
                     method: 'GET',
-                    credentials: 'include',  // 쿠키를 포함하여 요청
+                    credentials: 'include',
                 });
 
                 if (!response.ok) throw new Error('좌석 정보를 불러오는 데 실패했습니다.');
@@ -31,11 +35,7 @@ const SeatSelection = ({ selectedScreenId, selectedDate, selectedTime, selectedE
     }, [selectedScreenId, token]);
 
     const handleSeatSelect = (seatId) => {
-        // 클릭한 좌석 정보 찾기
         const selectedSeat = seats.find((seat) => seat.seatId === seatId);
-        // 클릭한 좌석 정보 콘솔 출력
-        console.log("선택된 좌석 정보:", selectedSeat);
-        // 선택된 좌석을 상태에 추가/제거
         setSelectedSeats((prevSeats) =>
             prevSeats.includes(seatId)
                 ? prevSeats.filter((seat) => seat !== seatId)
@@ -43,49 +43,46 @@ const SeatSelection = ({ selectedScreenId, selectedDate, selectedTime, selectedE
         );
     };
 
-    // 가격 업데이트
+
+
     useEffect(() => {
         if (price) {
             setTotalPrice(selectedSeats.length * price);
         }
     }, [selectedSeats, price]);
 
-    // 예매 생성 (결제 없이 진행)
+
+    const handleGoBack = () => {
+        navigate(`/bookings/${movieId}`);
+    };
+
     const handleBooking = async () => {
         if (selectedSeats.length === 0) {
-            alert('최소 한 개의 좌석을 선택해주세요.');
+            alert('최소 한 개의 좌석을 선택해주세요.'); // 좌석을 선택하지 않았을 때 경고 메시지
             return;
         }
 
         try {
-            // 1️⃣ 선택된 좌석들의 seatNumber만 배열로 추출
             const selectedSeatNumbers = seats
                 .filter((seat) => selectedSeats.includes(seat.seatId))
                 .map((seat) => seat.seatNumber);
 
-            console.log("선택된 좌석 번호들:", selectedSeatNumbers);
-
-            // 2️⃣ 예매 생성 (booking 생성)
             const bookingResponse = await fetch('http://127.0.0.1:8080/api/bookings', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
                 },
-                credentials: 'include',  // 쿠키를 포함하여 요청
+                credentials: 'include',
                 body: JSON.stringify({
-                    screenId: selectedScreenId, // 선택한 상영관
-                    seatNumbers: selectedSeatNumbers,  // 선택된 좌석 번호들
+                    screenId: selectedScreenId,
+                    seatNumbers: selectedSeatNumbers,
                 }),
             });
 
             if (!bookingResponse.ok) throw new Error('예매 생성 실패');
 
             const bookingData = await bookingResponse.json();
-            console.log('예매 생성 완료:', bookingData);
-
-            const bookingId = bookingData.bookingId; // 생성된 예매 ID
-
-            // 예매된 정보 페이지로 이동
+            const bookingId = bookingData.bookingId;
             navigate(`/bookings/${bookingId}`);
 
         } catch (error) {
@@ -94,43 +91,87 @@ const SeatSelection = ({ selectedScreenId, selectedDate, selectedTime, selectedE
         }
     };
 
-    // 총 좌석과 예약 가능한 좌석 수 계산
     const totalSeats = seats.length;
     const availableSeats = seats.filter((seat) => !seat.reserved).length;
 
+    const rows = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J'];  // 예시로 A~E열까지 가정
+
     return (
         <div>
+            {/* 좌석을 선택하지 않았을 때 문구 추가 */}
+            {selectedSeats.length === 0 && (
+                <p style={{ color: 'red', fontWeight: 'bold' }}>좌석을 선택해주세요!</p>
+            )}
+
             <h3>상영 날짜: {selectedDate ? selectedDate : '선택된 날짜가 없습니다.'}</h3>
             <h3>상영 시간: {selectedTime} ~ {selectedEndTime}</h3>
-
             <h3>선택된 좌석:</h3>
             {selectedSeats.map((seatId) => {
                 const seat = seats.find((s) => s.seatId === seatId);
                 return seat ? <span key={seatId}>{seat.seatNumber} </span> : null;
             })}
-
             <h3>결제 금액: {totalPrice.toLocaleString()}원</h3>
-
             <h3>총 좌석 수: {totalSeats}</h3>
             <h3>예약 가능한 좌석 수: {availableSeats}</h3>
 
             <h2>좌석 선택</h2>
-            <div>
-                {seats.map((seat) => (
-                    <button
-                        key={seat.seatId}
-                        onClick={() => handleSeatSelect(seat.seatId)}
-                        disabled={seat.reserved}
-                        className={`seat ${seat.reserved ? 'reserved' : ''} ${selectedSeats.includes(seat.seatId) ? 'selected' : ''}`}
-                    >
-                        {seat.seatNumber}
-                    </button>
-                ))}
+            <div className="screen">
+                <div className="screen-line"></div>
+                <div className="seats">
+                    {rows.map((row) => (
+                        <div key={row} className="row">
+                            <span className="row-label">{row}</span>
+                            {Array.from({ length: 19 }).map((_, index) => {
+                                const seatNumber = `${row}${index + 1}`;
+                                const seat = seats.find(seat => seat.seatNumber === seatNumber);
+                                return (
+                                    <button
+                                        key={seatNumber}
+                                        onClick={() => handleSeatSelect(seat.seatId)}
+                                        disabled={seat?.reserved}
+                                        className={`seat ${seat?.reserved ? 'reserved' : ''} ${selectedSeats.includes(seat?.seatId) ? 'selected' : ''}`}
+                                    >
+                                        {seatNumber}
+                                    </button>
+                                );
+                            })}
+                        </div>
+                    ))}
+                </div>
             </div>
 
-            <button onClick={handleBooking} disabled={selectedSeats.length === 0}>
-                결제하기
-            </button>
+
+
+            <div className="btn-container">
+                <button
+                    onClick={handleBooking}
+                    disabled={selectedSeats.length === 0} // 좌석이 선택되지 않으면 비활성화
+                    style={{
+                        backgroundColor: selectedSeats.length === 0 ? 'gray' : 'green', // 비활성화 시 색상 변경
+                        cursor: selectedSeats.length === 0 ? 'not-allowed' : 'pointer',
+                    }}
+                >
+                    예매하기
+                </button>
+
+                {/* <button
+                    className="prevBtn"
+                    onClick={() => {
+                        if (showSeatSelection) {
+                            // 좌석 선택에서 상영 시간 선택 화면으로 돌아가기
+                            setShowSeatSelection(false); // 좌석 선택 화면을 숨김
+                        } else {
+                            // "이전" 버튼을 누르면 상영 시간 선택 화면으로 돌아가도록
+                            handleGoBack();  // 영화 선택 화면으로 돌아가기
+                        }
+                    }}
+                >
+                    이전
+                </button> */}
+
+            </div>
+
+
         </div>
     );
 };

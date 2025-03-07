@@ -1,12 +1,8 @@
 import React, { useEffect, useState } from 'react';
 
-const TimeSelector = ({ availableTimes, onSelectTime, currentUserId }) => {
-    const [activeTime, setActiveTime] = useState(null); // 하나의 시간만 선택
+const TimeSelector = ({ availableTimes, onSelectTime, selectedDate }) => {
+    const [selectedTime, setSelectedTime] = useState(null); // 하나의 상영 시간만 선택하도록 변경
     const [seats, setSeats] = useState([]);
-    const [selectedScreenId, setSelectedScreenId] = useState(null);
-    const totalSeats = 100; // 예시: 상영관의 총 좌석 수
-    const [reservedSeatsCount, setReservedSeatsCount] = useState(0);
-    const [availableSeatsCount, setAvailableSeatsCount] = useState(0);
 
     // 좌석 로딩 함수
     const loadSeats = async (screenId) => {
@@ -20,72 +16,78 @@ const TimeSelector = ({ availableTimes, onSelectTime, currentUserId }) => {
 
             const data = await response.json();
             setSeats(data);
-            console.log("좌석 데이터:", data);  // 디버깅용 출력
+            console.log("좌석 데이터:", data);
 
         } catch (error) {
             console.error('좌석 로딩 실패:', error);
         }
     };
 
-    const handleTimeClick = (startTime, screenId, price, endTime) => {
-        // 이전에 선택된 시간이 있으면 비활성화하고, 새로 클릭한 시간만 활성화
-        setActiveTime(activeTime === startTime ? null : startTime);
-        setSelectedScreenId(screenId);  // 선택된 화면 ID를 업데이트
-        onSelectTime(screenId, startTime, endTime, price);
-    };
+    const handleTimeClick = (auditoriumName, startTime, screenId, price, endTime) => {
+        // startTime과 endTime을 'YYYY-MM-DD' 형식으로 변환
+        const startDate = new Date(startTime).toLocaleDateString();
+        const selectedDateFormatted = new Date(selectedDate).toLocaleDateString(); // 선택된 날짜도 형식을 맞추기
 
-    const getReservedSeatsCount = () => {
-        // 'reserved: true'인 좌석만 필터링
-        return seats.filter(seat => seat.reserved === true).length;
-    };
+        // 선택된 날짜와 상영 날짜가 일치하는지 확인
+        if (startDate === selectedDateFormatted) {
+            const newSelectedTime = {
+                auditoriumName,
+                startTime,
+                screenId,
+                endTime,
+                price
+            };
 
-    const getAvailableSeatsCount = () => {
-        // 'reserved: false'인 좌석만 필터링하여 예약 가능한 좌석 수를 계산
-        return seats.filter(seat => seat.reserved === false).length;
-    };
-
-    useEffect(() => {
-        if (selectedScreenId) {
-            loadSeats(selectedScreenId);  // 화면이 변경될 때마다 좌석 정보 로드
+            setSelectedTime(newSelectedTime);
+            onSelectTime(screenId, startTime, endTime, price);
         }
-    }, [selectedScreenId]);
+    };
 
+    // selectedTime이 변경될 때 좌석 로딩
     useEffect(() => {
-        setReservedSeatsCount(getReservedSeatsCount());  // 예약된 좌석 수 계산
-        setAvailableSeatsCount(getAvailableSeatsCount());  // 남은 좌석 수 계산
-    }, [seats]);  // seats가 업데이트될 때마다 실행
+        if (selectedTime?.screenId) {
+            loadSeats(selectedTime.screenId);
+        }
+    }, [selectedTime]);
 
-    // 중복 시간과 상영관을 필터링
-    const uniqueTimes = availableTimes.filter((time, index, self) =>
-        index === self.findIndex((t) => (
-            t.startTime === time.startTime && t.auditoriumName === time.auditoriumName
-        ))
-    );
+    // 상영관 이름을 기준으로 그룹화
+    const groupedTimes = availableTimes.reduce((groups, time) => {
+        if (!groups[time.auditoriumName]) {
+            groups[time.auditoriumName] = [];
+        }
+        groups[time.auditoriumName].push(time);
+        return groups;
+    }, {});
 
     return (
         <div className="times-container">
             <h3>상영 시간</h3>
-            {uniqueTimes.length === 0 ? (
+            {Object.keys(groupedTimes).length === 0 ? (
                 <p>상영 날짜를 선택해주세요.</p>
             ) : (
-                uniqueTimes.map(({ startTime, endTime, screenId, price, auditoriumName }) => (
-                    <div key={`${startTime}-${screenId}`} className="time-button-wrapper">
-                        <div className="time-details-wrapper">
-                            <h4>{auditoriumName}</h4> {/* 상영관 이름 출력 */}
-                            <button
-                                className={activeTime === startTime ? 'active' : ''}
-                                onClick={() => handleTimeClick(startTime, screenId, price, endTime)}
-                            >
-                                {startTime} - {endTime}
-                            </button>
+                Object.keys(groupedTimes).map((auditoriumName) => {
+                    const times = groupedTimes[auditoriumName];
+                    const totalSeats = times[0]?.totalSeats;
+                    return (
+                        <div key={auditoriumName} className="auditorium-group">
+                            <h4>{auditoriumName} <span>총 {totalSeats} 석</span></h4>
+                            <div className="time-button-wrapper">
+                                {times.map(({ startTime, endTime, screenId, price, totalSeats, availableSeats }) => (
+                                    <div key={`${startTime}-${screenId}`} className="time-details-wrapper">
+                                        <button
+                                            className={selectedTime?.screenId === screenId ? 'active' : ''}
+                                            onClick={() => handleTimeClick(auditoriumName, startTime, screenId, price, endTime)}
+                                            disabled={selectedTime?.screenId === screenId} // 이미 선택된 경우 비활성화
+                                        >
+                                            {startTime}
+                                        </button>
+                                        <p>{availableSeats}/{totalSeats}</p>
+                                    </div>
+                                ))}
+                            </div>
                         </div>
-                        {/* 예약 가능한 좌석 수 표시 */}
-                        <div>
-                            <h3>예약된 좌석 수: {reservedSeatsCount}</h3>
-                            <h4>남은 좌석 수: {availableSeatsCount}</h4>
-                        </div>
-                    </div>
-                ))
+                    );
+                })
             )}
         </div>
     );
