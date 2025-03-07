@@ -4,6 +4,7 @@ import { Box } from '@mui/material';
 import InputFormBox from '../../components/inputFormBox.js';
 import { AppContext } from "../../App.js";
 import { convertDateFormatter } from '../../utils/index.js';
+import { showToast } from '../../utils/toast.js';
 
 const MovieForm = ({ setShowModal, data = null }) => {
     const { context, setContext } = useContext(AppContext);
@@ -167,18 +168,18 @@ const MovieForm = ({ setShowModal, data = null }) => {
             document.querySelector('#uploadFile').value = '';
             document.querySelector('#plot').value = '';
 
-            alert('success addMOvie');
+            showToast('성공적으로 영화가 추가되었습니다.', 'success');
         }
     },[addMovieRes])
     useEffect(()=>{
         if(updateMovieRes != null){
-            alert('success updateMovie');
+            showToast('성공적으로 영화가 수정되었습니다.', 'success');
             window.location.reload ()
         }
     },[updateMovieRes])
     useEffect(() => {
         if (addMovieError || updateMovieError) {
-            alert('입력 값을 다시 확인해 주세요.');
+            showToast('입력 값을 다시 확인해 주세요.', 'warn');
         }
     }, [addMovieError, updateMovieError])
 
