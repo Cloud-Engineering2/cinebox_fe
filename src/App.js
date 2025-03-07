@@ -3,6 +3,7 @@ import './App.css';
 import './styles/button.css';
 import './styles/init.css';
 
+
 import Booking from './pages/bookings/booking.js';
 import BookingDetails from './pages/bookings/bookingDetails.js';
 import Detail from './pages/detail.js';
@@ -25,7 +26,8 @@ export default function App() {
   const [context, setContext] = useState({
     identifier: localStorage.getItem('identifier'),
     role: localStorage.getItem('role'),
-    userId: localStorage.getItem('userId')
+    userId: localStorage.getItem('userId'),
+    cookie: document.cookie,
   });
 
   return <AppContext.Provider value={{ context, setContext }}>
