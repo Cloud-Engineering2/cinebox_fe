@@ -25,6 +25,7 @@ const SeatSelection = ({ selectedScreenId, selectedDate, selectedTime, selectedE
                 if (!response.ok) throw new Error('좌석 정보를 불러오는 데 실패했습니다.');
 
                 const data = await response.json();
+                console.log("w좌석데이터 : ", data);
                 setSeats(data);
             } catch (error) {
                 console.error('좌석 로딩 실패:', error);
@@ -61,6 +62,9 @@ const SeatSelection = ({ selectedScreenId, selectedDate, selectedTime, selectedE
             alert('최소 한 개의 좌석을 선택해주세요.'); // 좌석을 선택하지 않았을 때 경고 메시지
             return;
         }
+        console.log("결제 요청 전에 selectedSeats:", selectedSeats);
+        console.log("결제 요청 전에 totPrice:", totalPrice);
+
 
         try {
             const selectedSeatNumbers = seats
@@ -85,7 +89,11 @@ const SeatSelection = ({ selectedScreenId, selectedDate, selectedTime, selectedE
 
             const bookingData = await bookingResponse.json();
             const bookingId = bookingData.bookingId;
-            navigate(`/bookings/${bookingId}`);
+
+            // navigate로 선택한 좌석과 가격을 전달
+            // selectedSeats를 문자열로 변환하여 전달
+            navigate(`/bookings/${bookingId}?selectedSeats=${JSON.stringify(selectedSeats)}&totalPrice=${totalPrice}`);
+
 
         } catch (error) {
             console.error('예매 처리 중 오류:', error);

@@ -3,8 +3,10 @@ import { useNavigate, useParams } from 'react-router-dom';
 
 import Calendar from '../../components/booking/Calendar';
 import SeatSelection from '../../components/booking/SeatSelection';
+
 import TimeSelector from '../../components/booking/TimeSelector';
 import UnderBarTitle from '../../components/underBarTitle';
+
 import '../../styles/pages/booking.css';
 
 
@@ -336,7 +338,11 @@ const Booking = () => {
                             setSelectedEndTime={setSelectedEndTime}  // 추가
                             formatDayOfWeek={formatDayOfWeek}
                         />
+
+
                     )}
+
+
                 </div>
                 <div className="btn-container">
                     {/* 이전 버튼 */}

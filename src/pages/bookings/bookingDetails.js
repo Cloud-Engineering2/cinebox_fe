@@ -3,17 +3,17 @@ import axios from 'axios';
 import React, { useEffect, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom'; // Make sure to import useNavigate
 import UnderBarTitle from '../../components/underBarTitle';
-const BookingDetails = () => {
+
+const BookingDetails = ({ seats }) => {
     const { bookingId } = useParams(); // URL에서 bookingId를 받아옴
     const [bookingData, setBookingData] = useState(null);
     const [error, setError] = useState(null);
     const [paymentMethod, setPaymentMethod] = useState('credit'); // 신용카드 기본 선택
     const [agreeRefundPolicy, setAgreeRefundPolicy] = useState(false); // 환불 정책 동의 여부
     const [isLoading, setIsLoading] = useState(false); // 결제 진행 중 상태
-    const navigate = useNavigate(); // useNavigate를 사용
+    const [selectedSeats, setSelectedSeats] = useState([]); // selectedSeatNumbers 대신 빈 배열로 초기화
     const [paymentMap, setPaymentMap] = useState({}); // paymentMap 상태 추가
-    const [selectedSeats, setSelectedSeats] = useState([]);
-
+    const navigate = useNavigate(); // useNavigate를 사용
 
     useEffect(() => {
         const fetchBookingDetails = async () => {
@@ -25,10 +25,17 @@ const BookingDetails = () => {
                     withCredentials: true, // 쿠키 자동 전송을 위해 설정
                 });
                 setBookingData(response.data);
+                console.log("서버에서 응답데이터 :", response.data);
+
                 // 서버에서 받은 좌석 정보를 selectedSeats에 설정
-                if (response.data.selectedSeats) {
-                    setSelectedSeats(response.data.selectedSeats);
+                if (response.data.seatNumbers && Array.isArray(response.data.seatNumbers)) {
+                    setSelectedSeats(response.data.seatNumbers);  // seatNumbers가 배열이므로 바로 설정
+                    console.log('받은 좌석 정보2222:', response.data.seatNumbers);
+                } else {
+                    console.log('seatNumbers가 없음');
                 }
+
+
             } catch (error) {
                 console.error('예매 정보 불러오기 실패:', error);
                 setError('예매 정보를 불러오는 데 실패했습니다.');
@@ -38,9 +45,8 @@ const BookingDetails = () => {
         fetchBookingDetails();
     }, [bookingId]);
 
-    const handlePaymentMethodChange = (e) => {
-        setPaymentMethod(e.target.value);
-    };
+
+
 
     const handleRefundPolicyChange = (e) => {
         setAgreeRefundPolicy(e.target.checked);
@@ -103,6 +109,8 @@ const BookingDetails = () => {
                             paymentMethod,
                             paymentId: rsp.imp_uid,
                             paymentSuccess: rsp.success,
+                            // 선택된 좌석 정보도 함께 전송
+                            selectedSeats
                         }, {
                             headers: {
                                 'Content-Type': 'application/json',
@@ -180,14 +188,6 @@ const BookingDetails = () => {
         return new Date(dateTime).toLocaleString('ko-KR', options).split(' ')[1]; // 시간만 반환
     };
 
-    const handleSeatSelection = (seat) => {
-        if (!selectedSeats.includes(seat)) {
-            setSelectedSeats(prevSeats => [...prevSeats, seat]);
-        }
-    };
-
-
-
     return (
         <>
             <UnderBarTitle title={'결제하기'} />
@@ -208,16 +208,19 @@ const BookingDetails = () => {
                             <strong>상영관 이름:</strong> {bookingData.auditoriumName}
                         </p>
 
-                        <p><strong>선택된 자리:</strong></p>
-                        {selectedSeats.length === 0 ? (
-                            <span className="empty-seat">좌석을 선택해주세요</span>
-                        ) : (
-                            selectedSeats.map((seat, index) => (
-                                <span key={index} className="selectSeat">
-                                    {seat}{index < selectedSeats.length - 1 ? ', ' : ''}
-                                </span>
-                            ))
-                        )}
+                        <div>
+                            <h3>선택한 좌석:</h3>
+                            {selectedSeats.length > 0 ? (
+                                <ul>
+                                    {selectedSeats.map((seat, index) => (
+                                        <li key={index}>{seat}</li>
+                                    ))}
+                                </ul>
+                            ) : (
+                                <p>좌석이 선택되지 않았습니다.</p>
+                            )}
+                        </div>
+
 
                         <p><strong>최종 결제금액:</strong> {bookingData.totPrice.toLocaleString()}원</p>
                     </div>
@@ -255,18 +258,33 @@ const BookingDetails = () => {
                     <p> - 현장 취소 시 영화 상영시간 이전까지만 가능합니다.</p>
                 </div>
 
+                {selectedSeats && selectedSeats.length === 0 ? (
+                    <span>좌석을 선택해주세요</span>
+                ) : (
+                    selectedSeats.map((seatId, index) => {
+                        // seats 배열이 정의되어 있는지 확인
+                        const seat = seats && seats.find((s) => s.seatId === seatId);
+                        return seat ? (
+                            <span key={seatId}>
+                                {seat.seatNumber}
+                                {index < selectedSeats.length - 1 && ', '}
+                            </span>
+                        ) : null;
+                    })
+                )}
+
+
+
+                <h3>예매된 좌석: {selectedSeats?.join(', ')}</h3>
+
+
+
                 {/* 결제 진행 버튼 */}
                 <div className="btn-container">
                     <button onClick={handleNext} disabled={isLoading}>
                         {isLoading ? '결제 중...' : '결제하기'}
                     </button>
                 </div>
-
-
-
-
-
-
 
             </div>
         </>
