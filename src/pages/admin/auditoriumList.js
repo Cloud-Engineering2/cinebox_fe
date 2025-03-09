@@ -46,7 +46,7 @@ const AuditoriumList = () => {
                             </Box>
                             <Box className='userCard flex'>
                                 <p className='label'>좌석수</p>
-                                <p>{auditorium.capacity}</p>
+                                <p>{auditorium.auditoriumCapacity}</p>
                             </Box>
                         </Box>
                         <Box className='controlBox'>
