@@ -1,3 +1,4 @@
+import { CheckCircle } from '@mui/icons-material';
 import React from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import UnderBarTitle from '../../components/underBarTitle';
@@ -12,27 +13,58 @@ const Confirmation = () => {
     }
 
     const handleGoToMypage = () => {
-        // 결제가 완료된 상태에서 마이페이지로 이동
-        navigate('/mypage');
+        navigate('/mypage'); // 예매 내역 확인 페이지로 이동
     };
+
+    const handleGoToMain = () => {
+        navigate('/main'); // 메인홈으로 이동
+    };
+
+
 
     return (
         <>
             <UnderBarTitle title={'영화 결제'} />
-            <div>
-                <h1>결제 완료</h1>
-                {paymentStatus === "COMPLETED" && (
+
+            {/* {paymentStatus === "COMPLETED" && (
                     <div>
                         <p>결제가 완료되었습니다.</p>
                         <p>영화 제목: {bookingData.movieTitle}</p>
                         <p>상영 시간: {bookingData.screenStartTime}</p>
                         <p>최종 결제금액: {bookingData.totPrice.toLocaleString()}원</p>
 
-                        {/* 예매내역확인 버튼 클릭 시 마이페이지로 이동 */}
-                        <button onClick={handleGoToMypage}>예매내역확인</button>
+                        <div>
+                            <h3>선택한 좌석:</h3>
+                            {bookingData.seatNumbers && bookingData.seatNumbers.length > 0 ? (
+                                <ul>
+                                    {bookingData.seatNumbers.map((seat, index) => (
+                                        <li key={index}>{seat}</li>
+                                    ))}
+                                </ul>
+                            ) : (
+                                <p>좌석이 선택되지 않았습니다.</p>
+                            )}
+                        </div>
                     </div>
-                )}
+                )} */}
+
+
+
+            <div className="confirmation-container">
+                <div className="icon-container">
+                    <CheckCircle className="check-icon" />
+                </div>
+                <div>
+                    <h2>결제 완료가 완료되었습니다.</h2>
+                    <h2>즐거운 영화 관람 되세요!</h2>
+                </div>
+                <div className="buttons-container">
+                    <button onClick={handleGoToMain}>메인 홈으로 이동</button>
+                    <button onClick={handleGoToMypage}>예매내역확인</button>
+                </div>
             </div>
+
+
         </>
     );
 };

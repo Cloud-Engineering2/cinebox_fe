@@ -92,7 +92,7 @@ const SeatSelection = ({ selectedScreenId, selectedDate, selectedTime, selectedE
 
             // navigate로 선택한 좌석과 가격을 전달
             // selectedSeats를 문자열로 변환하여 전달
-            navigate(`/bookings/${bookingId}?selectedSeats=${JSON.stringify(selectedSeats)}&totalPrice=${totalPrice}`);
+            navigate(`/bookings/${bookingId}`);
 
 
         } catch (error) {

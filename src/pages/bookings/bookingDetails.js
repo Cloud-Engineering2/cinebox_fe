@@ -161,8 +161,6 @@ const BookingDetails = ({ seats }) => {
     };
 
 
-
-
     if (error) {
         return <div>{error}</div>;
     }
@@ -199,35 +197,21 @@ const BookingDetails = ({ seats }) => {
                     <img src={bookingData.posterImageUrl} alt={bookingData.movieTitle} width="200" />
 
                     <div className="pay-info">
-                        <p><strong>영화 제목:</strong> {bookingData.movieTitle}</p>
+                        <p className="title"> <strong>{bookingData.movieTitle}</strong></p>
 
                         <p>
-                            <strong>상영 일자:</strong> {formatDateWithWeekday(bookingData.screenStartTime)} {formatTime(bookingData.screenStartTime)} ~ {formatTime(bookingData.screenEndTime)}
+                            {formatDateWithWeekday(bookingData.screenStartTime)} {formatTime(bookingData.screenStartTime)} ~ {formatTime(bookingData.screenEndTime)}
                         </p>
-                        <p>
-                            <strong>상영관 이름:</strong> {bookingData.auditoriumName}
-                        </p>
-
-                        <div>
-                            <h3>선택한 좌석:</h3>
-                            {selectedSeats.length > 0 ? (
-                                <ul>
-                                    {selectedSeats.map((seat, index) => (
-                                        <li key={index}>{seat}</li>
-                                    ))}
-                                </ul>
-                            ) : (
-                                <p>좌석이 선택되지 않았습니다.</p>
-                            )}
-                        </div>
-
-
-                        <p><strong>최종 결제금액:</strong> {bookingData.totPrice.toLocaleString()}원</p>
+                        <p> {bookingData.auditoriumName}</p>
+                        <p>{selectedSeats?.join(', ')}</p>
+                        <p className="price"><strong>최종 결제금액: <span className="">{bookingData.totPrice.toLocaleString()}</span> </strong> 원</p>
                     </div>
+
                 </div>
                 {/* 결제 수단 선택 */}
 
                 <h3>결제수단</h3>
+                <div className="bar"></div>
                 <div className="payment-method">
 
                     신용/체크카드
@@ -248,11 +232,28 @@ const BookingDetails = ({ seats }) => {
                         {agreeRefundPolicy ? (
                             <CheckCircle className="checkbox-icon checked" />
                         ) : (
-                            <Circle className="checkbox-icon" />
+                            <Circle className="checkbox-icon unchecked" />
                         )}
                         <span className="policy-text">취소/환불 정책에 동의합니다.</span>
                     </label>
                 </div>
+
+
+                {/* <div className="refund-policy-container">
+                    <label className="refund-policy-label">
+                        <input
+                            type="checkbox"
+                            checked={agreeRefundPolicy}
+                            onChange={handleRefundPolicyChange}
+                            className="hidden-checkbox"
+                        />
+                        <span className={`checkbox-icon ${agreeRefundPolicy ? 'checked' : 'unchecked'}`}>
+                            {agreeRefundPolicy ? '✅' : '☑️'}
+                        </span>
+                        <span className="policy-text">취소/환불 정책에 동의합니다.</span>
+                    </label>
+                </div> */}
+
                 <div>
                     <p>- 온라인 예매는 영화 상영시간 20분전까지 취소 가능하며, 20분 이후 현장 취소만 가능합니다.</p>
                     <p> - 현장 취소 시 영화 상영시간 이전까지만 가능합니다.</p>
@@ -273,9 +274,6 @@ const BookingDetails = ({ seats }) => {
                     })
                 )}
 
-
-
-                <h3>예매된 좌석: {selectedSeats?.join(', ')}</h3>
 
 
 
