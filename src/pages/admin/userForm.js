@@ -14,7 +14,7 @@ const UserForm = ({ setShowModal, data = null }) => {
         id: 'identifier',
         label: '아이디',
         value: data && data.identifier,
-        disabled: true
+        disabled: (data)
     }, {
         id: 'password',
         label: '비밀번호',
@@ -60,9 +60,9 @@ const UserForm = ({ setShowModal, data = null }) => {
     const add = useCallback(() => {
         const identifier = document.querySelector('#identifier').value;
         const password = document.querySelector('#password').value;
-        const email = document.querySelector('#email').value;
+        const email = checkEmailRegExp(document.querySelector('#email').value);
         const name = document.querySelector('#name').value;
-        const age = document.querySelector('#age').value;
+        const birthDate = convertDateFormatter(document.querySelector('.birthDate input').value);
         const gender = document.querySelector('#gender').value;
         const phone = document.querySelector('#phone').value;
         const role = document.querySelector('#role').value;
@@ -74,7 +74,7 @@ const UserForm = ({ setShowModal, data = null }) => {
                 password: password,
                 email: email,
                 name: name,
-                age: age,
+                birthDate: birthDate,
                 gender: gender,
                 phone: phone,
                 role: role
