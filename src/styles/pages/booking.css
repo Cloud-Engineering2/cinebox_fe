@@ -6,9 +6,9 @@
 
 .layout-container {
     display: flex;
-    justify-content: space-around;
+    justify-content: space-between;
     gap: 20px;
-    ;
+    
 }
 
 .calendar-container {
@@ -193,11 +193,12 @@
     font-size: 24px;
     text-align: right;
 }
-
+.seat-container{width:100%;}
+.seat-container .screenInfo .flex h3{}
 /* 스타일 추가 */
 .seats .row {
     display: flex;
-    justify-content: center;
+    justify-content: start;
     align-items: center;
     gap: 5px;
 }
