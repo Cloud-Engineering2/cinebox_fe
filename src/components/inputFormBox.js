@@ -1,8 +1,8 @@
-import React from 'react';
 import { Box, TextField } from '@mui/material';
+import React from 'react';
 import "../styles/components/inputFormBox.css";
 import BasicDatePicker from './datePicker';
-import DateTimePicker from './dateTimePicker.js'
+import DateTimePicker from './dateTimePicker.js';
 
 const InputFormBox = ({ inputs, style }) => {
     return <>
@@ -15,9 +15,9 @@ const InputFormBox = ({ inputs, style }) => {
                             input?.items?.map(item => { return <option value={item.value} selected={item.value == (input.defaultValue ? input.defaultValue : input?.items[0].value)} >{item.label}</option> })
                         }
                     </select>
-                    : input.type == 'datepicker' ? <BasicDatePicker className={input.id} value={input.value}/>
-                    : input.type == 'datetimepicker' ? <DateTimePicker className={input.id} value={input.value} />
-                    : <TextField id={input.id} variant="standard" sx={style} defaultValue={input.value} placeholder={input.placeholder} disabled={input.disabled} />
+                        : input.type == 'datepicker' ? <BasicDatePicker className={input.id} value={input.value} />
+                            : input.type == 'datetimepicker' ? <DateTimePicker className={input.id} value={input.value} />
+                                : <TextField id={input.id} variant="standard" sx={style} defaultValue={input.value} placeholder={input.placeholder} disabled={input.disabled} />
 
                 }
             </Box>;
