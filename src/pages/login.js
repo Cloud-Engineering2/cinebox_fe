@@ -4,19 +4,31 @@ import useReq from '../hooks/useReq.js';
 import { Box, Button, TextField } from '@mui/material';
 import UnderBarTitle from '../components/underBarTitle.js';
 import { showToast } from '../utils/toast.js';
+import { useLocation } from 'react-router-dom';
 
 const Login = () => {
+    const location = useLocation();
+    const userData = location.state;
     const { data, isLoading, error, doRequest } = useReq(process.env.REACT_APP_LOGIN_URL, null);
 
     useEffect(() => {
-        if (data != null) {
-            localStorage.setItem('identifier', data.identifier);
+        if (data) {
+            localStorage.setItem('identifier', data.idnetifier);
             localStorage.setItem('role', data.role);
             localStorage.setItem("userId", data.userId);
             
             window.location.href = '/main';
         }
     }, [data]);
+    useEffect(() => {
+        if (userData) {
+            localStorage.setItem('identifier', userData.idnetifier);
+            localStorage.setItem('role', userData.role);
+            localStorage.setItem("userId", userData.userId);
+            
+            window.location.href = '/main';
+        }
+    }, [userData]);
     useEffect(() => {
         if (error) {
             showToast('아이디 혹은 비밀번호가 맞지 않습니다.', 'error');
@@ -41,6 +53,11 @@ const Login = () => {
         });
     },[]);
 
+    const kakaoLogin = useCallback(() => {
+        const kakaoURL = `https://kauth.kakao.com/oauth/authorize?client_id=${process.env.REACT_APP_KAKAO_CLIENT_ID}&redirect_uri=${process.env.REACT_APP_KAKAO_REDIRECT_URL}&response_type=code`
+        window.location.href= kakaoURL;
+    },[]);
+
     return <>
         <UnderBarTitle title={'로그인'} />
         <Box className={styles.login}>
@@ -51,7 +68,7 @@ const Login = () => {
                 <TextField type='password' id="password" placeholder="비밀번호" variant="standard" />
             </Box>
             <Box id={styles.warning} className="mb_8 disabled">아이디 혹은 비밀번호를 입력해 주세요.</Box>
-            <Button id="signupKakao" type="button" className="kakaoButton mb-10 bg-yellow opacity-07" disabled >
+            <Button id="signupKakao" type="button" className="kakaoButton mb-10 bg-yellow" onClick={kakaoLogin}>
                 <img className="kakaoIcon" src='/assets/kakaoIcon.png' />
                 카카오로 로그인
             </Button>

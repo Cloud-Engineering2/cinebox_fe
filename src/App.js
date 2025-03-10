@@ -3,7 +3,6 @@ import './App.css';
 import './styles/button.css';
 import './styles/init.css';
 
-
 import Booking from './pages/bookings/booking.js';
 import BookingDetails from './pages/bookings/bookingDetails.js';
 import Confirmation from './pages/bookings/Confirmation.js'; // Confirmation.js 임포트
@@ -14,7 +13,6 @@ import Main from './pages/main.js';
 import Mypage from './pages/mypage.js';
 import Signup from './pages/signup.js';
 
-
 import { Box } from '@mui/material';
 import { Route, BrowserRouter as Router, Routes } from 'react-router-dom';
 import ErrorBoundary from './components/errorBoundary.js';
@@ -24,6 +22,8 @@ import Footer from './templates/footer.js';
 import Header from './templates/header.js';
 import { ToastContainer } from 'react-toastify';
 import BookingTable from './pages/admin/bookingTable.js';
+import KakaoRedirect from './pages/kakaoRedirect.js'
+import KakaoSignup from './pages/kakaoSignup.js';
 
 export const AppContext = createContext(null);
 export default function App() {
@@ -53,6 +53,8 @@ export default function App() {
               <Route path="/confirmation" element={<Confirmation />} />
               <Route path="/admin/screen/:movieId" element={<ScreenTable />} />
               <Route path="/admin/booking/:userId" element={<BookingTable />} />
+              <Route path="/kakaoSignup" element={<KakaoSignup />} />
+              <Route path="/auth/callback" element={<KakaoRedirect />} />
             </Routes>
           </Router>
         </Box>

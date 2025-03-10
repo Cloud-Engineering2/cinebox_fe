@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useContext, useCallback } from 'react';
 import useReq from '../hooks/useReq.js';
-import MainStyle from '../styles/pages/main.css';
+import '../styles/pages/main.css';
 import MovieCard from '../components/movieCard.js';
 import EmptyBox from '../components/emptyBox.js';
 import UnderBarTitle from '../components/underBarTitle.js';
@@ -24,7 +24,7 @@ const Main = () => {
                 'search': document.querySelector('#searchBox').value
             }
         })
-    },[])
+    }, [])
 
     return <Box className='pstn-relative'>
         <UnderBarTitle title={'박스오피스'} />
