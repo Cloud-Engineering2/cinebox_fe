@@ -1,3 +1,6 @@
+export const isUpcoming = (releaseDate) => new Date(releaseDate) < new Date(); // true면 아직 개봉 됨
+
+// datetime formatters
 export const changeTimeFormat = (datetime) => {
     const date = datetime.split('T')[0].replaceAll('-', '.');
     const time = datetime.split('T')[1].split('.')[0];

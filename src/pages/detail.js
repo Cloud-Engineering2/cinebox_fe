@@ -7,6 +7,7 @@ import MovieDetail from '../components/movieDetail.js';
 import ReviewList from '../components/reviewList.js';
 import UnderBarTitle from '../components/underBarTitle.js';
 import useReq from '../hooks/useReq.js';
+import { isUpcoming } from '../utils/index.js';
 
 const Detail = () => {
     const { context, setContext } = useContext(AppContext);
@@ -52,13 +53,13 @@ const Detail = () => {
         <UnderBarTitle />
         <Box style={{ margin: '47px 25%' }}>
             {data && [
-                <MovieDetail key="movie-detail" movie={data} styles={{ marginBottom: 73 }} />,
+                <MovieDetail key="movie-detail" movie={data} styles={{ marginBottom: 73 }} noBookingButton={!isUpcoming(data.releaseDate)} />,
                 <Box className='mainInfo'>
                     <Box className='mb-73'>
                         <p className='fs-19 mb-14'>{data.plot}</p>
                     </Box>
                 </Box>,
-                <Box key="review-box" className='reviewBox'>
+                (isUpcoming(data.releaseDate) && <Box key="review-box" className='reviewBox'>
                     <h2 className='fs-19 mb-18'>관객들의 리뷰</h2>
                     <Box className='fs-19 mb-6'>
                         <select id="rating" className="selectRating">
@@ -98,7 +99,7 @@ const Detail = () => {
                             })}
                             showMovieTitle={false} />}
                     </Box>
-                </Box>
+                </Box>)
             ]}
         </Box>
     </>
