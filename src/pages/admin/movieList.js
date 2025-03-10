@@ -6,7 +6,7 @@ import EmptyBox from '../../components/emptyBox.js';
 import { Box } from '@mui/material';
 import Modal from '../../components/modal.js';
 import MovieForm from './movieForm.js';
-import admin from '../../styles/pages/admin.css';
+import '../../styles/pages/admin.css';
 
 const MovieList = () => {
     const {context, setContext} = useContext(AppContext);
@@ -59,7 +59,8 @@ const MovieList = () => {
                 }}>
                     <MovieDetail 
                     movie={movie} 
-                    noBookingButton={true}/>
+                    noBookingButton={true}
+                    showStatus={true}/>
                     <Box className='controlBox'>
                         <button id="auditoriumList" type="button" className="button-sm mr-6" onClick={()=>window.location.href=`/admin/screen/${movie.movieId}`}>상영정보 조회</button>
                         <button id="edit" type="button" className="button-sm mr-6" onClick={()=>setShowEditMovie({movieId: movie.movieId, state: true})}>수정</button>

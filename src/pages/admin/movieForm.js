@@ -65,6 +65,7 @@ const MovieForm = ({ setShowModal, data = null }) => {
             id: 'status',
             label: '상영여부',
             type: 'select',
+            defaultValue: data && data.status,
             items: [{
                 label: 'SHOWING',
                 value: 'SHOWING'
@@ -186,7 +187,6 @@ const MovieForm = ({ setShowModal, data = null }) => {
     return <>
         <h2 className='mb-14'>{data ? '영화 수정' : '영화 등록'}</h2>
         <Box className='form mb-44'>
-
             <InputFormBox inputs={inputs} style={{ width: '75%' }} />
         </Box>
         <h2 className='mb-14'>대표 이미지</h2>
