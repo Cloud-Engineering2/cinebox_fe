@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react';
 import { Box } from '@mui/material';
-import { useNavigate, useParams, useSearchParams } from 'react-router-dom';
+import { useNavigate, useSearchParams } from 'react-router-dom';
 import useReq from '../hooks/useReq';
 
 export default function KakaoRedirect() {
@@ -12,6 +12,7 @@ export default function KakaoRedirect() {
     
     useEffect(()=>{
         if(code){
+            debugger;
             doRequest(process.env.REACT_APP_KAKAO_CALLBACK_API + `?code=${code}`, {
                 method: "GET"
             });
@@ -33,5 +34,8 @@ export default function KakaoRedirect() {
         }
     },[error]);
 
-    return <Box>Kakao Redirect Page</Box>;
+    return <Box className='flex jsfy-cnt-cnt width-100p width-65vh fs-30'>
+        <img className="kakaoIcon width-50 mr-15" src='/assets/kakaoIcon.png' />
+        Kakao Login Loading...
+    </Box>;
 }

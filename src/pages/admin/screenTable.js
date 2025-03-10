@@ -32,13 +32,13 @@ const ScreenTable = () => {
         const filteredAuditoriumId = filteredDate[0].auditoriums.filter(auditorium => auditorium.auditoriumId == auditoriumId);
         const filteredScreenId = filteredAuditoriumId[0].screens.filter(screen => screen.screenId == screenId);
 
-        return filteredScreenId;
+        return Object.assign(filteredScreenId[0], {movieId : movieId});
     },[getMovieScreensRes])
 
     return <>
         <UnderBarTitle title={'상영정보 조회'} />
         <Box className='screenTable'>
-            {showAddScreen && <Modal className='flex jsfy-cnt-rght mb-10' content={<ScreenForm setShowModal={setShowAddScreen} />} />}
+            {showAddScreen && <Modal className='flex jsfy-cnt-rght mb-10' content={<ScreenForm setShowModal={setShowAddScreen} data={{movieId : movieId}} />} />}
             <Box className='flex jsfy-cnt-rght mb-10'>
                 <button id="addScreen" type="button" className="button-sm fs-23" onClick={() => setShowAddScreen(true)}>+</button>
             </Box>
@@ -80,7 +80,7 @@ const ScreenTable = () => {
                 }) : <EmptyBox text="상영정보가 없습니다." />
             }
         </Box>
-        {showEditScreen.state && <Modal className='flex jsfy-cnt-rght mb-10' content={<ScreenForm setShowModal={setShowEditScreen} data={getScreen(showEditScreen.info)[0]} />} />}
+        {showEditScreen.state && <Modal className='flex jsfy-cnt-rght mb-10' content={<ScreenForm setShowModal={setShowEditScreen} data={getScreen(showEditScreen.info)} type='update' />} />}
     </>
 };
 

@@ -5,7 +5,7 @@ import './styles/init.css';
 
 import Booking from './pages/bookings/booking.js';
 import BookingDetails from './pages/bookings/bookingDetails.js';
-import Confirmation from './pages/bookings/Confirmation.js'; // Confirmation.js 임포트
+import Confirmation from './pages/bookings/Confirmation.js';
 
 import Detail from './pages/detail.js';
 import Login from './pages/login.js';

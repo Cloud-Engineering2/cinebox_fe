@@ -6,7 +6,7 @@ import { AppContext } from "../../App.js";
 import { convertISOString, getFullDateTime } from '../../utils/index.js';
 import { showToast } from '../../utils/toast.js';
 
-const ScreenForm = ({setShowModal, data=null}) => {
+const ScreenForm = ({setShowModal, data=null, type='add'}) => {
     const {context, setContext} = useContext(AppContext);
     const { data: addScreenRes, isLoading: isAddScreenLoading, error: addScreenError, doRequest: doAddScreenRequest } = useReq(process.env.REACT_APP_MOVIE_API, null);
     const { data: updateScreenRes, isLoading: isUpdateScreenLoading, error: updateScreenError, doRequest: doUpdateScreenRequest } = useReq(process.env.REACT_APP_MOVIE_API, null);
@@ -108,7 +108,7 @@ const ScreenForm = ({setShowModal, data=null}) => {
             <InputFormBox inputs={inputs} style={{width: '75%'}}/>
         </Box>
         <Box className='controlBox mt-18'>
-            <button id="save" type="button" className="button-sm mr-6" onClick={data != null ? update : add}>저장</button>
+            <button id="save" type="button" className="button-sm mr-6" onClick={(type == 'update') ? update : add}>저장</button>
             <button id="back" type="button" className="button-sm" onClick={() => setShowModal(false)}>뒤로</button>
         </Box>
     </>;
