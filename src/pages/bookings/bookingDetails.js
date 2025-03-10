@@ -13,6 +13,7 @@ const BookingDetails = ({ seats }) => {
     const [isLoading, setIsLoading] = useState(false); // 결제 진행 중 상태
     const [selectedSeats, setSelectedSeats] = useState([]); // selectedSeatNumbers 대신 빈 배열로 초기화
     const [paymentMap, setPaymentMap] = useState({}); // paymentMap 상태 추가
+    const [isNavigating, setIsNavigating] = useState(false); // 추가된 상태
     const navigate = useNavigate(); // useNavigate를 사용
 
     useEffect(() => {
@@ -34,22 +35,68 @@ const BookingDetails = ({ seats }) => {
                 } else {
                     console.log('seatNumbers가 없음');
                 }
-
-
             } catch (error) {
-                console.error('예매 정보 불러오기 실패:', error);
-                setError('예매 정보를 불러오는 데 실패했습니다.');
+                // 예매 정보 불러오기 실패 시
+                alert('예매 정보를 불러오는 데 실패했습니다.');
+                navigate('/main', { replace: true });  // Main 페이지로 이동
             }
         };
 
         fetchBookingDetails();
     }, [bookingId]);
 
-
-
-
     const handleRefundPolicyChange = (e) => {
         setAgreeRefundPolicy(e.target.checked);
+    };
+
+    const handleCancel = async () => {
+        if (!bookingData) {
+            alert('예매 정보를 로딩 중입니다. 잠시 후 다시 시도해 주세요.');
+            return;
+        }
+
+        if (bookingData.status === 'CANCELED') {
+            alert('이미 취소된 예약입니다.');
+            return;
+        }
+
+        setIsLoading(true);
+
+        try {
+            const cancelResponse = await axios.post(`http://127.0.0.1:8080/api/bookings/${bookingId}/cancel`, null, {
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                withCredentials: true,
+            });
+
+
+            if (cancelResponse.status === 200 || cancelResponse.status === 204) {
+                alert('예약이 취소되었습니다.');
+
+                setBookingData((prevData) => ({
+                    ...prevData,
+                    status: 'CANCELED', // 상태 업데이트
+                }));
+                // ✅ bookingData에서 movieId를 안전하게 추출
+                const movieId = bookingData?.movieId;
+
+                if (movieId) {
+                    navigate(`/detail/${movieId}`); // 영화 상세 페이지로 이동
+                } else {
+                    alert('영화 정보를 찾을 수 없습니다.');
+                    navigate('/main'); // movieId가 없을 경우 메인 페이지로 이동
+                }
+            } else {
+                alert('취소 요청 실패');
+                console.error('취소 요청 실패 상태 코드:', cancelResponse.status);
+            }
+        } catch (error) {
+            console.error('취소 처리 실패:', error); // 에러 로그 출력
+            alert('취소 처리에 실패했습니다.');
+        } finally {
+            setIsLoading(false);
+        }
     };
 
 
@@ -72,7 +119,6 @@ const BookingDetails = ({ seats }) => {
         setIsLoading(true);
 
         try {
-
             const userResponse = await axios.get('http://127.0.0.1:8080/api/users/my', {
                 headers: {
                     'Content-Type': 'application/json',
@@ -81,13 +127,11 @@ const BookingDetails = ({ seats }) => {
             });
             console.log('사용자 응답 데이터:', userResponse.data); // 데이터 확인
 
-
             const user = userResponse.data;
             if (!user) {
                 alert('사용자 정보를 가져올 수 없습니다.');
                 return;
             }
-
 
             const IMP = window.IMP;
             IMP.init("imp25587836");
@@ -138,7 +182,6 @@ const BookingDetails = ({ seats }) => {
                             console.log("paymentMap 갱신:", paymentMap);
                             // 결제 완료 후 Confirmation.js로 리디렉션
                             navigate('/confirmation', { state: { bookingData, paymentStatus: 'COMPLETED' } });
-
                         } else {
                             alert("결제 상태를 확인할 수 없습니다. 오류 발생");
                         }
@@ -150,7 +193,6 @@ const BookingDetails = ({ seats }) => {
                     alert('결제에 실패했습니다. 오류 메시지: ' + rsp.error_msg);
                     console.error('결제 실패 응답:', rsp);
                 }
-
                 setIsLoading(false);
             });
         } catch (error) {
@@ -159,7 +201,6 @@ const BookingDetails = ({ seats }) => {
             setIsLoading(false);
         }
     };
-
 
     if (error) {
         return <div>{error}</div>;
@@ -185,6 +226,8 @@ const BookingDetails = ({ seats }) => {
         const options = { hour: '2-digit', minute: '2-digit' };
         return new Date(dateTime).toLocaleString('ko-KR', options).split(' ')[1]; // 시간만 반환
     };
+
+
 
     return (
         <>
@@ -220,7 +263,6 @@ const BookingDetails = ({ seats }) => {
 
 
                 {/* 환불 정책 동의 체크 */}
-
                 <div className="refund-policy-container">
                     <label className="refund-policy-label">
                         <input
@@ -238,56 +280,26 @@ const BookingDetails = ({ seats }) => {
                     </label>
                 </div>
 
-
-                {/* <div className="refund-policy-container">
-                    <label className="refund-policy-label">
-                        <input
-                            type="checkbox"
-                            checked={agreeRefundPolicy}
-                            onChange={handleRefundPolicyChange}
-                            className="hidden-checkbox"
-                        />
-                        <span className={`checkbox-icon ${agreeRefundPolicy ? 'checked' : 'unchecked'}`}>
-                            {agreeRefundPolicy ? '✅' : '☑️'}
-                        </span>
-                        <span className="policy-text">취소/환불 정책에 동의합니다.</span>
-                    </label>
-                </div> */}
-
                 <div>
                     <p>- 온라인 예매는 영화 상영시간 20분전까지 취소 가능하며, 20분 이후 현장 취소만 가능합니다.</p>
-                    <p> - 현장 취소 시 영화 상영시간 이전까지만 가능합니다.</p>
+                    <p> - 현장 취소 시 취소 수수료가 부과될 수 있습니다.</p>
                 </div>
-
-                {selectedSeats && selectedSeats.length === 0 ? (
-                    <span>좌석을 선택해주세요</span>
-                ) : (
-                    selectedSeats.map((seatId, index) => {
-                        // seats 배열이 정의되어 있는지 확인
-                        const seat = seats && seats.find((s) => s.seatId === seatId);
-                        return seat ? (
-                            <span key={seatId}>
-                                {seat.seatNumber}
-                                {index < selectedSeats.length - 1 && ', '}
-                            </span>
-                        ) : null;
-                    })
-                )}
+                <div className="bar"></div>
 
 
 
-
-                {/* 결제 진행 버튼 */}
                 <div className="btn-container">
+                    {/* 취소 버튼 추가 */}
+                    {bookingData.status === 'PENDING' && (
+                        <button className="prevBtn" onClick={handleCancel}>취소</button>
+                    )}
                     <button onClick={handleNext} disabled={isLoading}>
-                        {isLoading ? '결제 중...' : '결제하기'}
+                        결제
                     </button>
                 </div>
-
             </div>
         </>
     );
-
 };
 
 export default BookingDetails;
