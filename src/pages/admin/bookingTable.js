@@ -5,7 +5,7 @@ import UnderBarTitle from '../../components/underBarTitle.js';
 import { useParams } from 'react-router-dom';
 import EmptyBox from '../../components/emptyBox.js';
 import { Box } from '@mui/material';
-import { changeTimeFormat, convertStartEndTimeFormatter } from '../../utils/index.js';
+import { changeTimeFormat, convertStartEndTimeFormatter } from '../../utils/datetime.js';
 
 const BookingTable = () => {
     const { userId } = useParams();

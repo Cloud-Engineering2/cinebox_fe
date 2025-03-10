@@ -5,7 +5,7 @@ import List from '@mui/material/List';
 import Divider from '@mui/material/Divider';
 import { Box } from '@mui/material';
 import EditModeInput from './editModeInput.js';
-import { changeTimeFormat } from '../utils/index.js';
+import { changeTimeFormat } from '../utils/datetime.js';
 
 export default function ReviewList({ reviews, styles, doGetReviewRequest, noEdit = false, showMovieTitle = true }) {
     const { data: editReviewResponse, isLoading: isReviewEditLoading, error: editReviewsError, doRequest: doEditReviewRequest } = useReq(null, null);

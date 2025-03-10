@@ -5,9 +5,9 @@ import { Box, Button, TextField } from '@mui/material';
 import UnderBarTitle from '../components/underBarTitle.js';
 import ToggleButton from '../components/toggleButton.js';
 import BasicDatePicker from '../components/datePicker.js';
-import { convertDateFormatter, convertISOString } from '../utils/index.js';
+import { convertDateFormatter } from '../utils/datetime.js';
 import { showToast } from '../utils/toast.js';
-import { checkEmailRegExp, checkPhoneRegExp } from '../utils/regExp.js';
+import { checkEmailRegExp } from '../utils/regExp.js';
 import { useLocation } from 'react-router-dom';
 
 const KakaoSignup = () => {

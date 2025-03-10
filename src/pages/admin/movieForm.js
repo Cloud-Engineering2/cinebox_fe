@@ -3,7 +3,7 @@ import React, { useCallback, useContext, useEffect, useMemo } from 'react';
 import { AppContext } from "../../App.js";
 import InputFormBox from '../../components/inputFormBox.js';
 import useReq from '../../hooks/useReq.js';
-import { convertDateFormatter } from '../../utils/index.js';
+import { convertDateFormatter } from '../../utils/datetime.js';
 import { showToast } from '../../utils/toast.js';
 
 const MovieForm = ({ setShowModal, data = null }) => {
