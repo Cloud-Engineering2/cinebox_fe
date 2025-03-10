@@ -10,6 +10,7 @@ import ReviewList from '../components/reviewList.js';
 import UnderBarTitle from '../components/underBarTitle.js';
 import useReq from '../hooks/useReq.js';
 import UserForm from './admin/userForm.js';
+import { showToast } from '../utils/toast.js';
 
 const Mypage = () => {
     const { context, setContext } = useContext(AppContext);
@@ -19,6 +20,7 @@ const Mypage = () => {
     const [showBookingList, setShowBookingList] = useState(false);
     const [showEditUser, setShowEditUser] = useState({ userId: null, state: false });
 
+    const { data: logoutRequest, isLoading: isLogoutLoading, error: logoutError, doRequest: doLogoutRequest } = useReq(null, null);
     const { data, isLoading, error, doRequest } = useReq(process.env.REACT_APP_USER_API + `/${context.userId}`, {
         method: 'GET'
     });
@@ -33,9 +35,6 @@ const Mypage = () => {
     });
     const { data: deleteUserRes, isLoading: isDeleteUserLoading, error: deleteUserError, doRequest: doDeleteUserRequest } = useReq(process.env.REACT_APP_USER_API + `/${context.userId}`, null);
     
-    useEffect(() => {
-        console.log(JSON.stringify(context));
-    }, []);
     useEffect(() => {
         setMovies(likeMoviesRes);
     }, [likeMoviesRes]);
@@ -55,14 +54,26 @@ const Mypage = () => {
             document.querySelector('.more').style.display = 'none';
         }
     }, [showBookingList]);
+    useEffect(() => {
+		if (isLogoutLoading) window.location.href = '/';
+	}, [isLogoutLoading])
+	useEffect(() => {
+		if (logoutError) showToast('로그아웃에 실패하였습니다.', 'error');
+	}, [logoutError])
 
+    const logout = () => {
+        localStorage.clear();
+		doLogoutRequest(process.env.REACT_APP_LOGOUT_URL, {
+			method: 'POST'
+		})
+	}
     const deleteUser = useCallback(() => {
         doDeleteUserRequest(process.env.REACT_APP_USER_API + `/${context.userId}/withdraw`, {
             method: 'POST'
         });
-        localStorage.clear();
-        window.location.href = '/';
+        logout();
     }, [])
+
 
     return <>
         <UnderBarTitle title={'나의 시네박스'} />
