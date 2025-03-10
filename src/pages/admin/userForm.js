@@ -133,6 +133,7 @@ const UserForm = ({ setShowModal, data = null }) => {
     }, [addUserError, updateUserError])
 
     return <>
+    {console.log(JSON.stringify(data))}
         <h2 className='mb-14'>{data ? '유저 수정' : '유저 등록'}</h2>
         <Box className='form mb-44'>
             <InputFormBox inputs={inputs} style={{ width: '75%' }} />
