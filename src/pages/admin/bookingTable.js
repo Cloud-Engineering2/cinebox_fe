@@ -22,14 +22,14 @@ const BookingTable = () => {
         doDeleteBookingRequest((status == 'CANCEL' ? cancelURL : refundURL), {
             method: 'POST'
         })
-        // document.querySelector(`#booking_${bookingId}`).remove();
+        window.location.reload();
     }, [])
 
     return <>
         <UnderBarTitle title={'사용자별 예약 리스트'} />
         <Box className='bookingTable'>
             {
-                getUserBookingsRes ? getUserBookingsRes.map(booking => {
+                (getUserBookingsRes && getUserBookingsRes.length > 0) ? getUserBookingsRes.map(booking => {
                     return <>
                         <Box
                             key={`booking_${booking.bookingId}`}

@@ -158,14 +158,13 @@ const MovieForm = ({ setShowModal, data = null }) => {
     useEffect(() => {
         if (addMovieRes != null) {
             document.querySelector('#title').value = '';
-            document.querySelector('#runTime').value = '';
+            document.querySelector('#runtime').value = '';
             document.querySelector('#ratingGrade').value = '';
             document.querySelector('#genre').value = '';
             document.querySelector('#director').value = '';
-            document.querySelector('#actor').value = '';
+            document.querySelector('#actors').value = '';
             document.querySelector('#status').value = '';
-            document.querySelector('#posterImageUrl').value = '';
-            document.querySelector('#uploadFile').value = '';
+            document.querySelector('#image').value = '';
             document.querySelector('#plot').value = '';
 
             showToast('성공적으로 영화가 추가되었습니다.', 'success');

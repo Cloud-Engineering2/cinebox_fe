@@ -43,7 +43,7 @@ const ScreenTable = () => {
                 <button id="addScreen" type="button" className="button-sm fs-23" onClick={() => setShowAddScreen(true)}>+</button>
             </Box>
             {
-                getMovieScreensRes ? getMovieScreensRes.map(groupedData => {
+                (getMovieScreensRes && getMovieScreensRes.length > 0) ? getMovieScreensRes.map(groupedData => {
                     return <Accordion className='accordion mb-14'>
                         <AccordionSummary
                             expandIcon={<ExpandMoreIcon />}
