@@ -83,6 +83,7 @@ const SeatSelection = ({ selectedScreenId, selectedDate, selectedTime, selectedE
                 }),
             });
 
+
             console.log("응답상태 확인 :  ", bookingResponse); // 응답 상태 확인
 
             if (!bookingResponse.ok) throw new Error('예매 생성 실패');
