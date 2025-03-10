@@ -1,8 +1,8 @@
-import React, { useState, useEffect, useContext, useMemo, useCallback } from 'react';
-import useReq from '../../hooks/useReq.js';
 import { Box } from '@mui/material';
-import InputFormBox from '../../components/inputFormBox.js';
+import React, { useCallback, useContext, useEffect, useMemo } from 'react';
 import { AppContext } from "../../App.js";
+import InputFormBox from '../../components/inputFormBox.js';
+import useReq from '../../hooks/useReq.js';
 import { convertDateFormatter } from '../../utils/index.js';
 import { showToast } from '../../utils/toast.js';
 
@@ -155,8 +155,8 @@ const MovieForm = ({ setShowModal, data = null }) => {
         });
     }, [])
 
-    useEffect(()=>{
-        if(addMovieRes != null){
+    useEffect(() => {
+        if (addMovieRes != null) {
             document.querySelector('#title').value = '';
             document.querySelector('#runTime').value = '';
             document.querySelector('#ratingGrade').value = '';
@@ -170,13 +170,13 @@ const MovieForm = ({ setShowModal, data = null }) => {
 
             showToast('성공적으로 영화가 추가되었습니다.', 'success');
         }
-    },[addMovieRes])
-    useEffect(()=>{
-        if(updateMovieRes != null){
+    }, [addMovieRes])
+    useEffect(() => {
+        if (updateMovieRes != null) {
             showToast('성공적으로 영화가 수정되었습니다.', 'success');
-            window.location.reload ()
+            window.location.reload()
         }
-    },[updateMovieRes])
+    }, [updateMovieRes])
     useEffect(() => {
         if (addMovieError || updateMovieError) {
             showToast('입력 값을 다시 확인해 주세요.', 'warn');
@@ -195,7 +195,7 @@ const MovieForm = ({ setShowModal, data = null }) => {
             <Box>
                 <input id='image' type="file" />
             </Box>
-            <button id="remove" type="button" className="button-sm mr-6" onClick={remove}>삭제</button>
+            <button id="remove" type="buttpon" className="button-sm mr-6" onClick={remove}>삭제</button>
         </Box>
         <Box className='controlBox mt-18'>
             <button id="save" type="button" className="button-sm mr-6" onClick={data != null ? update : add}>저장</button>

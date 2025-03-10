@@ -1,22 +1,22 @@
 import { Box } from '@mui/material';
 import React, { useContext, useEffect } from 'react';
-import '../styles/templates/header.css'
-import useReq from '../hooks/useReq';
 import { AppContext } from "../App.js";
+import useReq from '../hooks/useReq';
+import '../styles/templates/header.css';
 import { showToast } from '../utils/toast.js';
 
 const Header = () => {
 	const { context, setContext } = useContext(AppContext);
-	const { data : logoutRequest, isLoading : isLogoutLoading, error : logoutError, doRequest: doLogoutRequest } = useReq(null, null);
+	const { data: logoutRequest, isLoading: isLogoutLoading, error: logoutError, doRequest: doLogoutRequest } = useReq(null, null);
 
-	useEffect(()=>{
-		if(isLogoutLoading) window.location.href='/';
-	},[isLogoutLoading])
-	useEffect(()=>{
-		if(logoutError) showToast('로그아웃에 실패하였습니다.', 'error');
-	},[logoutError])
+	useEffect(() => {
+		if (isLogoutLoading) window.location.href = '/';
+	}, [isLogoutLoading])
+	useEffect(() => {
+		if (logoutError) showToast('로그아웃에 실패하였습니다.', 'error');
+	}, [logoutError])
 
-	const logout = ()=>{
+	const logout = () => {
 		localStorage.removeItem('userId');
 		localStorage.removeItem('role');
 		localStorage.removeItem('identifier');
