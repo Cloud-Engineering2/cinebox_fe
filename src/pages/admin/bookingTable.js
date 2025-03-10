@@ -42,7 +42,7 @@ const BookingTable = () => {
                             }}>
                             <Box className='flex'>
                                 <Box className='width-180'>
-                                    <img src='/assets/movie1.jpg' className='width-100p'/>
+                                    <img src={booking.posterImageUrl} className='width-100p'/>
                                 </Box>
                                 <Box className='width-83p'>
                                     <Box className='userCard flex'>
