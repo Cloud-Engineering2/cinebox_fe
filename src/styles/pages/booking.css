@@ -218,6 +218,7 @@
 }
 
 .seats .row .row-label {
+    width:30px;
     font-weight: 500;
     font-size: 17px;
 }
@@ -479,6 +480,7 @@
     border: none;
     cursor: pointer;
 }
+
 
 .btn-container .prevBtn {
     background: transparent;

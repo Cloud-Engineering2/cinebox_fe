@@ -13,6 +13,7 @@ const BookingDetails = ({ seats }) => {
     const [isLoading, setIsLoading] = useState(false); // 결제 진행 중 상태
     const [selectedSeats, setSelectedSeats] = useState([]); // selectedSeatNumbers 대신 빈 배열로 초기화
     const [paymentMap, setPaymentMap] = useState({}); // paymentMap 상태 추가
+    const [isNavigating, setIsNavigating] = useState(false); // 추가된 상태
     const navigate = useNavigate(); // useNavigate를 사용
 
     useEffect(() => {
@@ -35,8 +36,9 @@ const BookingDetails = ({ seats }) => {
                     console.log('seatNumbers가 없음');
                 }
             } catch (error) {
-                console.error('예매 정보 불러오기 실패:', error);
-                setError('예매 정보를 불러오는 데 실패했습니다.');
+                // 예매 정보 불러오기 실패 시
+                alert('예매 정보를 불러오는 데 실패했습니다.');
+                navigate('/main', { replace: true });  // Main 페이지로 이동
             }
         };
 
@@ -61,20 +63,30 @@ const BookingDetails = ({ seats }) => {
         setIsLoading(true);
 
         try {
-            const cancelResponse = await axios.put(`http://127.0.0.1:8080/api/bookings/${bookingId}/cancel`, null, {
+            const cancelResponse = await axios.post(`http://127.0.0.1:8080/api/bookings/${bookingId}/cancel`, null, {
                 headers: {
                     'Content-Type': 'application/json',
                 },
                 withCredentials: true,
             });
 
-            if (cancelResponse.status === 200) {
+
+            if (cancelResponse.status === 200 || cancelResponse.status === 204) {
                 alert('예약이 취소되었습니다.');
+
                 setBookingData((prevData) => ({
                     ...prevData,
-                    status: 'CANCELED', // 상태를 취소로 업데이트
+                    status: 'CANCELED', // 상태 업데이트
                 }));
-                navigate('/bookings');
+                // ✅ bookingData에서 movieId를 안전하게 추출
+                const movieId = bookingData?.movieId;
+
+                if (movieId) {
+                    navigate(`/detail/${movieId}`); // 영화 상세 페이지로 이동
+                } else {
+                    alert('영화 정보를 찾을 수 없습니다.');
+                    navigate('/main'); // movieId가 없을 경우 메인 페이지로 이동
+                }
             } else {
                 alert('취소 요청 실패');
                 console.error('취소 요청 실패 상태 코드:', cancelResponse.status);
@@ -170,7 +182,6 @@ const BookingDetails = ({ seats }) => {
                             console.log("paymentMap 갱신:", paymentMap);
                             // 결제 완료 후 Confirmation.js로 리디렉션
                             navigate('/confirmation', { state: { bookingData, paymentStatus: 'COMPLETED' } });
-
                         } else {
                             alert("결제 상태를 확인할 수 없습니다. 오류 발생");
                         }
@@ -182,7 +193,6 @@ const BookingDetails = ({ seats }) => {
                     alert('결제에 실패했습니다. 오류 메시지: ' + rsp.error_msg);
                     console.error('결제 실패 응답:', rsp);
                 }
-
                 setIsLoading(false);
             });
         } catch (error) {
@@ -217,6 +227,8 @@ const BookingDetails = ({ seats }) => {
         return new Date(dateTime).toLocaleString('ko-KR', options).split(' ')[1]; // 시간만 반환
     };
 
+
+
     return (
         <>
             <UnderBarTitle title={'결제하기'} />
@@ -248,12 +260,7 @@ const BookingDetails = ({ seats }) => {
                     신용/체크카드
                 </div>
 
-                {/* 취소 버튼 추가 */}
-                {bookingData.status === 'PENDING' && (
-                    <div className="btn-container">
-                        <button onClick={handleCancel}>취소</button>
-                    </div>
-                )}
+
 
                 {/* 환불 정책 동의 체크 */}
                 <div className="refund-policy-container">
@@ -279,8 +286,16 @@ const BookingDetails = ({ seats }) => {
                 </div>
                 <div className="bar"></div>
 
+
+
                 <div className="btn-container">
-                    <button onClick={handleNext} disabled={isLoading || !agreeRefundPolicy}>결제</button>
+                    {/* 취소 버튼 추가 */}
+                    {bookingData.status === 'PENDING' && (
+                        <button className="prevBtn" onClick={handleCancel}>취소</button>
+                    )}
+                    <button onClick={handleNext} disabled={isLoading}>
+                        결제
+                    </button>
                 </div>
             </div>
         </>

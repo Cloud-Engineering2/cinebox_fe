@@ -29,7 +29,6 @@ const Booking = () => {
     const [totalPrice, setTotalPrice] = useState(0);  // 결제 금액 상태 추가
     const [selectedEndTime, setSelectedEndTime] = useState(null);  // selectedEndTime 상태 추가
 
-
     // const formatDate = (date) => {
     //     const dateObj = (date instanceof Date) ? date : new Date(date);
     //     return dateObj.toISOString().split('T')[0];
@@ -75,7 +74,6 @@ const Booking = () => {
             const response = await fetch(`${process.env.REACT_APP_MOVIE_SCHEDULE_API}/${movieId}/dates`, {
                 method: 'GET',
                 headers: {
-
                     'Content-Type': 'application/json',
                 },
                 credentials: 'include',  // 쿠키를 포함하여 요청
@@ -84,9 +82,21 @@ const Booking = () => {
                 throw new Error(`HTTP error! Status: ${response.status}`);
             }
             const data = await response.json();
-            setAvailableDates(data.map(date => formatDate(new Date(date))));
+            const formattedDates = data.map(date => formatDate(new Date(date)));
+
+            // 이미 availableDates가 설정되어 있으면 더 이상 호출하지 않도록 방지
+            if (formattedDates.length === 0 && availableDates.length === 0) {
+
+                console.log("상영날짜정보가없습니다.");
+                window.location.href = '/main';  // main 페이지로 리다이렉트
+                return;  // 더 이상 진행하지 않도록 종료
+            }
+            setAvailableDates(formattedDates);
+
         } catch (error) {
             console.error('상영 날짜 로딩 실패:', error);
+            alert('상영회차 정보가 없습니다.');
+            navigate('/main');  // 오류 발생 시 main 페이지로 이동
         }
     };
 
@@ -163,6 +173,7 @@ const Booking = () => {
                     credentials: 'include',  // 쿠키를 포함하여 요청
 
                 });
+
                 if (!response.ok) {
                     throw new Error(`HTTP error! Status: ${response.status}`);
                 }
@@ -179,16 +190,20 @@ const Booking = () => {
                         }))
                         : []
                 );
-
                 setMovieDetails(uniqueData);
             } catch (error) {
                 console.error('영화 정보 로딩 실패:', error);
             }
         };
 
-        fetchMovieDetails();
-        fetchAvailableDates();
-    }, [movieId, token]);
+        // fetchMovieDetails() 호출 전에 availableDates가 비어있을 경우에만 fetchAvailableDates() 호출
+        if (availableDates.length === 0) {
+            fetchAvailableDates(); // availableDates가 비어있으면 날짜 정보를 가져옴
+        }
+        fetchMovieDetails();  // 영화 정보를 가져오는 API 호출
+    }, [movieId, token, availableDates]);
+
+
 
 
     useEffect(() => {
@@ -205,6 +220,7 @@ const Booking = () => {
         // 상영 시간 가져오기
         fetchAvailableTimes(formattedDate);
     };
+
 
     const handleTimeSelect = (screenId, startTime, endTime, price) => {
         setSelectedScreenId(screenId);
@@ -290,9 +306,9 @@ const Booking = () => {
         navigate(`/detail/${movieId}`);
     };
 
-    if (loading) {
-        return <div>로딩 중...</div>;
-    }
+    // if (loading) {
+    //     return <div>로딩 중...</div>;
+    // }
 
     const calendarDays = renderCalendar();
 
@@ -301,8 +317,18 @@ const Booking = () => {
         <>
             <UnderBarTitle title={'영화 예매'} />
             <div className="booking-container">
-                <h1>{movieDetails.title} </h1>
-                <p>{movieDetails.description}</p>
+                {/* <h1>{movieDetails.title} </h1>
+                <p>{movieDetails.description}</p> */}
+
+                {movieDetails ? (  // movieDetails가 null이 아닌 경우에만 렌더링
+                    <>
+                        <h1>{movieDetails.title}</h1>
+                        <p>{movieDetails.description}</p>
+                    </>
+                ) : (
+                    null
+                )}
+
 
                 <div className="layout-container">
                     {!showSeatSelection ? (
