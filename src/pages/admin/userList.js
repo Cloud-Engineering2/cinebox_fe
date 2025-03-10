@@ -69,6 +69,7 @@ const UserList = () => {
                             </Box>
                         </Box>
                         <Box className='controlBox'>
+                            <button id="booking" type="button" className="button-sm mr-6" onClick={()=>window.location.href=`/admin/booking/${user.userId}`}>예매정보 조회</button>
                             <button id="edit" type="button" className="button-sm mr-6" onClick={()=>setShowEditUser({userId: user.userId, state: true})}>수정</button>
                             <button id="delete" type="button" className="button-sm" onClick={()=>deleteUser(user.userId)}>삭제</button>
                         </Box>
