@@ -61,7 +61,7 @@ const MovieList = () => {
                     movie={movie} 
                     noBookingButton={true}/>
                     <Box className='controlBox'>
-                        <button id="edit" type="button" className="button-sm mr-6" onClick={()=>window.location.href=`/screen/${movie.movieId}`}>상영정보 조회</button>
+                        <button id="auditoriumList" type="button" className="button-sm mr-6" onClick={()=>window.location.href=`/admin/screen/${movie.movieId}`}>상영정보 조회</button>
                         <button id="edit" type="button" className="button-sm mr-6" onClick={()=>setShowEditMovie({movieId: movie.movieId, state: true})}>수정</button>
                         <button id="delete" type="button" className="button-sm" onClick={()=>deleteMovie(movie.movieId)}>삭제</button>
                     </Box>

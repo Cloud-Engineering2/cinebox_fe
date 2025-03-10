@@ -122,6 +122,9 @@
 .width-83p{
     width: 83% !important;
 }
+.width-100p{
+    width: 83% !important;
+}
 .width-14 {
     width: 14px !important;
 }
@@ -130,6 +133,9 @@
 }
 .width-28 {
     width: 28px !important;
+}
+.width-180 {
+    width: 180px !important;
 }
 .min-width-20 {
     min-width: 20px;

@@ -23,6 +23,7 @@ import ScreenTable from './pages/admin/screenTable.js';
 import Footer from './templates/footer.js';
 import Header from './templates/header.js';
 import { ToastContainer } from 'react-toastify';
+import BookingTable from './pages/admin/bookingTable.js';
 
 export const AppContext = createContext(null);
 export default function App() {
@@ -48,10 +49,10 @@ export default function App() {
               <Route path="/admin" element={<Admin />} />
               <Route path="/detail/:movieId" element={<Detail />} />
               <Route path="/booking/:movieId" element={<Booking />} />
-              <Route path="/screen/:movieId" element={<ScreenTable />} />
-              {/* 다른 라우트들 */}
               <Route path="/bookings/:bookingId" element={<BookingDetails />} />
               <Route path="/confirmation" element={<Confirmation />} />
+              <Route path="/admin/screen/:movieId" element={<ScreenTable />} />
+              <Route path="/admin/booking/:userId" element={<BookingTable />} />
             </Routes>
           </Router>
         </Box>

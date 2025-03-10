@@ -1,4 +1,3 @@
-
 export const changeTimeFormat = (datetime) => {
     const date = datetime.split('T')[0].replaceAll('-', '.');
     const time = datetime.split('T')[1].split('.')[0];
@@ -29,10 +28,30 @@ export const splitDateTime = (datetime) => {
     };
 }
 
+export const splitDateTime_v2 = (datetime)=>{
+    const date = datetime.split('T')[0].replaceAll('-', '.');
+    const time = datetime.split('T')[1].split('.')[0];
+    const hour = time.split(':')[0];
+    const min = time.split(':')[1];
+
+    return {
+        date: `${date}`,
+        time: `${hour}:${min}`
+    };
+}
+
+export const convertStartEndTimeFormatter = (start, end)=>{
+    const date = splitDateTime_v2(start).date;
+    const start_time = splitDateTime_v2(start).time;
+    const end_time = splitDateTime_v2(end).time;
+    
+    return `${date} (${start_time}~${end_time})`;
+}
+
 export const getFullDateTime = (datetime) => {
     const date = new Date(datetime);
     const year = date.getFullYear();
-    const month = date.getMonth();
+    const month = date.getMonth() + 1;
     const day = date.getDate();
     const hour = date.getHours();
     const min = date.getMinutes();

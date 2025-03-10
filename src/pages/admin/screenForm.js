@@ -89,7 +89,7 @@ const ScreenForm = ({setShowModal, data=null}) => {
         const movieId = document.querySelector('#movieId').value;
         const auditoriumId = document.querySelector('#auditoriumId').value;
         const startTime = getFullDateTime(document.querySelector('.startTime input').value);
-        
+
         doUpdateScreenRequest(process.env.REACT_APP_SCREEN_API + `/${data.screenId}`, {
             method: 'PUT',
             data: {
