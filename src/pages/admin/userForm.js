@@ -2,7 +2,7 @@ import { Box } from '@mui/material';
 import React, { useCallback, useEffect } from 'react';
 import InputFormBox from '../../components/inputFormBox.js';
 import useReq from '../../hooks/useReq.js';
-import { convertDateFormatter } from '../../utils/index.js';
+import { convertDateFormatter } from '../../utils/datetime.js';
 import { checkEmailRegExp } from '../../utils/regExp.js';
 import { showToast } from '../../utils/toast.js';
 

@@ -12,7 +12,6 @@ export default function KakaoRedirect() {
     
     useEffect(()=>{
         if(code){
-            debugger;
             doRequest(process.env.REACT_APP_KAKAO_CALLBACK_API + `?code=${code}`, {
                 method: "GET"
             });

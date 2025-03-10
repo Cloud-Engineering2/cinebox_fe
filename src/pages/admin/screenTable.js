@@ -3,7 +3,7 @@ import useReq from '../../hooks/useReq.js';
 import '../../styles/components/screenTable.css';
 import { Accordion, AccordionDetails, AccordionSummary, Typography, Box } from '@mui/material';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
-import { splitDateTime } from '../../utils/index.js';
+import { splitDateTime } from '../../utils/datetime.js';
 import UnderBarTitle from '../../components/underBarTitle.js';
 import { useParams } from 'react-router-dom';
 import EmptyBox from '../../components/emptyBox.js';

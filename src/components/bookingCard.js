@@ -1,7 +1,7 @@
 import { Box } from '@mui/material';
 import React from 'react';
 import '../styles/components/bookingCard.css';
-import { changeTimeFormat } from '../utils/index.js';
+import { changeTimeFormat } from '../utils/datetime.js';
 
 export default function BookingCard({ booking }) {
 
