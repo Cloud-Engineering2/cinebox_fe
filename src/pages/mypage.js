@@ -32,7 +32,10 @@ const Mypage = () => {
         method: 'GET'
     });
     const { data: deleteUserRes, isLoading: isDeleteUserLoading, error: deleteUserError, doRequest: doDeleteUserRequest } = useReq(process.env.REACT_APP_USER_API + `/${context.userId}`, null);
-
+    
+    useEffect(() => {
+        console.log(JSON.stringify(context));
+    }, []);
     useEffect(() => {
         setMovies(likeMoviesRes);
     }, [likeMoviesRes]);
@@ -53,9 +56,9 @@ const Mypage = () => {
         }
     }, [showBookingList]);
 
-    const deleteUser = useCallback(async () => {
-        await doDeleteUserRequest(process.env.REACT_APP_USER_API + `/${context.userId}`, {
-            method: 'DELETE'
+    const deleteUser = useCallback(() => {
+        doDeleteUserRequest(process.env.REACT_APP_USER_API + `/${context.userId}/withdraw`, {
+            method: 'POST'
         });
         localStorage.clear();
         window.location.href = '/';
