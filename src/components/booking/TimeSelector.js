@@ -70,7 +70,7 @@ const TimeSelector = ({ availableTimes, onSelectTime, selectedDate }) => {
                     const totalSeats = times[0]?.totalSeats;
                     return (
                         <div key={auditoriumName} className="auditorium-group">
-                            <h4>{auditoriumName} <span>총 {totalSeats} 석</span></h4>
+                            <h4>{auditoriumName} / <span>총 {totalSeats} 석</span></h4>
                             <div className="time-button-wrapper">
                                 {times.map(({ startTime, endTime, screenId, price, totalSeats, availableSeats }) => (
                                     <div key={`${startTime}-${screenId}`} className="time-details-wrapper">
@@ -81,7 +81,8 @@ const TimeSelector = ({ availableTimes, onSelectTime, selectedDate }) => {
                                         >
                                             {startTime}
                                         </button>
-                                        <p>{availableSeats}/{totalSeats}</p>
+                                        {/* <p>{availableSeats}/{totalSeats}</p> */}
+                                        <p>{availableSeats}석</p>
                                     </div>
                                 ))}
                             </div>
