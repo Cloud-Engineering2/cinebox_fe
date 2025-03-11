@@ -64,7 +64,7 @@ jobs:
       - name: Download build artifact
         uses: actions/download-artifact@v2
         with:
-          name: build-output
+          name: cinebox
 
       - name: Login to Amazon ECR
         id: login-ecr
