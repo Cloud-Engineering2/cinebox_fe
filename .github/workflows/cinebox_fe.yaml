@@ -46,7 +46,7 @@ jobs:
         with:
           name: cinebox
           path: ./build
-
+ 
       # - name: Configure AWS credentials 
       #   run: |
       #     aws configure set aws_access_key_id ${{ secrets.AWS_ACCESS_KEY_ID }}
