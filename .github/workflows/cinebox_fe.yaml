@@ -95,5 +95,5 @@ jobs:
   #         git config --local user.email "${{ secrets.EMAIL }}"
   #         git config --local user.name "HIRedrain"
   #         git add .
-          git commit -m "Update image version to ${{ env.date }} - ${{ github.sha }}"
-          git push
+          # git commit -m "Update image version to ${{ env.date }} - ${{ github.sha }}"
+          # git push
