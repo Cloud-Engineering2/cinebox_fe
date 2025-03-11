@@ -47,9 +47,6 @@ jobs:
         with:
           name: cinebox
           path: ./build
-          
-      - name: Check build folder (double Check)
-        run: ls ./build
  
       - name: Configure AWS credentials 
         run: |
@@ -69,9 +66,13 @@ jobs:
         run: |
           aws ecr get-login-password --region ${{ secrets.AWS_REGION }} | docker login --username AWS --password-stdin ${{ secrets.AWS_ACCOUNT_ID }}.dkr.ecr.${{ secrets.AWS_REGION }}.amazonaws.com
 
-      - name: Build and push
+      - name: Build and Push Docker Image
+        env:
+          ECR_REGISTRY: ${{ secrets.AWS_ACCOUNT_ID }}.dkr.ecr.${{ secrets.AWS_REGION }}.amazonaws.com
+          IMAGE_TAG: latest
         run: |
-          docker buildx build --platform linux/amd64 -t ${{ secrets.ECR_REPOSITORY }}:${{ github.sha }} --push .
+          docker build -t $ECR_REGISTRY/${{ secrets.ECR_REPOSITORY }}:$IMAGE_TAG .
+          docker push $ECR_REGISTRY/${{ secrets.ECR_REPOSITORY }}:$IMAGE_TAG
 
 
   # cd:
