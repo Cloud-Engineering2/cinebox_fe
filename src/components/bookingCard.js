@@ -31,6 +31,16 @@ export default function BookingCard({ booking }) {
           </Box>
           <Box className='flex'><p className='grayFont'>상영 극장</p>{booking.auditoriumName}</Box>
           <Box className='flex'><p className='grayFont'>좌석</p>{booking.seatNumbers.join(', ')}</Box>
+          <Box className='flex'>
+            <p className='grayFont'>예매상태</p>
+            {
+              booking.status === 'PENDING' ? '결제 대기중' :
+                booking.status === 'PAID' ? '결제 완료' :
+                  booking.status === 'CANCELED' ? '취소' :
+                    booking.status === 'REFUNDED' ? '환불' :
+                      (booking.status ? booking.status : '상태 없음')
+            }
+          </Box>
         </Box>
         <Box className='totPrice'>
           {new Intl.NumberFormat('ko-KR', { style: 'currency', currency: 'KRW' }).format(booking.totPrice)}

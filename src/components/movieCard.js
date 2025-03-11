@@ -1,9 +1,9 @@
-import React, { useCallback } from 'react';
 import { Box, Button } from '@mui/material';
 import Typography from '@mui/material/Typography';
-import AgeLogo from './ageLogo';
-import '../styles/components/movieCard.css'
+import React, { useCallback } from 'react';
+import '../styles/components/movieCard.css';
 import { isUpcoming } from '../utils';
+import AgeLogo from './ageLogo';
 
 export default function MovieCard({ number, movie, imgUrl, styles }) {
   const id = movie.movieId;

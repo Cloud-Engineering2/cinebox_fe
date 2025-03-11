@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 
 import Calendar from '../../components/booking/Calendar';
@@ -14,6 +14,10 @@ const Booking = () => {
     const token = localStorage.getItem('token');
     const { movieId } = useParams();
     const navigate = useNavigate();
+
+    const [alertShown, setAlertShown] = useState(false);  // 알림 상태 관리
+
+
 
     const [movieDetails, setMovieDetails] = useState(null);
     const [availableDates, setAvailableDates] = useState([]);
@@ -69,7 +73,16 @@ const Booking = () => {
     };
 
 
+    // 중복 호출 방지를 위한 플래그 생성
+    const isFetched = useRef(false);
+
+
+    // 상영날짜 정보 가져오기
     const fetchAvailableDates = async () => {
+        // ✅ 이미 실행된 경우 중복 호출 방지
+        if (isFetched.current) return;
+        isFetched.current = true; // ✅ 첫 실행 이후 플래그 설정
+
         try {
             const response = await fetch(`${process.env.REACT_APP_MOVIE_SCHEDULE_API}/${movieId}/dates`, {
                 method: 'GET',
@@ -78,32 +91,39 @@ const Booking = () => {
                 },
                 credentials: 'include',  // 쿠키를 포함하여 요청
             });
+
             if (!response.ok) {
                 throw new Error(`HTTP error! Status: ${response.status}`);
             }
+
             const data = await response.json();
             const formattedDates = data.map(date => formatDate(new Date(date)));
 
-            // 이미 availableDates가 설정되어 있으면 더 이상 호출하지 않도록 방지
-            if (formattedDates.length === 0 && availableDates.length === 0) {
-
-                console.log("상영날짜정보가없습니다.");
-                window.location.href = '/main';  // main 페이지로 리다이렉트
-                return;  // 더 이상 진행하지 않도록 종료
+            // 상영 날짜가 없으면 한 번만 알림을 표시하고 리다이렉트
+            if (formattedDates.length === 0) {
+                alert("상영회차 정보가 없습니다.");
+                navigate('/main');  // main 페이지로 이동
+                return;
             }
+
             setAvailableDates(formattedDates);
 
         } catch (error) {
             console.error('상영 날짜 로딩 실패:', error);
-            alert('상영회차 정보가 없습니다.');
-            navigate('/main');  // 오류 발생 시 main 페이지로 이동
+            alert("상영회차 정보를 불러오는 중 오류가 발생했습니다.");
+            navigate('/main');
         }
     };
 
+
+    useEffect(() => {
+        fetchAvailableDates();
+    }, [movieId]);
+
     const fetchAvailableTimes = async (date) => {
         try {
-            //const response = await fetch(`${process.env.REACT_APP_MOVIE_SCHEDULE_API}/${movieId}/screens/date?date=${formatDate(date)}`, {
-            const response = await fetch(`http://127.0.0.1:8080/api/movies/${movieId}/screens/date?date=${formatDate(date)}`, {
+            const response = await fetch(`${process.env.REACT_APP_MOVIE_SCHEDULE_API}/${movieId}/screens/date?date=${formatDate(date)}`, {
+                //const response = await fetch(`http://127.0.0.1:8080/api/movies/${movieId}/screens/date?date=${formatDate(date)}`, {
 
                 method: 'GET',
                 headers: {
@@ -164,6 +184,11 @@ const Booking = () => {
 
     useEffect(() => {
         const fetchMovieDetails = async () => {
+            // fetchMovieDetails() 호출 전에 availableDates가 비어있을 경우에만 fetchAvailableDates() 호출
+            if (availableDates.length === 0) {
+                console.log("availableDates", availableDates);
+                fetchAvailableDates(); // availableDates가 비어있으면 날짜 정보를 가져옴
+            }
             try {
                 const response = await fetch(`http://127.0.0.1:8080/api/movies/${movieId}/dates`, {
                     method: 'GET',
@@ -196,10 +221,7 @@ const Booking = () => {
             }
         };
 
-        // fetchMovieDetails() 호출 전에 availableDates가 비어있을 경우에만 fetchAvailableDates() 호출
-        if (availableDates.length === 0) {
-            fetchAvailableDates(); // availableDates가 비어있으면 날짜 정보를 가져옴
-        }
+
         fetchMovieDetails();  // 영화 정보를 가져오는 API 호출
     }, [movieId, token, availableDates]);
 

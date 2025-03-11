@@ -1,7 +1,7 @@
 import { Box } from '@mui/material';
-import '../styles/components/movieDetail.css';
-import React, { useCallback, useContext, useEffect } from 'react';
+import React, { useCallback, useEffect } from 'react';
 import useReq from '../hooks/useReq.js';
+import '../styles/components/movieDetail.css';
 import { showToast } from '../utils/toast.js';
 
 const MovieDetail = ({ movie, styles, noBookingButton = false, showStatus = false }) => {
