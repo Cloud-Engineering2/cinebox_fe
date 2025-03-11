@@ -52,7 +52,7 @@ jobs:
         run: |
           aws configure set aws_access_key_id ${{ secrets.AWS_ACCESS_KEY_ID }}
           aws configure set aws_secret_access_key ${{ secrets.AWS_SECRET_ACCESS_KEY }} 
-          aws configure set default.region ${{ secrets.REGION }}
+          aws configure set default.region ${{ secrets.AWS_REGION }}
           aws configure set output json
           
       - name: Set up QEMU
@@ -61,9 +61,13 @@ jobs:
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v3
 
+      - name: Login to Amazon ECR
+        id: login-ecr
+        run: |
+          aws ecr get-login-password --region ${{ secrets.AWS_REGION }} | docker login --username AWS --password-stdin ${{ secrets.AWS_ACCOUNT_ID }}.dkr.ecr.${{ secrets.AWS_REGION }}.amazonaws.com
+
       - name: Build and push
         run: |
-          aws ecr get-login-password --region ${{ secrets.REGION }} | docker login --username AWS --password-stdin ${{ secrets.AWS_ACCOUNT_ID }}.dkr.ecr.${{ secrets.REGION }}.amazonaws.com
           docker buildx build --platform linux/amd64 -t ${{ secrets.ECR_REPOSITORY }}:${{ github.sha }} --push .
 
 
