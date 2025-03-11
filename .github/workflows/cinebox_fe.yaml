@@ -17,21 +17,20 @@ jobs:
           distribution: 'temurin'
           cache: maven
 
-      - name: Make application-prod.properties
+      - name: Make .env file
         run: |
           cd ./src/main/resources
-          touch ./application.properties
+          touch ./.env
           echo "${{ secrets.AWSPROPERTIES }}" > ./application.properties
         shell: bash
 
       - name: Build with Maven
-        run: mvn -B -DskipTests package --file pom.xml
+        run: |
+          cd $HOME/cinebox
+          npm run build
 
-      - name: Naming jar file
-        run: mv ./target/*.jar ./target/app.jar
-
-      - name: Check jar file
-        run: ls ./target
+      - name: Check build folder
+        run: ls ./build
 
       - uses: actions/upload-artifact@v4
         with:
@@ -57,34 +56,34 @@ jobs:
           docker buildx build --platform linux/amd64 -t ${{ secrets.ECRURL }}:${{ github.sha }} --push .
 
 
-  cd:
-    needs: ci
-    runs-on: ubuntu-latest
+  # cd:
+  #   needs: ci
+  #   runs-on: ubuntu-latest
 
-    steps:
-      - uses: actions/checkout@v4
-        with:
-          repository: Cloud-Engineering2/project2-team4-manifest
-          ref: main
-          token: ${{ secrets.GIT_TOKEN }}
+  #   steps:
+  #     - uses: actions/checkout@v4
+  #       with:
+  #         repository: Cloud-Engineering2/project2-team4-manifest
+  #         ref: main
+  #         token: ${{ secrets.GIT_TOKEN }}
 
-      - name: Set timestamp
-        id: timestamp
-        run: echo "date=$(date +'%Y%m%d%H%M%S')" >> $GITHUB_ENV
+  #     - name: Set timestamp
+  #       id: timestamp
+  #       run: echo "date=$(date +'%Y%m%d%H%M%S')" >> $GITHUB_ENV
 
-      - name: Check ls
-        run: |
-          pwd
-          ls -al          
+  #     - name: Check ls
+  #       run: |
+  #         pwd
+  #         ls -al          
 
-      - name: Set up Image
-        run: |
-          sed -i 's|image: .*$|image: '"${{ secrets.ECRURL }}:${{ github.sha }}"'|g' ./manifestAWS/aws_deployment.yaml
+  #     - name: Set up Image
+  #       run: |
+  #         sed -i 's|image: .*$|image: '"${{ secrets.ECRURL }}:${{ github.sha }}"'|g' ./manifestAWS/aws_deployment.yaml
 
-      - name: Commit and push changes
-        run: |
-          git config --local user.email "${{ secrets.EMAIL }}"
-          git config --local user.name "HIRedrain"
-          git add .
+  #     - name: Commit and push changes
+  #       run: |
+  #         git config --local user.email "${{ secrets.EMAIL }}"
+  #         git config --local user.name "HIRedrain"
+  #         git add .
           git commit -m "Update image version to ${{ env.date }} - ${{ github.sha }}"
           git push
