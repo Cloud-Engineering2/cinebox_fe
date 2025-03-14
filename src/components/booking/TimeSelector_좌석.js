@@ -11,7 +11,7 @@ const TimeSelector = ({ availableTimes, onSelectTime, currentUserId }) => {
     // 좌석 로딩 함수
     const loadSeats = async (screenId) => {
         try {
-            const response = await fetch(`http://127.0.0.1:8080/api/screens/${screenId}/seats`, {
+            const response = await fetch(`http://cinebox-service.dev.svc.cluster.local:8080/api/screens/${screenId}/seats`, {
                 method: 'GET',
                 credentials: 'include',
             });

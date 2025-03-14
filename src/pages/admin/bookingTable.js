@@ -1,16 +1,16 @@
-import React, { useState, useCallback } from 'react';
-import useReq from '../../hooks/useReq.js';
-import '../../styles/components/bookingTable.css';
-import UnderBarTitle from '../../components/underBarTitle.js';
+import { Box } from '@mui/material';
+import React, { useCallback } from 'react';
 import { useParams } from 'react-router-dom';
 import EmptyBox from '../../components/emptyBox.js';
-import { Box } from '@mui/material';
+import UnderBarTitle from '../../components/underBarTitle.js';
+import useReq from '../../hooks/useReq.js';
+import '../../styles/components/bookingTable.css';
 import { changeTimeFormat, convertStartEndTimeFormatter } from '../../utils/datetime.js';
 
 const BookingTable = () => {
     const { userId } = useParams();
 
-    const { data: getUserBookingsRes, isLoading: isGetUserBookingsLoading, error: getUserBookingsError, doRequest: doGetUserBookingsRequest } = useReq(`http://127.0.0.1:8080/api/users/${userId}/bookings`, {
+    const { data: getUserBookingsRes, isLoading: isGetUserBookingsLoading, error: getUserBookingsError, doRequest: doGetUserBookingsRequest } = useReq(`http://cinebox-service.dev.svc.cluster.local:8080/api/users/${userId}/bookings`, {
         method: 'GET'
     });
     const { data: deleteBookingRes, isLoading: isDeleteBookingLoading, error: deleteBookingError, doRequest: doDeleteBookingRequest } = useReq(process.env.REACT_APP_BOOKING_API, null);
@@ -42,7 +42,7 @@ const BookingTable = () => {
                             }}>
                             <Box className='flex'>
                                 <Box className='width-180'>
-                                    <img src={booking.posterImageUrl} className='width-100p'/>
+                                    <img src={booking.posterImageUrl} className='width-100p' />
                                 </Box>
                                 <Box className='width-83p'>
                                     <Box className='userCard flex'>
