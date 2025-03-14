@@ -81,6 +81,17 @@ jobs:
           docker push $ECR_REGISTRY/${{ secrets.ECR_REPOSITORY }}:$IMAGE_TAG
           
           docker push $ECR_REGISTRY/${{ secrets.ECR_REPOSITORY }}:$LATEST_TAG
+
+      - name: Deploy to Kubernetes
+        run: |
+          # 템플릿 변수 치환
+          sed -i 's|${{ secrets.AWS_ACCOUNT_ID }}|'"${{ secrets.AWS_ACCOUNT_ID }}"'|g' cinebox-front.yaml
+          sed -i 's|${{ secrets.AWS_REGION }}|'"${{ secrets.AWS_REGION }}"'|g' cinebox-front.yaml
+          sed -i 's|${{ secrets.ECR_REPOSITORY }}|'"${{ secrets.ECR_REPOSITORY }}"'|g' cinebox-front.yaml
+          sed -i 's|${{ github.sha }}|'"${{ github.sha }}"'|g' cinebox-front.yaml
+          
+          # Kubernetes에 배포
+          kubectl apply -f cinebox-front.yaml
  
   # cd:
   #   needs: ci
