@@ -122,8 +122,7 @@ const Booking = () => {
 
     const fetchAvailableTimes = async (date) => {
         try {
-            const response = await fetch(`${process.env.REACT_APP_MOVIE_SCHEDULE_API}/${movieId}/screens/date?date=${formatDate(date)}`, {
-                //const response = await fetch(`http://cinebox-service.dev.svc.cluster.local:8080/api/movies/${movieId}/screens/date?date=${formatDate(date)}`, {
+            const response = await fetch(`${process.env.REACT_APP_MOVIE_API}/${movieId}/screens/date?date=${formatDate(date)}`, {
 
                 method: 'GET',
                 headers: {
@@ -190,7 +189,8 @@ const Booking = () => {
                 fetchAvailableDates(); // availableDates가 비어있으면 날짜 정보를 가져옴
             }
             try {
-                const response = await fetch(`http://cinebox-service.dev.svc.cluster.local:8080/api/movies/${movieId}/dates`, {
+                const response = await fetch(`${process.env.REACT_APP_MOVIE_API}/${movieId}/dates`, {
+
                     method: 'GET',
                     headers: {
                         'Content-Type': 'application/json',
@@ -297,7 +297,8 @@ const Booking = () => {
         console.log('결제 요청 데이터:', paymentData);
 
         try {
-            const response = await fetch('http://cinebox-service.dev.svc.cluster.local:8080/api/payments', {
+            const response = await fetch(process.env.REACT_APP_PAYMENTS_API, {
+
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',

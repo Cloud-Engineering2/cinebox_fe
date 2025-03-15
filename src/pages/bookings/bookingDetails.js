@@ -19,7 +19,8 @@ const BookingDetails = ({ seats }) => {
     useEffect(() => {
         const fetchBookingDetails = async () => {
             try {
-                const response = await axios.get(`http://cinebox-service.dev.svc.cluster.local:8080/api/bookings/${bookingId}`, {
+                const response = await axios.get(`${process.env.REACT_APP_BOOKING_API}/${bookingId}`, {
+
                     headers: {
                         'Content-Type': 'application/json',
                     },
@@ -63,7 +64,8 @@ const BookingDetails = ({ seats }) => {
         setIsLoading(true);
 
         try {
-            const cancelResponse = await axios.post(`http://cinebox-service.dev.svc.cluster.local:8080/api/bookings/${bookingId}/cancel`, null, {
+            const cancelResponse = await axios.post(`${process.env.REACT_APP_BOOKING_API}/${bookingId}/cancel`, null, {
+
                 headers: {
                     'Content-Type': 'application/json',
                 },
@@ -119,7 +121,8 @@ const BookingDetails = ({ seats }) => {
         setIsLoading(true);
 
         try {
-            const userResponse = await axios.get('http://cinebox-service.dev.svc.cluster.local:8080/api/users/my', {
+
+            const userResponse = await axios.get(process.env.REACT_APP_USER_MY_API, {
                 headers: {
                     'Content-Type': 'application/json',
                 },
@@ -147,7 +150,7 @@ const BookingDetails = ({ seats }) => {
             }, async (rsp) => {
                 if (rsp.success) {
                     try {
-                        const paymentResponse = await axios.post('http://cinebox-service.dev.svc.cluster.local:8080/api/payments', {
+                        const paymentResponse = await axios.post(process.env.REACT_APP_PAYMENTS_API, {
                             bookingId,
                             totalAmount: bookingData.totPrice,
                             paymentMethod,

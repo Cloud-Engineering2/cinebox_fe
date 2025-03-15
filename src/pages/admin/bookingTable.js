@@ -10,7 +10,8 @@ import { changeTimeFormat, convertStartEndTimeFormatter } from '../../utils/date
 const BookingTable = () => {
     const { userId } = useParams();
 
-    const { data: getUserBookingsRes, isLoading: isGetUserBookingsLoading, error: getUserBookingsError, doRequest: doGetUserBookingsRequest } = useReq(`http://cinebox-service.dev.svc.cluster.local:8080/api/users/${userId}/bookings`, {
+
+    const { data: getUserBookingsRes, isLoading: isGetUserBookingsLoading, error: getUserBookingsError, doRequest: doGetUserBookingsRequest } = useReq(`${process.env.REACT_APP_USER_API}/${userId}/bookings`, {
         method: 'GET'
     });
     const { data: deleteBookingRes, isLoading: isDeleteBookingLoading, error: deleteBookingError, doRequest: doDeleteBookingRequest } = useReq(process.env.REACT_APP_BOOKING_API, null);

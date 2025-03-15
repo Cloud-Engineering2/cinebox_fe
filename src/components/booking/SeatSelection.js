@@ -17,7 +17,8 @@ const SeatSelection = ({ selectedScreenId, selectedDate, selectedTime, selectedE
     useEffect(() => {
         const fetchSeats = async () => {
             try {
-                const response = await fetch(`http://cinebox-service.dev.svc.cluster.local:8080/api/screens/${selectedScreenId}/seats`, {
+                const response = await fetch(`${process.env.REACT_APP_SCREEN_API}/${selectedScreenId}/seats`, {
+
                     method: 'GET',
                     credentials: 'include',
                 });
@@ -67,7 +68,8 @@ const SeatSelection = ({ selectedScreenId, selectedDate, selectedTime, selectedE
                 .filter((seat) => selectedSeats.includes(seat.seatId))
                 .map((seat) => seat.seatNumber);
 
-            const bookingResponse = await fetch('http://cinebox-service.dev.svc.cluster.local:8080/api/bookings', {
+            const bookingResponse = await fetch(process.env.REACT_APP_BOOKING_API, {
+
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
