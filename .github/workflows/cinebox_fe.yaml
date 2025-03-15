@@ -1,8 +1,11 @@
 name: cinebox With Github Actions
 
 on:
-  push
-  # workflow_dispatch
+  push:
+    branches:
+      - main
+      - develop
+  workflow_dispatch:
       
 jobs:
   ci:
