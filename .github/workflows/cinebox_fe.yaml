@@ -85,36 +85,35 @@ jobs:
           
           docker push $ECR_REGISTRY/${{ secrets.ECR_REPOSITORY }}:$LATEST_TAG
 
+  cd:
+    needs: ci
+    runs-on: ubuntu-latest
 
- 
-  # cd:
-  #   needs: ci
-  #   runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          repository: Cloud-Engineering2/cinebox-manifest  # 매니페스트 파일이 있는 리포지토리
+          ref: main
+          token: ${{ secrets.GIT_TOKEN }}
 
-  #   steps:
-  #     - uses: actions/checkout@v4
-  #       with:
-  #         repository: Cloud-Engineering2/project2-team4-manifest
-  #         ref: main
-  #         token: ${{ secrets.GIT_TOKEN }}
+      - name: Set timestamp
+        id: timestamp
+        run: echo "date=$(date +'%Y%m%d%H%M%S')" >> $GITHUB_ENV
 
-  #     - name: Set timestamp
-  #       id: timestamp
-  #       run: echo "date=$(date +'%Y%m%d%H%M%S')" >> $GITHUB_ENV
+      - name: Check ls
+        run: |
+          pwd
+          ls -al
 
-  #     - name: Check ls
-  #       run: |
-  #         pwd
-  #         ls -al          
+      - name: Set up Image
+        run: |
+          # 이미지 태그를 최신 커밋 해시로 업데이트
+          sed -i 's|image: .*$|image: '"${{ secrets.AWS_ACCOUNT_ID }}.dkr.ecr.${{ secrets.AWS_REGION }}.amazonaws.com/${{ secrets.ECR_REPOSITORY }}:${{ github.sha }}"'|g' ./frontend/deployment/cinebox-deployment.yaml
 
-  #     - name: Set up Image
-  #       run: |
-  #         sed -i 's|image: .*$|image: '"${{ secrets.ECRURL }}:${{ github.sha }}"'|g' ./manifestAWS/aws_deployment.yaml
-
-  #     - name: Commit and push changes
-  #       run: |
-  #         git config --local user.email "${{ secrets.EMAIL }}"
-  #         git config --local user.name "HIRedrain"
-  #         git add .
-          # git commit -m "Update image version to ${{ env.date }} - ${{ github.sha }}"
-          # git push
+      - name: Commit and push changes
+        run: |
+          git config --local user.email "${{ secrets.GIT_EMAIL }}"
+          git config --local user.name "CI Bot"
+          git add .
+          git commit -m "Update image version to ${{ github.sha }}"
+          git push
