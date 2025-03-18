@@ -1,14 +1,14 @@
-import React, { useCallback, useEffect } from 'react';
-import '../styles/pages/signup.css'
-import useReq from '../hooks/useReq.js';
 import { Box, Button, TextField } from '@mui/material';
-import UnderBarTitle from '../components/underBarTitle.js';
-import ToggleButton from '../components/toggleButton.js';
-import BasicDatePicker from '../components/datePicker.js';
-import { convertDateFormatter } from '../utils/datetime.js';
-import { showToast } from '../utils/toast.js';
-import { checkEmailRegExp } from '../utils/regExp.js';
+import React, { useCallback, useEffect } from 'react';
 import { useLocation } from 'react-router-dom';
+import BasicDatePicker from '../components/datePicker.js';
+import ToggleButton from '../components/toggleButton.js';
+import UnderBarTitle from '../components/underBarTitle.js';
+import useReq from '../hooks/useReq.js';
+import '../styles/pages/signup.css';
+import { convertDateFormatter } from '../utils/datetime.js';
+import { checkEmailRegExp } from '../utils/regExp.js';
+import { showToast } from '../utils/toast.js';
 
 const KakaoSignup = () => {
     const location = useLocation();
@@ -41,13 +41,13 @@ const KakaoSignup = () => {
         const phone = document.querySelector('#phone').value;
         var gender = null;
 
-        if(!identifier || !email || !name || !birthDate || !phone){
+        if (!identifier || !email || !name || !birthDate || !phone) {
             showToast('빈 칸을 입력해주세요.', 'warn');
             return;
         }
-        if(document.querySelector('.gender button[aria-pressed=true]')){
+        if (document.querySelector('.gender button[aria-pressed=true]')) {
             gender = document.querySelector('.gender button[aria-pressed=true]').value;
-        }else {
+        } else {
             showToast('성별을 선택해주세요.', 'warn');
             return;
         }
@@ -65,6 +65,7 @@ const KakaoSignup = () => {
                 'platformType': 'KAKAO'
             }
         });
+        console.log('SignUp URL:', process.env.REACT_APP_SIGN_UP_KAKAO_URL);  // 확인용 로그
     }, [])
 
     return <>
@@ -74,7 +75,7 @@ const KakaoSignup = () => {
                 <TextField id="name" placeholder="이름" variant="standard" disabled />
             </Box>
             <Box className="form-box">
-                <BasicDatePicker label='생년월일' className='birthDate'/>
+                <BasicDatePicker label='생년월일' className='birthDate' />
             </Box>
             <Box className="gender-form-box">
                 <label>성별</label>

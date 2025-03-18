@@ -1,10 +1,10 @@
-import React, { useCallback, useEffect } from 'react';
-import styles from '../styles/pages/login.module.css'
-import useReq from '../hooks/useReq.js';
 import { Box, Button, TextField } from '@mui/material';
-import UnderBarTitle from '../components/underBarTitle.js';
-import { showToast } from '../utils/toast.js';
+import React, { useCallback, useEffect } from 'react';
 import { useLocation } from 'react-router-dom';
+import UnderBarTitle from '../components/underBarTitle.js';
+import useReq from '../hooks/useReq.js';
+import styles from '../styles/pages/login.module.css';
+import { showToast } from '../utils/toast.js';
 
 const Login = () => {
     const location = useLocation();
@@ -16,7 +16,7 @@ const Login = () => {
             localStorage.setItem('identifier', data.idnetifier);
             localStorage.setItem('role', data.role);
             localStorage.setItem("userId", data.userId);
-            
+
             window.location.href = '/main';
         }
     }, [data]);
@@ -25,7 +25,7 @@ const Login = () => {
             localStorage.setItem('identifier', userData.idnetifier);
             localStorage.setItem('role', userData.role);
             localStorage.setItem("userId", userData.userId);
-            
+
             window.location.href = '/main';
         }
     }, [userData]);
@@ -39,7 +39,7 @@ const Login = () => {
         const identifier = document.querySelector('#identifier').value;
         const password = document.querySelector('#password').value;
 
-        if(!identifier || !password){
+        if (!identifier || !password) {
             showToast('빈 칸을 입력해주세요.', 'warn');
             return;
         }
@@ -51,12 +51,12 @@ const Login = () => {
                 'password': password,
             }
         });
-    },[]);
+    }, []);
 
     const kakaoLogin = useCallback(() => {
         const kakaoURL = `https://kauth.kakao.com/oauth/authorize?client_id=${process.env.REACT_APP_KAKAO_CLIENT_ID}&redirect_uri=${process.env.REACT_APP_KAKAO_REDIRECT_URL}&response_type=code`
-        window.location.href= kakaoURL;
-    },[]);
+        window.location.href = kakaoURL;
+    }, []);
 
     return <>
         <UnderBarTitle title={'로그인'} />

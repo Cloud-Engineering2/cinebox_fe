@@ -35,7 +35,7 @@ const Header = () => {
 				<Box>
 					{context.userId && <a id="logout" onClick={logout}>로그아웃</a>}
 					{!context.userId && <a href='/signup' id="signup">회원가입</a>}
-					{context.userId && <a href='/quickBooking' id="quickBooking">빠른예매</a>}
+					{context.userId && <a href='/quickBooking' id="quickBooking" style={{ display: 'none' }}>빠른예매</a>}
 				</Box>
 			</Box>
 			<Box className="bottom-header">
