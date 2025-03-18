@@ -51,14 +51,16 @@ const Detail = () => {
 
     return <>
         <UnderBarTitle />
-        <Box style={{ margin: '47px 25%' }}>
+        <Box className="movie-detail-wrap" style={{ margin: '47px 25%' }}>
             {data && [
-                <MovieDetail key="movie-detail" movie={data} styles={{ marginBottom: 73 }} noBookingButton={!isUpcoming(data.releaseDate)} />,
-                <Box className='mainInfo'>
-                    <Box className='mb-73'>
-                        <p className='fs-19 mb-14'>{data.plot}</p>
+                <div className="movie-detail-wrapper">
+                    <MovieDetail key="movie-detail" movie={data} styles={{ marginBottom: 73 }} noBookingButton={!isUpcoming(data.releaseDate)} />
+                    <Box className='mainInfo'>
+                        <Box className='mb-73'>
+                            <p className='fs-19 mb-14'>{data.plot}</p>
+                        </Box>
                     </Box>
-                </Box>,
+                </div>,
                 (isUpcoming(data.releaseDate) && <Box key="review-box" className='reviewBox'>
                     <h2 className='fs-19 mb-18'>관객들의 리뷰</h2>
                     <Box className='fs-19 mb-6'>
