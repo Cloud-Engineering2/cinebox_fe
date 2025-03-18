@@ -37,7 +37,7 @@ const MovieDetail = ({ movie, styles, noBookingButton = false, showStatus = fals
             <Box className="img mb-6">
                 <img src={movie.posterImageUrl ? movie.posterImageUrl : '/assets/noImage.png'} alt="image" />
             </Box>
-            {!noBookingButton && <Box className='flex jsfy-cnt-spc-btwn'>
+            <Box className='flex jsfy-cnt-spc-btwn'>
                 <span className='like flex' onClick={increaseLikeCount}>
                     <img className='width-28 mr-6' src='/assets/RedHeart.png' />
                     {movie.likeCount}
@@ -45,7 +45,7 @@ const MovieDetail = ({ movie, styles, noBookingButton = false, showStatus = fals
                 <span className="bookingButton button-sm width-50p">
                     <a href={`/booking/${movie.movieId}`}>예매</a>
                 </span>
-            </Box>}
+            </Box>
         </Box>
     </Box>
 };

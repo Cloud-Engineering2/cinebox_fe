@@ -244,7 +244,6 @@ const BookingDetails = ({ seats }) => {
 
                     <div className="pay-info">
                         <p className="title"> <strong>{bookingData.movieTitle}</strong></p>
-
                         <p>
                             {formatDateWithWeekday(bookingData.screenStartTime)} {formatTime(bookingData.screenStartTime)} ~ {formatTime(bookingData.screenEndTime)}
                         </p>

@@ -122,7 +122,7 @@ const SeatSelection = ({ selectedScreenId, selectedDate, selectedTime, selectedE
                         })}
                     </h3>
                     <div>
-                        <h3>상영 시간:{selectedDate ? `${selectedDate} (${formatDayOfWeek(selectedDate)})` : '선택된 날짜가 없습니다.'} {selectedTime} ~ {selectedEndTime}</h3>
+                        <h3>상영 시간: {selectedDate ? `${selectedDate} (${formatDayOfWeek(selectedDate)})` : '선택된 날짜가 없습니다.'} {selectedTime} ~ {selectedEndTime}</h3>
                         <p>예약 가능한 좌석 수: {seats.filter((seat) => !seat.reserved).length}/{seats.length}</p>
                     </div>
                 </div>

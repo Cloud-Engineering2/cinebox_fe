@@ -2,7 +2,6 @@ import { Box, Button } from '@mui/material';
 import Typography from '@mui/material/Typography';
 import React, { useCallback } from 'react';
 import '../styles/components/movieCard.css';
-import { isUpcoming } from '../utils';
 import AgeLogo from './ageLogo';
 
 export default function MovieCard({ number, movie, imgUrl, styles }) {
@@ -33,7 +32,7 @@ export default function MovieCard({ number, movie, imgUrl, styles }) {
       onMouseOver={() => actionBoxController(true)}
       onMouseOut={() => actionBoxController(false)}>
       <Box id={cardId} className='actionBox'>
-        {isUpcoming(movie.releaseDate) && <Button onClick={() => { window.location.href = `/booking/${id}` }}>예매</Button>}
+        <Button onClick={() => { window.location.href = `/booking/${id}` }}>예매</Button>
         <Button onClick={() => { window.location.href = `/detail/${id}` }}>상세 정보</Button>
       </Box>
       <Box style={{ height: styles.card.height * 0.87 }}>

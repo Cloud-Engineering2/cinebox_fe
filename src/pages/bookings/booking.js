@@ -386,6 +386,7 @@ const Booking = () => {
                             setSelectedPrice={setSelectedPrice}  // 추가
                             setSelectedEndTime={setSelectedEndTime}  // 추가
                             formatDayOfWeek={formatDayOfWeek}
+
                         />
 
 
