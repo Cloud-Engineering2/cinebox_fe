@@ -1,6 +1,5 @@
 name: cinebox With Github Actions
 
-
 on:
   push:
     branches:
