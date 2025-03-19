@@ -23,5 +23,4 @@ const Calendar = ({ currentDate, changeMonth, calendarDays, handleDateSelect }) 
     </div>
 );
 
-
 export default Calendar;
