@@ -3,6 +3,7 @@ import './App.css'
 import './styles/init.css'
 import './styles/button.css'
 
+
 import Booking from './pages/bookings/booking.js';
 import Detail from './pages/detail.js';
 import Login from './pages/login.js';
