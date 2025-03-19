@@ -91,10 +91,11 @@ jobs:
     steps:
       - uses: actions/checkout@v4
         with:
-          repository: Cloud-Engineering2/cinebox-manifest  # 매니페스트 파일이 있는 리포지토리
+          repository: Cloud-Engineering2/cinebox-manifest
           ref: main
           token: ${{ secrets.GIT_TOKEN }}
 
+      # Set overlay path based on branch
       - name: Set overlay path based on branch
         run: |
           if [[ "${{ github.ref }}" == "refs/heads/develop" ]]; then
@@ -103,15 +104,22 @@ jobs:
             echo "OVERLAY_PATH=overlays/prod" >> $GITHUB_ENV
           fi
 
-      - name: Check repository structure
+      # Debug to check overlay path
+      - name: Debug Overlay Path
         run: |
-          pwd
-          ls -al
+          echo "OVERLAY_PATH is set to: $OVERLAY_PATH"
 
-      - name: Update Image in deployment.yaml
+      # Check if patch-web-deployment.yaml exists in the overlay directory
+      - name: Check overlay directory
         run: |
-          sed -i 's|image: .*$|image: '"${{ secrets.AWS_ACCOUNT_ID }}.dkr.ecr.${{ secrets.AWS_REGION }}.amazonaws.com/${{ secrets.ECR_REPOSITORY }}:${{ github.sha }}"'|g' $OVERLAY_PATH/deployment.yaml
+          ls -al $OVERLAY_PATH
 
+      # Update image in patch-web-deployment.yaml
+      - name: Update Image in patch-web-deployment.yaml
+        run: |
+          sed -i 's|image: .*$|image: '"${{ secrets.AWS_ACCOUNT_ID }}.dkr.ecr.${{ secrets.AWS_REGION }}.amazonaws.com/${{ secrets.ECR_REPOSITORY }}:${{ github.sha }}"'|g' $OVERLAY_PATH/patch-web-deployment.yaml
+
+      # Commit and push changes
       - name: Commit and push changes
         run: |
           git config --local user.email "${{ secrets.GIT_EMAIL }}"
