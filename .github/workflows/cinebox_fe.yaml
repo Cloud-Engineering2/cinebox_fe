@@ -77,7 +77,7 @@ jobs:
           IMAGE_TAG: ${{ github.sha }}
           LATEST_TAG: latest
         run: |
-          docker build -t $ECR_REGISTRY/${{ secrets.ECR_REPOSITORY }}:$IMAGE_TAG .
+          docker build -f develop/Dockerfile -t $ECR_REGISTRY/${{ secrets.ECR_REPOSITORY }}:$IMAGE_TAG .
 
           # latest 태그 생성
           docker tag $ECR_REGISTRY/${{ secrets.ECR_REPOSITORY }}:$IMAGE_TAG $ECR_REGISTRY/${{ secrets.ECR_REPOSITORY }}:$LATEST_TAG
