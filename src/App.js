@@ -34,6 +34,7 @@ export default function App() {
     cookie: document.cookie,
   });
 
+  
   return <AppContext.Provider value={{ context, setContext }}>
     <ToastContainer />
     <ErrorBoundary>
@@ -61,5 +62,6 @@ export default function App() {
         <Footer />
       </Box>
     </ErrorBoundary>
-  </AppContext.Provider >;
+
+  </AppContext.Provider>;
 }
