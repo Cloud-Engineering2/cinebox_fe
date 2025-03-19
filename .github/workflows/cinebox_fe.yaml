@@ -6,8 +6,8 @@ on:
       - develop
       - main
     paths-ignore:
-      - .github/workflows/** 
-  workflow_dispatch:
+      - .github/workflows/**
+  workflow_dispatch:  # 이 줄은 수동으로 실행하기 위한 트리거입니다. 선택적입니다.
 
 jobs:
   ci:
