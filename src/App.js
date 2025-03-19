@@ -26,7 +26,7 @@ export default function App() {
     role: localStorage.getItem('role'),
     userId: localStorage.getItem('userId')
   });
-
+  
   return <AppContext.Provider value={{ context, setContext }}>
 
     <ErrorBoundary>
