@@ -1,13 +1,12 @@
 name: cinebox With Github Actions
 
-
 on:
   push:
     branches:
       - main
       - develop
   workflow_dispatch:
-      
+
 jobs:
   ci:
     runs-on: ubuntu-latest
@@ -36,7 +35,7 @@ jobs:
 
       - name: Verify .env file
         run: cat ./.env
-  
+
       - name: Build with npm
         run: |
           CI=false npm run build || { echo "Build failed!"; exit 1; }
@@ -51,14 +50,14 @@ jobs:
         with:
           name: cinebox
           path: ./build
- 
-      - name: Configure AWS credentials 
+
+      - name: Configure AWS credentials
         run: |
           aws configure set aws_access_key_id ${{ secrets.AWS_ACCESS_KEY_ID }}
-          aws configure set aws_secret_access_key ${{ secrets.AWS_SECRET_ACCESS_KEY }} 
+          aws configure set aws_secret_access_key ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           aws configure set default.region ${{ secrets.AWS_REGION }}
           aws configure set output json
-          
+
       - name: Set up QEMU
         uses: docker/setup-qemu-action@v3
 
@@ -77,13 +76,12 @@ jobs:
           LATEST_TAG: latest
         run: |
           docker build -t $ECR_REGISTRY/${{ secrets.ECR_REPOSITORY }}:$IMAGE_TAG .
-          
+
           # latest 태그 생성
           docker tag $ECR_REGISTRY/${{ secrets.ECR_REPOSITORY }}:$IMAGE_TAG $ECR_REGISTRY/${{ secrets.ECR_REPOSITORY }}:$LATEST_TAG
-         
+
           # 두 개의 태그 모두 푸시
           docker push $ECR_REGISTRY/${{ secrets.ECR_REPOSITORY }}:$IMAGE_TAG
-          
           docker push $ECR_REGISTRY/${{ secrets.ECR_REPOSITORY }}:$LATEST_TAG
 
   cd:
@@ -97,24 +95,27 @@ jobs:
           ref: main
           token: ${{ secrets.GIT_TOKEN }}
 
-      - name: Set timestamp
-        id: timestamp
-        run: echo "date=$(date +'%Y%m%d%H%M%S')" >> $GITHUB_ENV
+      - name: Set overlay path based on branch
+        run: |
+          if [[ "${{ github.ref }}" == "refs/heads/develop" ]]; then
+            echo "OVERLAY_PATH=overlays/dev" >> $GITHUB_ENV
+          elif [[ "${{ github.ref }}" == "refs/heads/main" ]]; then
+            echo "OVERLAY_PATH=overlays/prod" >> $GITHUB_ENV
+          fi
 
-      - name: Check ls
+      - name: Check repository structure
         run: |
           pwd
           ls -al
 
-      - name: Set up Image
+      - name: Update Image in deployment.yaml
         run: |
-          # 이미지 태그를 최신 커밋 해시로 업데이트
-          sed -i 's|image: .*$|image: '"${{ secrets.AWS_ACCOUNT_ID }}.dkr.ecr.${{ secrets.AWS_REGION }}.amazonaws.com/${{ secrets.ECR_REPOSITORY }}:${{ github.sha }}"'|g' ./frontend/deployment/cinebox-deployment.yaml
+          sed -i 's|image: .*$|image: '"${{ secrets.AWS_ACCOUNT_ID }}.dkr.ecr.${{ secrets.AWS_REGION }}.amazonaws.com/${{ secrets.ECR_REPOSITORY }}:${{ github.sha }}"'|g' $OVERLAY_PATH/deployment.yaml
 
       - name: Commit and push changes
         run: |
           git config --local user.email "${{ secrets.GIT_EMAIL }}"
           git config --local user.name "CI Bot"
           git add .
-          git commit -m "Update image version to ${{ github.sha }}"
+          git commit -m "Update image version to ${{ github.sha }}" || echo "No changes to commit"
           git push
