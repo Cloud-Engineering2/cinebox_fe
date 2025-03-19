@@ -1,16 +1,19 @@
-import React, { useCallback, useEffect } from 'react';
-import styles from '../styles/pages/login.module.css'
-import useReq from '../hooks/useReq.js';
 import { Box, Button, TextField } from '@mui/material';
+import React, { useCallback, useEffect } from 'react';
+import { useLocation } from 'react-router-dom';
 import UnderBarTitle from '../components/underBarTitle.js';
+import useReq from '../hooks/useReq.js';
+import styles from '../styles/pages/login.module.css';
+import { showToast } from '../utils/toast.js';
 
 const Login = () => {
+    const location = useLocation();
+    const userData = location.state;
     const { data, isLoading, error, doRequest } = useReq(process.env.REACT_APP_LOGIN_URL, null);
 
     useEffect(() => {
-        if (data != null) {
-            localStorage.setItem('token', data.token);
-            localStorage.setItem('identifier', data.identifier);
+        if (data) {
+            localStorage.setItem('identifier', data.idnetifier);
             localStorage.setItem('role', data.role);
             localStorage.setItem("userId", data.userId);
 
@@ -18,8 +21,17 @@ const Login = () => {
         }
     }, [data]);
     useEffect(() => {
+        if (userData) {
+            localStorage.setItem('identifier', userData.idnetifier);
+            localStorage.setItem('role', userData.role);
+            localStorage.setItem("userId", userData.userId);
+
+            window.location.href = '/main';
+        }
+    }, [userData]);
+    useEffect(() => {
         if (error) {
-            alert('아이디 혹은 비밀번호가 맞지 않습니다.');
+            showToast('아이디 혹은 비밀번호가 맞지 않습니다.', 'error');
         }
     }, [error]);
 
@@ -27,8 +39,8 @@ const Login = () => {
         const identifier = document.querySelector('#identifier').value;
         const password = document.querySelector('#password').value;
 
-        if(!identifier || !password){
-            alert('빈 칸을 입력해주세요.');
+        if (!identifier || !password) {
+            showToast('빈 칸을 입력해주세요.', 'warn');
             return;
         }
 
@@ -39,7 +51,12 @@ const Login = () => {
                 'password': password,
             }
         });
-    },[]);
+    }, []);
+
+    const kakaoLogin = useCallback(() => {
+        const kakaoURL = `https://kauth.kakao.com/oauth/authorize?client_id=${process.env.REACT_APP_KAKAO_CLIENT_ID}&redirect_uri=${process.env.REACT_APP_KAKAO_REDIRECT_URL}&response_type=code`
+        window.location.href = kakaoURL;
+    }, []);
 
     return <>
         <UnderBarTitle title={'로그인'} />
@@ -48,10 +65,10 @@ const Login = () => {
                 <TextField id="identifier" placeholder="아이디" variant="standard" />
             </Box>
             <Box className={styles.formBox}>
-                <TextField id="password" placeholder="비밀번호" variant="standard" />
+                <TextField type='password' id="password" placeholder="비밀번호" variant="standard" />
             </Box>
             <Box id={styles.warning} className="mb_8 disabled">아이디 혹은 비밀번호를 입력해 주세요.</Box>
-            <Button id="signupKakao" type="button" className="kakaoButton mb-10 bg-yellow opacity-07" disabled >
+            <Button id="signupKakao" type="button" className="kakaoButton mb-10 bg-yellow" onClick={kakaoLogin}>
                 <img className="kakaoIcon" src='/assets/kakaoIcon.png' />
                 카카오로 로그인
             </Button>

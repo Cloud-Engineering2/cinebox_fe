@@ -1,20 +1,15 @@
 import React, { useState, useEffect, useContext, useCallback } from 'react';
 import useReq from '../hooks/useReq.js';
-import MainStyle from '../styles/pages/main.css';
+import '../styles/pages/main.css';
 import MovieCard from '../components/movieCard.js';
 import EmptyBox from '../components/emptyBox.js';
 import UnderBarTitle from '../components/underBarTitle.js';
-import { AppContext } from "../App.js";
 import { Box } from '@mui/material';
 
 const Main = () => {
-    const { context, setContext } = useContext(AppContext);
     const [movies, setMovies] = useState([]);
     const { data, isLoading, error, doRequest } = useReq(process.env.REACT_APP_MOVIE_API, {
-        method: 'GET',
-        headers: {
-            'Authorization': `Bearer ${context.token}`
-        }
+        method: 'GET'
     });
 
     useEffect(() => {
@@ -24,15 +19,12 @@ const Main = () => {
     const searchMoviesList = useCallback(() => {
         doRequest(process.env.REACT_APP_MOVIE_API, {
             method: 'GET',
-            headers: {
-                'Authorization': `Bearer ${context.token}`
-            },
             params: {
                 'sort': document.querySelector('#sortingSelectBox').value,
                 'search': document.querySelector('#searchBox').value
             }
         })
-    },[context.token])
+    }, [])
 
     return <Box className='pstn-relative'>
         <UnderBarTitle title={'박스오피스'} />

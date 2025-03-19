@@ -1,12 +1,13 @@
+import { Box, TextField } from '@mui/material';
 import React, { useCallback, useContext, useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
-import '../styles/pages/detail.css';
-import { Box, TextField } from '@mui/material';
 import { AppContext } from "../App.js";
 import MovieDetail from '../components/movieDetail.js';
 import ReviewList from '../components/reviewList.js';
 import UnderBarTitle from '../components/underBarTitle.js';
 import useReq from '../hooks/useReq.js';
+import '../styles/pages/detail.css';
+import { isUpcoming } from '../utils/index.js';
 
 const Detail = () => {
     const { context, setContext } = useContext(AppContext);
@@ -14,25 +15,16 @@ const Detail = () => {
     const [reviews, setReviews] = useState([]);
 
     const { data, isLoading, error, doRequest } = useReq(process.env.REACT_APP_MOVIE_API + `/${movieId}`, {
-        method: 'GET',
-        headers: {
-            'Authorization': `Bearer ${context.token}`
-        }
+        method: 'GET'
     });
     const { data: reviewResponse, isLoading: isReviewLoading, error: getReviewsError, doRequest: doGetReviewRequest } = useReq(process.env.REACT_APP_MOVIE_API + `/${movieId}/reviews`, {
-        method: 'GET',
-        headers: {
-            'Authorization': `Bearer ${context.token}`
-        }
+        method: 'GET'
     });
     const { data: addReviewResponse, isLoading: isReviewAddLoading, error: addReviewsError, doRequest: doAddReviewRequest } = useReq(process.env.REACT_APP_MOVIE_API + `/${movieId}/reviews`, null);
 
     useEffect(() => {
         doGetReviewRequest(process.env.REACT_APP_MOVIE_API + `/${movieId}/reviews`, {
-            method: 'GET',
-            headers: {
-                'Authorization': `Bearer ${context.token}`
-            }
+            method: 'GET'
         });
     }, [isReviewAddLoading]);
     useEffect(() => {
@@ -46,9 +38,6 @@ const Detail = () => {
         if (content != null || rating != '') {
             doAddReviewRequest(process.env.REACT_APP_MOVIE_API + `/${movieId}/reviews`, {
                 method: 'POST',
-                headers: {
-                    'Authorization': `Bearer ${context.token}`
-                },
                 data: {
                     movieId: movieId,
                     userId: context.userId,
@@ -58,19 +47,21 @@ const Detail = () => {
             });
             document.querySelector('#reviewTextField').value = '';
         }
-    }, [context, movieId])
+    }, [movieId])
 
     return <>
         <UnderBarTitle />
-        <Box style={{ margin: '47px 25%' }}>
+        <Box className="movie-detail-wrap" style={{ margin: '47px 25%' }}>
             {data && [
-                <MovieDetail key="movie-detail" movie={data} styles={{ marginBottom: 73 }} />,
-                <Box className='mainInfo'>
-                    <Box className='mb-73'>
-                        <p className='fs-19 mb-14'>{data.plot}</p>
+                <div className="movie-detail-wrapper">
+                    <MovieDetail key="movie-detail" movie={data} styles={{ marginBottom: 73 }} noBookingButton={!isUpcoming(data.releaseDate)} />
+                    <Box className='mainInfo'>
+                        <Box className='mb-73'>
+                            <p className='fs-19 mb-14'>{data.plot}</p>
+                        </Box>
                     </Box>
-                </Box>,
-                <Box key="review-box" className='reviewBox'>
+                </div>,
+                (isUpcoming(data.releaseDate) && <Box key="review-box" className='reviewBox'>
                     <h2 className='fs-19 mb-18'>관객들의 리뷰</h2>
                     <Box className='fs-19 mb-6'>
                         <select id="rating" className="selectRating">
@@ -110,7 +101,7 @@ const Detail = () => {
                             })}
                             showMovieTitle={false} />}
                     </Box>
-                </Box>
+                </Box>)
             ]}
         </Box>
     </>

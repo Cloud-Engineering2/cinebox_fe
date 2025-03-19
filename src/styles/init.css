@@ -38,6 +38,9 @@
 .mb-18 {
     margin-bottom: 18px !important;
 }
+.mb-24 {
+    margin-bottom: 24px !important;
+}
 .mb-28 {
     margin-bottom: 28px !important;
 }
@@ -57,6 +60,9 @@
 .mt-10 {
     margin-top: 10px !important;
 }
+.mt-15 {
+    margin-top: 15px !important;
+}
 .mt-18 {
     margin-top: 18px !important;
 }
@@ -69,6 +75,9 @@
 }
 .mr-12 {
     margin-right: 12px !important;
+}
+.mr-15 {
+    margin-right: 15px !important;
 }
 .mr-20 {
     margin-right: 20px !important;
@@ -92,12 +101,18 @@
 .fs-23 {
     font-size: 23px;
 }
+.fs-30 {
+    font-size: 30px;
+}
 
 .color-green {
     color: #004D09;
 }
 .color-gray {
     color: #656565;
+}
+.color-light-gray {
+    color: #A2A2A2;
 }
 
 .bold {
@@ -116,6 +131,12 @@
 .width-83p{
     width: 83% !important;
 }
+.width-100p{
+    width: 100% !important;
+}
+.width-65vh{
+    width: 65vh !important;
+}
 .width-14 {
     width: 14px !important;
 }
@@ -124,6 +145,12 @@
 }
 .width-28 {
     width: 28px !important;
+}
+.width-50 {
+    width: 50px !important;
+}
+.width-180 {
+    width: 180px !important;
 }
 .min-width-20 {
     min-width: 20px;
@@ -135,6 +162,10 @@
     min-width: 75px;
 }
 
+
+.height-100p{
+    height: 100% !important;
+}
 .height-35 {
     height: 35px !important;
 }

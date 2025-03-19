@@ -10,6 +10,7 @@ import ReviewList from '../components/reviewList.js';
 import UnderBarTitle from '../components/underBarTitle.js';
 import useReq from '../hooks/useReq.js';
 import UserForm from './admin/userForm.js';
+import { showToast } from '../utils/toast.js';
 
 const Mypage = () => {
     const { context, setContext } = useContext(AppContext);
@@ -19,32 +20,21 @@ const Mypage = () => {
     const [showBookingList, setShowBookingList] = useState(false);
     const [showEditUser, setShowEditUser] = useState({ userId: null, state: false });
 
+    const { data: logoutRequest, isLoading: isLogoutLoading, error: logoutError, doRequest: doLogoutRequest } = useReq(null, null);
     const { data, isLoading, error, doRequest } = useReq(process.env.REACT_APP_USER_API + `/${context.userId}`, {
-        method: 'GET',
-        headers: {
-            'Authorization': `Bearer ${context.token}`
-        }
+        method: 'GET'
     });
     const { data: likeMoviesRes, isLoading: isGetLikeMoviesReqLoading, error: getLikeMoviesReqError, doRequest: doGetLikeMoviesRequest } = useReq(process.env.REACT_APP_MOVIE_API + '/likes', {
-        method: 'GET',
-        headers: {
-            'Authorization': `Bearer ${context.token}`
-        }
+        method: 'GET'
     });
     const { data: bookingRes, isLoading: isBookingReqLoading, error: getBookingReqError, doRequest: doGetBookingRequest } = useReq(process.env.REACT_APP_BOOKING_API + '/my', {
-        method: 'GET',
-        headers: {
-            'Authorization': `Bearer ${context.token}`
-        }
+        method: 'GET'
     });
     const { data: reviewRes, isLoading: isReviewLoading, error: getReviewsError, doRequest: doGetReviewRequest } = useReq(process.env.REACT_APP_REVIEW_API + `/my`, {
-        method: 'GET',
-        headers: {
-            'Authorization': `Bearer ${context.token}`
-        }
+        method: 'GET'
     });
     const { data: deleteUserRes, isLoading: isDeleteUserLoading, error: deleteUserError, doRequest: doDeleteUserRequest } = useReq(process.env.REACT_APP_USER_API + `/${context.userId}`, null);
-
+    
     useEffect(() => {
         setMovies(likeMoviesRes);
     }, [likeMoviesRes]);
@@ -64,17 +54,26 @@ const Mypage = () => {
             document.querySelector('.more').style.display = 'none';
         }
     }, [showBookingList]);
+    useEffect(() => {
+		if (isLogoutLoading) window.location.href = '/';
+	}, [isLogoutLoading])
+	useEffect(() => {
+		if (logoutError) showToast('로그아웃에 실패하였습니다.', 'error');
+	}, [logoutError])
 
-    const deleteUser = useCallback(async () => {
-        await doDeleteUserRequest(process.env.REACT_APP_USER_API + `/${context.userId}`, {
-            method: 'DELETE',
-            headers: {
-                'Authorization': `Bearer ${context.token}`
-            }
-        });
+    const logout = () => {
         localStorage.clear();
-        window.location.href = '/';
-    }, [context.token])
+		doLogoutRequest(process.env.REACT_APP_LOGOUT_URL, {
+			method: 'POST'
+		})
+	}
+    const deleteUser = useCallback(() => {
+        doDeleteUserRequest(process.env.REACT_APP_USER_API + `/${context.userId}/withdraw`, {
+            method: 'POST'
+        });
+        logout();
+    }, [])
+
 
     return <>
         <UnderBarTitle title={'나의 시네박스'} />
@@ -88,7 +87,7 @@ const Mypage = () => {
                 </Box>
                 <Box className='userControlBox'>
                     <span className='mr-12 pointer' onClick={() => setShowEditUser({ userId: context.userId, state: true })}>개인정보수정</span>
-                    <span className='pointer' onClick={deleteUser}>회원 탈퇴</span>
+                    {context.role != 'ADMIN' && <span className='pointer' onClick={deleteUser}>회원 탈퇴</span>}
                 </Box>
             </Box>
             <UnderBarTitle className='favoriteMovieLabel' title={'기대되는 영화'} styles={{ margin: 'none' }} />

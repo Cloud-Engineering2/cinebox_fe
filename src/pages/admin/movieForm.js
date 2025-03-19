@@ -1,14 +1,15 @@
-import React, { useState, useEffect, useContext, useMemo, useCallback } from 'react';
-import useReq from '../../hooks/useReq.js';
 import { Box } from '@mui/material';
-import InputFormBox from '../../components/inputFormBox.js';
+import React, { useCallback, useContext, useEffect, useMemo } from 'react';
 import { AppContext } from "../../App.js";
+import InputFormBox from '../../components/inputFormBox.js';
+import useReq from '../../hooks/useReq.js';
+import { convertDateFormatter } from '../../utils/datetime.js';
+import { showToast } from '../../utils/toast.js';
 
-const MovieForm = ({setShowModal, data=null}) => {
-    const {context, setContext} = useContext(AppContext);
+const MovieForm = ({ setShowModal, data = null }) => {
+    const { context, setContext } = useContext(AppContext);
     const { data: addMovieRes, isLoading: isAddMovieLoading, error: addMovieError, doRequest: doAddMovieRequest } = useReq(process.env.REACT_APP_MOVIE_API, null);
     const { data: updateMovieRes, isLoading: isUpdateMovieLoading, error: updateMovieError, doRequest: doUpdateMovieRequest } = useReq(process.env.REACT_APP_MOVIE_API, null);
-
     const inputs = useMemo(() => [
         {
             id: 'title',
@@ -18,6 +19,7 @@ const MovieForm = ({setShowModal, data=null}) => {
         {
             id: 'releaseDate',
             label: '개봉일',
+            type: 'datepicker',
             value: data && data.releaseDate
         },
         {
@@ -28,7 +30,21 @@ const MovieForm = ({setShowModal, data=null}) => {
         {
             id: 'ratingGrade',
             label: '관람등급',
-            value: data && data.ratingGrade
+            defaultValue: data && data.ratingGrade,
+            type: 'select',
+            items: [{
+                label: '전체관람가',
+                value: '전체관람가'
+            }, {
+                label: '15세이상관람가',
+                value: '15세이상관람가'
+            }, {
+                label: '12세이상관람가',
+                value: '12세이상관람가'
+            }, {
+                label: '청소년관람불가',
+                value: '청소년관람불가'
+            }]
         },
         {
             id: 'genre',
@@ -48,12 +64,21 @@ const MovieForm = ({setShowModal, data=null}) => {
         {
             id: 'status',
             label: '상영여부',
-            value: data && data.status
-        },
-        {
-            id: 'posterImageUrl',
-            label: '포스터',
-            value: data && data.posterImageUrl
+            type: 'select',
+            defaultValue: data && data.status,
+            items: [{
+                label: 'SHOWING',
+                value: 'SHOWING'
+            }, {
+                label: 'UPCOMING',
+                value: 'UPCOMING'
+            }, {
+                label: 'ENDED',
+                value: 'ENDED'
+            }, {
+                label: 'UNRELEASED',
+                value: 'UNRELEASED'
+            }]
         },
         {
             id: 'plot',
@@ -62,115 +87,114 @@ const MovieForm = ({setShowModal, data=null}) => {
         }
     ], [data]);
 
-    const remove = useCallback(()=>{
-        const uploadFile = document.querySelector('#uploadFile');
-        uploadFile.value = null;
-    },[])
-    const add = useCallback(()=>{
+    const remove = useCallback(() => {
+        const image = document.querySelector('#image');
+        image.value = null;
+    }, [])
+    const add = useCallback(() => {
         const title = document.querySelector('#title').value;
-        const releaseDate = document.querySelector('#releaseDate').value;
+        const releaseDate = document.querySelector('.releaseDate input').value;
         const runtime = document.querySelector('#runtime').value;
         const ratingGrade = document.querySelector('#ratingGrade').value;
         const genre = document.querySelector('#genre').value;
         const director = document.querySelector('#director').value;
         const actors = document.querySelector('#actors').value;
         const status = document.querySelector('#status').value;
-        const posterImageUrl = document.querySelector('#posterImageUrl').value;
-        const uploadFile = document.querySelector('#uploadFile').value;
+        const image = document.querySelector('#image').files[0];
         const plot = document.querySelector('#plot').value;
-        
+
+        let formData = new FormData();
+        formData.append('movie', new Blob([JSON.stringify({
+            title: title,
+            releaseDate: convertDateFormatter(releaseDate),
+            runtime: runtime,
+            ratingGrade: ratingGrade,
+            genre: genre,
+            director: director,
+            actors: actors,
+            status: status,
+            plot: plot
+        })], { type: "application/json" }));
+
+        formData.append('image', image);
+
         doAddMovieRequest(process.env.REACT_APP_MOVIE_API, {
             method: 'POST',
-            headers: {
-                    'Authorization': `Bearer ${context.token}`
-            },
-            data: {
-                title: title,
-                releaseDate: releaseDate,
-                runtime: runtime,
-                ratingGrade: ratingGrade,
-                genre: genre,
-                director: director,
-                actors: actors,
-                status: status,
-                posterImageUrl: posterImageUrl,
-                uploadFile: uploadFile,
-                plot: plot,
-                likeCount: 0
-            }
+            data: formData
         });
-    },[context.token])
-    const update = useCallback(()=>{
+    }, [])
+    const update = useCallback(() => {
         const title = document.querySelector('#title').value;
-        const releaseDate = document.querySelector('#releaseDate').value;
+        const releaseDate = document.querySelector('.releaseDate input').value;
         const runtime = document.querySelector('#runtime').value;
         const ratingGrade = document.querySelector('#ratingGrade').value;
         const genre = document.querySelector('#genre').value;
         const director = document.querySelector('#director').value;
         const actors = document.querySelector('#actors').value;
         const status = document.querySelector('#status').value;
-        const posterImageUrl = document.querySelector('#posterImageUrl').value;
-        const uploadFile = document.querySelector('#uploadFile').value;
+        const image = document.querySelector('#image').files[0];
         const plot = document.querySelector('#plot').value;
-        
+
+        let formData = new FormData();
+        formData.append('movie', new Blob([JSON.stringify({
+            title: title,
+            releaseDate: convertDateFormatter(releaseDate),
+            runtime: runtime,
+            ratingGrade: ratingGrade,
+            genre: genre,
+            director: director,
+            actors: actors,
+            status: status,
+            plot: plot
+        })], { type: "application/json" }));
+
+        formData.append('image', image);
+
         doUpdateMovieRequest(process.env.REACT_APP_MOVIE_API + `/${data.movieId}`, {
             method: 'PUT',
-            headers: {
-                    'Authorization': `Bearer ${context.token}`
-            },
-            data: {
-                movieId: data.movieId,
-                title: title,
-                releaseDate: releaseDate,
-                runtime: runtime,
-                ratingGrade: ratingGrade,
-                genre: genre,
-                director: director,
-                actors: actors,
-                status: status,
-                posterImageUrl: posterImageUrl,
-                uploadFile: uploadFile,
-                plot: plot
-            }
+            data: formData
         });
-    },[context.token])
+    }, [])
 
-    useEffect(()=>{
-        if(addMovieRes != null){
+    useEffect(() => {
+        if (addMovieRes != null) {
             document.querySelector('#title').value = '';
-            document.querySelector('#releaseDate').value = '';
-            document.querySelector('#runTime').value = '';
+            document.querySelector('#runtime').value = '';
             document.querySelector('#ratingGrade').value = '';
             document.querySelector('#genre').value = '';
             document.querySelector('#director').value = '';
-            document.querySelector('#actor').value = '';
+            document.querySelector('#actors').value = '';
             document.querySelector('#status').value = '';
-            document.querySelector('#posterImageUrl').value = '';
-            document.querySelector('#uploadFile').value = '';
+            document.querySelector('#image').value = '';
             document.querySelector('#plot').value = '';
 
-            alert('success addMOvie');
+            showToast('성공적으로 영화가 추가되었습니다.', 'success');
         }
-    },[addMovieRes])
-    useEffect(()=>{
-        if(updateMovieRes != null){
-            alert('success updateMovie');
-            window.location.reload ()
+    }, [addMovieRes])
+    useEffect(() => {
+        if (updateMovieRes != null) {
+            showToast('성공적으로 영화가 수정되었습니다.', 'success');
+            window.location.reload()
         }
-    },[updateMovieRes])
+    }, [updateMovieRes])
+    useEffect(() => {
+        if (addMovieError || updateMovieError) {
+            showToast('입력 값을 다시 확인해 주세요.', 'warn');
+        }
+    }, [addMovieError, updateMovieError])
 
-    
+
     return <>
-        <h2 className='mb-14'>영화 등록</h2>
+        <h2 className='mb-14'>{data ? '영화 수정' : '영화 등록'}</h2>
         <Box className='form mb-44'>
-            <InputFormBox inputs={inputs} style={{width: '75%'}}/>
+            <InputFormBox inputs={inputs} style={{ width: '75%' }} />
         </Box>
         <h2 className='mb-14'>대표 이미지</h2>
         <Box className='uploadForm'>
             <Box>
-                <input id='uploadFile' type="file"/>
+                <input id='image' type="file" />
             </Box>
-            <button id="remove" type="button" className="button-sm mr-6" onClick={remove}>삭제</button>
+            <button id="remove" type="buttpon" className="button-sm mr-6" onClick={remove}>삭제</button>
         </Box>
         <Box className='controlBox mt-18'>
             <button id="save" type="button" className="button-sm mr-6" onClick={data != null ? update : add}>저장</button>

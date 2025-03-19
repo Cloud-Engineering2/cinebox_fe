@@ -1,19 +1,29 @@
-import React, { useCallback, useEffect } from 'react';
-import '../styles/pages/signup.css'
-import useReq from '../hooks/useReq.js';
 import { Box, Button, TextField } from '@mui/material';
-import UnderBarTitle from '../components/underBarTitle.js';
-import ToggleButton from '../components/toggleButton.js';
+import React, { useCallback, useEffect } from 'react';
+import { useLocation } from 'react-router-dom';
 import BasicDatePicker from '../components/datePicker.js';
+import ToggleButton from '../components/toggleButton.js';
+import UnderBarTitle from '../components/underBarTitle.js';
+import useReq from '../hooks/useReq.js';
+import '../styles/pages/signup.css';
 import { convertDateFormatter } from '../utils/datetime.js';
-import { showToast } from '../utils/toast.js';
 import { checkEmailRegExp } from '../utils/regExp.js';
+import { showToast } from '../utils/toast.js';
 
-const Signup = () => {
+const KakaoSignup = () => {
+    const location = useLocation();
+    const userData = location.state;
     const { data, isLoading, error, doRequest } = useReq(process.env.REACT_APP_SIGN_UP_URL, null);
 
     useEffect(() => {
-        if (data != null) {
+        if (userData) {
+            document.querySelector('#identifier').value = userData.id;
+            document.querySelector('#email').value = userData.kakao_account.email;
+            document.querySelector('#name').value = userData.properties.nickname;
+        }
+    }, []);
+    useEffect(() => {
+        if (data) {
             window.location.href = '/';
         }
     }, [data]);
@@ -25,54 +35,47 @@ const Signup = () => {
 
     const SignUpReq = useCallback(() => {
         const identifier = document.querySelector('#identifier').value;
-        const password = document.querySelector('#password').value;
-        const passwordCheck = document.querySelector('#passwordCheck').value;
         const email = checkEmailRegExp(document.querySelector('#email').value);
         const name = document.querySelector('#name').value;
         const birthDate = document.querySelector('.birthDate input').value;
         const phone = document.querySelector('#phone').value;
-        const role = document.querySelector('#role').value;
         var gender = null;
 
-        if(!identifier || !password || !passwordCheck || !email || !name || !birthDate || !phone || !role){
+        if (!identifier || !email || !name || !birthDate || !phone) {
             showToast('빈 칸을 입력해주세요.', 'warn');
             return;
         }
-        if(document.querySelector('.gender button[aria-pressed=true]')){
+        if (document.querySelector('.gender button[aria-pressed=true]')) {
             gender = document.querySelector('.gender button[aria-pressed=true]').value;
-        }else {
+        } else {
             showToast('성별을 선택해주세요.', 'warn');
             return;
         }
-        if(passwordCheck != password){
-            showToast('패스워드를 다시 확인해주세요.', 'warn');
-            document.querySelector('#passwordCheck').value = '';
-            return;
-        }
 
-        doRequest(process.env.REACT_APP_SIGN_UP_URL, {
+        doRequest(process.env.REACT_APP_SIGN_UP_KAKAO_URL, {
             method: "POST",
             data: {
                 'identifier': identifier,
-                'password': password,
                 'email': email,
                 'name': name,
                 'birthDate': convertDateFormatter(birthDate),
                 'gender': gender,
                 'phone': phone,
-                'role': role
+                'role': 'USER',
+                'platformType': 'KAKAO'
             }
         });
+        console.log('SignUp URL:', process.env.REACT_APP_SIGN_UP_KAKAO_URL);  // 확인용 로그
     }, [])
 
     return <>
-        <UnderBarTitle title={'회원가입'} />
+        <UnderBarTitle title={'카카오 회원가입'} />
         <Box className="signup">
             <Box className="form-box">
-                <TextField id="name" placeholder="이름" variant="standard" />
+                <TextField id="name" placeholder="이름" variant="standard" disabled />
             </Box>
             <Box className="form-box">
-                <BasicDatePicker label='생년월일' className='birthDate'/>
+                <BasicDatePicker label='생년월일' className='birthDate' />
             </Box>
             <Box className="gender-form-box">
                 <label>성별</label>
@@ -89,33 +92,21 @@ const Signup = () => {
                 </Box>
             </Box>
             <Box className="form-box">
-                <TextField id="email" placeholder="이메일" variant="standard" />
+                <TextField id="email" placeholder="이메일" variant="standard" disabled />
             </Box>
             <Box className="form-box">
-                <TextField id="identifier" placeholder="아이디" variant="standard" />
-            </Box>
-            <Box className="form-box">
-                <TextField type='password' id="password" placeholder="비밀번호" variant="standard" />
-            </Box>
-            <Box className="form-box">
-                <TextField type='password' id="passwordCheck" placeholder="비밀번호 확인" variant="standard" />
+                <TextField id="identifier" placeholder="아이디" variant="standard" disabled />
             </Box>
             <Box className="form-box">
                 <TextField id="phone" placeholder="전화번호" variant="standard" />
             </Box>
-            <Box className="form-box mb-18">
-                <select id="role" className="form-select">
-                    <option value="USER" selected>USER</option>
-                </select>
-            </Box>
             <Box id="warning" className="disabled">빈칸을 입력해 주세요.</Box>
-            <Button id="signupKakao" type="button" className="kakaoButton mb-10 bg-yellow" >
+            <Button id="signup" type="button" className="kakaoButton mb-10 bg-yellow" onClick={SignUpReq}>
                 <img className="kakaoIcon" src='/assets/kakaoIcon.png' />
-                5초 만에 카카오로 시작하기
+                카카오 회원가입
             </Button>
-            <Button id="signup" type="button" className="button" onClick={SignUpReq}>회원가입</Button>
         </Box>
     </>;
 };
 
-export default Signup;
+export default KakaoSignup;
