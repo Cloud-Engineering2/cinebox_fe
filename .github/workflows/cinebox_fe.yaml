@@ -3,7 +3,6 @@ name: cinebox With Github Actions
 on:
   push:
     branches:
-      - main
       - develop
     paths-ignore:
       - .github/workflows/** 
