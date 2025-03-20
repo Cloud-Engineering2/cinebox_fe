@@ -32,11 +32,11 @@ jobs:
       - name: Make .env file
         run: |
           if [[ "${{ github.ref }}" == "refs/heads/develop" ]]; then
-            cp .env.dev .env
+            echo "${{ secrets.ENV_DEV }}" > .env
           elif [[ "${{ github.ref }}" == "refs/heads/main" ]]; then
-            cp .env .env
+            echo "${{ secrets.ENV_PROD }}" > .env
           fi
-          cat .env  # 디버깅을 위해 확인
+          cat .env  # 디버깅을 위해 출력
         shell: bash
 
       - name: Verify .env file
