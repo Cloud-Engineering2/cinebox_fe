@@ -28,7 +28,7 @@ const Header = () => {
 		<Box className="header">
 			<Box className="top-header">
 				<Box>
-					{context.userId && <a href='/mypage' id="myPage">마이페이지dev</a>}
+					{context.userId && <a href='/mypage' id="myPage">마이페이지</a>}
 					{context.role == 'ADMIN' && <a href='/admin' id="moveAdmin">어드민 페이지</a>}
 				</Box>
 				<Box>
