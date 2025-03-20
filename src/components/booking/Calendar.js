@@ -5,7 +5,6 @@ const Calendar = ({ currentDate, changeMonth, calendarDays, handleDateSelect, se
 
     const daysOfWeek = ['일', '월', '화', '수', '목', '금', '토'];
 
-
     const formatDate = (date) => {
         // 'YYYY-MM-DD' 형식으로 변환
         const dateObj = (date instanceof Date) ? date : new Date(date);
