@@ -34,7 +34,7 @@ jobs:
           if [[ "${{ github.ref }}" == "refs/heads/develop" ]]; then
             cp .env.dev .env
           elif [[ "${{ github.ref }}" == "refs/heads/main" ]]; then
-            cp .env.prod .env
+            cp .env .env
           fi
           cat .env  # 디버깅을 위해 확인
         shell: bash
