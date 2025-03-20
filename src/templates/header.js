@@ -15,7 +15,6 @@ const Header = () => {
 	useEffect(() => {
 		if (logoutError) showToast('로그아웃에 실패하였습니다.', 'error');
 	}, [logoutError])
-
 	const logout = () => {
 		localStorage.removeItem('userId');
 		localStorage.removeItem('role');
