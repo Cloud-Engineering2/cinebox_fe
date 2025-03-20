@@ -46,6 +46,8 @@ jobs:
       - name: Build with npm
         run: |
           CI=false npm run build || { echo "Build failed!"; exit 1; }
+        env:
+          REACT_APP_NODE_ENV: ${{ github.ref == 'refs/heads/develop' && 'development' || 'production' }}
 
       - name: Verify build output
         run: du -sh ./build
