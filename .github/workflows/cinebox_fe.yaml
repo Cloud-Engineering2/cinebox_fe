@@ -32,6 +32,11 @@ jobs:
       - name: Make .env file
         run: |
           touch ./.env
+          if [[ "${{ github.ref }}" == "refs/heads/develop" ]]; then
+            echo "NODE_ENV=development" >> ./.env
+          elif [[ "${{ github.ref }}" == "refs/heads/main" ]]; then
+            echo "NODE_ENV=production" >> ./.env
+          fi
           echo "${{ secrets.ENV }}" > ./.env
         shell: bash
 
