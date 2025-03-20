@@ -34,7 +34,7 @@ jobs:
           if [[ "${{ github.ref }}" == "refs/heads/develop" ]]; then
             echo "${{ secrets.ENV_DEV }}" > .env
           elif [[ "${{ github.ref }}" == "refs/heads/main" ]]; then
-            echo "${{ secrets.ENV_PROD }}" > .env
+            echo "${{ secrets.ENV }}" > .env
           fi
           cat .env  # 디버깅을 위해 출력
         shell: bash
