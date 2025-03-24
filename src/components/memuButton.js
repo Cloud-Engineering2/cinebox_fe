@@ -1,10 +1,10 @@
-import * as React from 'react';
+import { Box } from '@mui/material';
 import Button from '@mui/material/Button';
 import Menu from '@mui/material/Menu';
 import MenuItem from '@mui/material/MenuItem';
-import { Box } from '@mui/material';
+import * as React from 'react';
 
-export default function BasicMenu({items}) {
+export default function BasicMenu({ items }) {
     const [anchorEl, setAnchorEl] = React.useState(null);
     const open = Boolean(anchorEl);
     const handleClick = (event) => {
@@ -23,7 +23,7 @@ export default function BasicMenu({items}) {
                 aria-expanded={open ? 'true' : undefined}
                 onClick={handleClick}
             >
-                <img src={'/assets/Menu_gray.png'}/>
+                <img src={'/assets/Menu_gray.png'} />
             </Button>
             <Menu
                 id="basic-menu"
@@ -32,8 +32,8 @@ export default function BasicMenu({items}) {
                 onClose={handleClose}
             >
                 {
-                    items.map(item =>{
-                        return <MenuItem key={`memu-item-${item.label}`} onClick={()=>{
+                    items.map(item => {
+                        return <MenuItem key={`memu-item-${item.label}`} onClick={() => {
                             item.onClick();
                             handleClose();
                         }} disabled={item.disabled}>{item.label}</MenuItem>;
