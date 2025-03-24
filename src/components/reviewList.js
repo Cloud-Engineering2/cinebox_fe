@@ -62,8 +62,7 @@ export default function ReviewList({ reviews, styles, doGetReviewRequest, noEdit
                                     edit: (content, rating) => editReviewHandler(content, rating, review),
                                     remove: () => deleteReviewHandler(review)
                                 }}
-                                //noEdit={noEdit}
-                                noEdit={noEdit || !context.userId || review.userId !== context.userId} // userId가 없으면 수정 불가능
+                                noEdit={noEdit}
                             />
                         </Box>
                         <Divider variant="inset" component="li" sx={{ marginLeft: 0, marginBottom: 1 }} />
