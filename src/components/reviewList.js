@@ -1,11 +1,11 @@
-import React, { useCallback, useContext, useEffect, useState } from 'react';
-import '../styles/components/reviewList.css';
-import useReq from '../hooks/useReq.js';
-import List from '@mui/material/List';
-import Divider from '@mui/material/Divider';
 import { Box } from '@mui/material';
-import EditModeInput from './editModeInput.js';
+import Divider from '@mui/material/Divider';
+import List from '@mui/material/List';
+import React, { useCallback } from 'react';
+import useReq from '../hooks/useReq.js';
+import '../styles/components/reviewList.css';
 import { changeTimeFormat } from '../utils/datetime.js';
+import EditModeInput from './editModeInput.js';
 
 export default function ReviewList({ reviews, styles, doGetReviewRequest, noEdit = false, showMovieTitle = true }) {
     const { data: editReviewResponse, isLoading: isReviewEditLoading, error: editReviewsError, doRequest: doEditReviewRequest } = useReq(null, null);
@@ -25,24 +25,24 @@ export default function ReviewList({ reviews, styles, doGetReviewRequest, noEdit
             }
         });
         getReviewHandler(movieId);
-    },[])
+    }, [])
     const deleteReviewHandler = useCallback(async (review) => {
         await doDeleteReviewRequest(process.env.REACT_APP_REVIEW_API + `/${review.reviewId}`, {
             method: 'GET'
         });
         getReviewHandler(review.movieId);
-    },[])
+    }, [])
     const getReviewHandler = useCallback((movieId) => {
         doGetReviewRequest(process.env.REACT_APP_MOVIE_API + `/${movieId}/reviews`, {
             method: 'GET'
         });
-    },[])
+    }, [])
 
     return (
         <List sx={Object.assign({ width: '100%', maxWidth: 360, bgcolor: 'background.paper' }, styles)}>
             {
                 reviews && reviews.map(review => {
-                    return <Box 
+                    return <Box
                         key={`reviewBox${review.reviewId}`}
                         id={`reviewBox${review.reviewId}`}
                         className='mb-10'>
@@ -62,7 +62,8 @@ export default function ReviewList({ reviews, styles, doGetReviewRequest, noEdit
                                     edit: (content, rating) => editReviewHandler(content, rating, review),
                                     remove: () => deleteReviewHandler(review)
                                 }}
-                                noEdit={noEdit}
+                                //noEdit={noEdit}
+                                noEdit={noEdit || !context.userId || review.userId !== context.userId} // userId가 없으면 수정 불가능
                             />
                         </Box>
                         <Divider variant="inset" component="li" sx={{ marginLeft: 0, marginBottom: 1 }} />
