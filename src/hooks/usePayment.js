@@ -18,7 +18,7 @@ const usePayment = () => {
             return;
         }
 
-        IMP.init("imp25587836");
+        IMP.init("");
 
         IMP.request_pay({
             pg: "html5_inicis",
